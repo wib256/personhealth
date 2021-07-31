@@ -80,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-            BlocBuilder<LoginBloc, LoginState>(builder: (context, state)  {
+            BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
               if (state is LoginStateFailure) {
                 return Text('${state.errorMessage}');
               }
@@ -90,13 +90,15 @@ class _LoginScreenState extends State<LoginScreen> {
               if (state is LoginStateSuccess) {
                 isLogin = true;
               }
-              return Text('Please enter phone and password');
+              return Text('');
             }),
             Padding(
               padding: EdgeInsets.fromLTRB(30, 5, 30, 10),
               child: RaisedButton(
                 onPressed: () {
-                  _loginBloc.add(LoginEvent(username: _userController.text, password: _passwordController.text));
+                  _loginBloc.add(LoginEvent(
+                      username: _userController.value.text,
+                      password: _passwordController.value.text));
                   if (isLogin) {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(index: 0)));
                   }

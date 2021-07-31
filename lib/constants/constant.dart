@@ -31,6 +31,7 @@ const ACCEPT_INVITED = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/user-
 
 // Group Family Details
 const GET_GROUP_FAMILY_DETAIL = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/user-family-groups/user-family-group/family-group/';
+const DELETE_MEMBER = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/user-family-groups/user-family-group/';
 
 //Sharing
 const POST_SHARING_INFORMATION_TO_GROUP = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/sharings/sharing/group';

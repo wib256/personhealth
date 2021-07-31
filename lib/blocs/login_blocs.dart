@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:personhealth/events/login_events.dart';
 import 'package:personhealth/models/patient.dart';
@@ -15,28 +17,34 @@ class LoginBloc extends Bloc<LoginBloc, LoginState> {
       yield LoginStateFailure(errorMessage: '');
     }
     if (event is LoginEvent) {
-      if (state is LoginStateFailure) {
-        bool isLogin = await login(event.username, event.password);
-        if (isLogin) {
-          String? token = await LocalData().getToken();
-          String? phone = await LocalData().getPhone();
-          if (phone != null && token != null) {
-            print(token + ',' + phone);
-            Patient? patient = await getPatientByPhoneFromApi(phone);
-            print(patient);
-            if (patient != null) {
-              await LocalData().saveGender(patient.gender);
-              await LocalData().savePatientId(patient.id);
-              await LocalData().saveName(patient.name);
-              await LocalData().saveImage(patient.image);
-              print(patient.gender+patient.id.toString()+patient.name+patient.image);
-              yield LoginStateSuccess();
+      try {
+        if (state is LoginStateFailure) {
+          bool isLogin = await login(event.username, event.password);
+          if (isLogin) {
+            String? phone = await LocalData().getPhone();
+            String? token = await LocalData().getToken();
+            final parts = token!.split('.');
+            final payload = parts[1];
+            final String decoded = utf8.decode(base64Url.decode(payload));
+            if (phone != null && decoded.contains('PATIENT')) {
+              Patient? patient = await getPatientByPhoneFromApi(phone);
+              if (patient != null) {
+                await LocalData().saveGender(patient.gender);
+                await LocalData().savePatientId(patient.id);
+                await LocalData().saveName(patient.name);
+                await LocalData().saveImage(patient.image);
+                yield LoginStateSuccess();
+              } else {
+                yield LoginStateFailure(errorMessage: 'Incorrect phone or password');
+              }
             }
+          } else {
+            yield LoginStateFailure(errorMessage: 'Incorrect phone or password');
           }
-
-        } else {
-          yield LoginStateFailure(errorMessage: 'Incorrect phone or password');
         }
+      } catch (exception) {
+        print(exception);
+        yield LoginStateFailure(errorMessage: 'Incorrect phone or password');
       }
     }
   }

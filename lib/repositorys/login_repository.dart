@@ -16,6 +16,7 @@ Future<bool> login(String username, String password) async {
     });
     if (response.statusCode == 200) {
       String token = response.body.toString();
+      print(token);
       await LocalData().saveToken(token);
       await LocalData().savePhone(username);
       return true;
