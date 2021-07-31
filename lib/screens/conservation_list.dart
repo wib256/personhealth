@@ -30,7 +30,7 @@ class _ConservationListState extends State<ConservationList> {
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) => BlocProvider(
           create: (context) => GroupFamilyBloc()..add(GroupFamilyFetchEvent(familyId: _userFamilyGroup.id)),
-          child: GroupDetailScreen(familyId: _userFamilyGroup.id),
+          child: GroupDetailScreen(familyId: _userFamilyGroup.id, roleInGroup: _userFamilyGroup.roleInTheGroup,),
         )));
       },
       child: Container(

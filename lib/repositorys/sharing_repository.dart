@@ -7,6 +7,23 @@ import 'package:personhealth/models/shared.dart';
 
 import 'local_data.dart';
 
+Future<bool> removeMember(int familyGroupId, int patientId) async {
+  try {
+    String? token = await LocalData().getToken();
+    token = 'Bearer ' + token!;
+    final response = await http.delete(Uri.parse('$DELETE_MEMBER$familyGroupId/$patientId'), headers: {
+      HttpHeaders.authorizationHeader: token
+    });
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (exception) {
+    return false;
+  }
+}
+
 Future<bool> addMember(int familyGroupId, String phone) async {
   try {
     String? token = await LocalData().getToken();

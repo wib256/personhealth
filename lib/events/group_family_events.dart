@@ -29,3 +29,11 @@ class GroupFamilyAddMemberToGroup extends GroupFamilyBloc {
 
   GroupFamilyAddMemberToGroup({required this.familyGroupId, required this.phone});
 }
+
+class GroupFamilyDeleteMember extends GroupFamilyBloc {
+  final int familyId;
+  final int patientId;
+  final int index;
+
+  GroupFamilyDeleteMember({required this.familyId, required this.patientId, required this.index});
+}

@@ -7,8 +7,11 @@ import 'package:personhealth/states/group_family_states.dart';
 
 class GroupDetailScreen extends StatefulWidget {
   final int familyId;
+  final String roleInGroup;
 
-  const GroupDetailScreen({Key? key, required this.familyId}) : super(key: key);
+  const GroupDetailScreen(
+      {Key? key, required this.familyId, required this.roleInGroup})
+      : super(key: key);
 
   @override
   _GroupDetailScreenState createState() => _GroupDetailScreenState();
@@ -35,14 +38,10 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
     _phoneController.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-      appBar: AppBar(
-        actions: [
-          PopupMenuButton(
-              itemBuilder: (context) => [
+  PopupMenuButton getPopupMenuButton(BuildContext context) {
+    if (widget.roleInGroup.compareTo('leader') == 0) {
+      return PopupMenuButton(
+          itemBuilder: (context) => [
                 PopupMenuItem(
                   child: GestureDetector(
                     onTap: () {
@@ -67,8 +66,34 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                   ),
                   value: 2,
                 )
-              ]
-          )
+              ]);
+    } else {
+      return PopupMenuButton(
+          itemBuilder: (context) => [
+            PopupMenuItem(
+              child: GestureDetector(
+                onTap: () {
+                  _showEditDialog(context, widget.familyId);
+                },
+                child: ListTile(
+                  leading: Icon(Icons.edit),
+                  title: Text('Edit'),
+                ),
+              ),
+              value: 1,
+            )
+          ]
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+        child: Scaffold(
+      appBar: AppBar(
+        actions: [
+          getPopupMenuButton(context),
         ],
       ),
       body: SingleChildScrollView(
@@ -83,8 +108,9 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                 );
               } else if (state is GroupFamilyStateFailure) {
                 return Center(
-                  child:
-                      Expanded(child: Text('The system is crashing, please try again later!')),
+                  child: Expanded(
+                      child: Text(
+                          'The system is crashing, please try again later!')),
                 );
               } else if (state is GroupFamilyStateSuccess) {
                 if (state.groupFamily != null) {
@@ -123,6 +149,12 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                                   ),
                                 ),
                               ),
+                              widget.roleInGroup.compareTo('leader') == 0 ? TextButton(
+                                  onPressed: () {
+                                    _groupFamilyBloc.add(GroupFamilyDeleteMember(familyId: widget.familyId, patientId: state.groupFamily!.patients[index].id, index: index));
+                                  },
+                                  child: Text('Delete')
+                              ) : Text(''),
                             ],
                           ),
                           children: [
@@ -289,9 +321,21 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
   }
 
   _showAddSuccess(BuildContext buildContext) {
-    showDialog(context: context, builder: (BuildContext buildContext) {
-      return AlertDialog(content: Text('Add member successfully, wait for that person to accept the invitation.'), actions: [TextButton(onPressed: () {Navigator.pop(context);}, child: Text('Close'))],);
-    });
+    showDialog(
+        context: context,
+        builder: (BuildContext buildContext) {
+          return AlertDialog(
+            content: Text(
+                'Add member successfully, wait for that person to accept the invitation.'),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('Close'))
+            ],
+          );
+        });
   }
 
   _showAddDialog(BuildContext buildContext, int familyGroupId) {
@@ -314,7 +358,9 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
         ),
         TextButton(
           onPressed: () {
-            _groupFamilyBloc.add(GroupFamilyAddMemberToGroup(familyGroupId: widget.familyId, phone: _phoneController.value.text));
+            _groupFamilyBloc.add(GroupFamilyAddMemberToGroup(
+                familyGroupId: widget.familyId,
+                phone: _phoneController.value.text));
             Navigator.pop(context);
             _showAddSuccess(context);
           },
@@ -342,8 +388,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                     contentPadding: EdgeInsets.all(8),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
-                        borderSide:
-                        BorderSide(color: Colors.grey.shade100)),
+                        borderSide: BorderSide(color: Colors.grey.shade100)),
                   ),
                 ),
               ],
@@ -374,7 +419,11 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
         ),
         TextButton(
           onPressed: () {
-            _groupFamilyBloc.add(GroupFamilyEditSharingToGroupEvent(familyGroupId: familyGroupId, bodyIndex: valueSecond, legalInformation: valueFirst, prehistoricInformation: valueThird));
+            _groupFamilyBloc.add(GroupFamilyEditSharingToGroupEvent(
+                familyGroupId: familyGroupId,
+                bodyIndex: valueSecond,
+                legalInformation: valueFirst,
+                prehistoricInformation: valueThird));
             Navigator.pop(context);
           },
           child: Text('Edit'),
@@ -396,7 +445,6 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                       this.valueFirst = value!;
                     });
                   },
-
                 ),
                 CheckboxListTile(
                   controlAffinity: ListTileControlAffinity.trailing,
@@ -410,7 +458,6 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                       print(this.valueSecond);
                     });
                   },
-
                 ),
                 CheckboxListTile(
                   controlAffinity: ListTileControlAffinity.trailing,

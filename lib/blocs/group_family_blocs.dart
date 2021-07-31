@@ -79,5 +79,18 @@ class GroupFamilyBloc extends Bloc<GroupFamilyBloc, GroupFamilyState> {
         yield currentState;
       }
     }
+    if (event is GroupFamilyDeleteMember) {
+      if (state is GroupFamilyStateSuccess) {
+        var currentState = state as GroupFamilyStateSuccess;
+        bool isDelete = await removeMember(event.familyId, event.patientId);
+        if (isDelete) {
+          currentState.groupFamily!.patients.removeAt(event.index);
+          currentState.listPatient.removeAt(event.index);
+          yield currentState;
+        } else {
+          yield GroupFamilyStateFailure();
+        }
+      }
+    }
   }
 }
