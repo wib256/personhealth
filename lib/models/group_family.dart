@@ -1,10 +1,14 @@
 import 'package:personhealth/models/patient.dart';
 
 class GroupFamily {
-  final String name;
+  String name;
   final String avatar;
   final int leaderId;
   final List<Patient> patients;
+
+  void setName(String newName) {
+    name = newName;
+  }
 
   GroupFamily({required this.name, required this.avatar, required this.leaderId, required this.patients});
 

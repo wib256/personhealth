@@ -28,6 +28,8 @@ const CREATE_GROUP = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/family-
 const GET_INVITED_GROUP = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/family-groups/family-groups/inviting/';
 const ADD_MEMBER = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/user-family-groups/user-family-group/';
 const ACCEPT_INVITED = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/user-family-groups/user-family-group/';
+const RENAME_GROUP = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/family-groups/family-group/';
+const CHANGE_AVATAR_GROUP = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/commons/profile/pic/';
 
 // Group Family Details
 const GET_GROUP_FAMILY_DETAIL = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/user-family-groups/user-family-group/family-group/';

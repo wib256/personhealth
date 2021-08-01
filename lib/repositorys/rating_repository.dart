@@ -5,6 +5,8 @@ import 'package:personhealth/constants/constant.dart';
 import 'package:personhealth/models/rating.dart';
 import 'package:http/http.dart' as http;
 
+import 'local_data.dart';
+
 Future<String> rateExamination(Rating rating) async {
   try {
     var param = {
@@ -14,12 +16,14 @@ Future<String> rateExamination(Rating rating) async {
     };
     print(param);
     Uri uri = Uri.parse('$POST_RATING');
-
-    final response = await http.post(uri, body: json.encode(param), headers: {
+    String? token = await LocalData().getToken();
+    token = 'Bearer ' + token!;
+    final response = await http.put(uri, body: json.encode(param), headers: {
       HttpHeaders.contentTypeHeader: "application/json",
-      HttpHeaders.acceptHeader: "application/json"
+      HttpHeaders.acceptHeader: "application/json",
+      HttpHeaders.authorizationHeader: token
     });
-
+    print('Body ne: ' + response.body);
     if (response.statusCode == 200) {
       return "Succeeded!";
     } else {

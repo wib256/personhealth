@@ -1,6 +1,8 @@
+import 'dart:io' as local;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:personhealth/blocs/group_family_blocs.dart';
 import 'package:personhealth/events/group_family_events.dart';
 import 'package:personhealth/states/group_family_states.dart';
@@ -8,9 +10,13 @@ import 'package:personhealth/states/group_family_states.dart';
 class GroupDetailScreen extends StatefulWidget {
   final int familyId;
   final String roleInGroup;
+  final String groupName;
 
   const GroupDetailScreen(
-      {Key? key, required this.familyId, required this.roleInGroup})
+      {Key? key,
+      required this.familyId,
+      required this.roleInGroup,
+      required this.groupName})
       : super(key: key);
 
   @override
@@ -23,6 +29,15 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
   late bool valueSecond = false;
   late bool valueThird = false;
   final _phoneController = TextEditingController();
+  final _groupNameController = TextEditingController();
+
+  final picker = ImagePicker();
+
+  _imgFromGallery() async {
+    XFile? imageT = (await picker.pickImage(source: ImageSource.gallery));
+    local.File image = local.File(imageT!.path);
+    _groupFamilyBloc.add(GroupFamilyChangeImage(familyId: widget.familyId, image: image));
+  }
 
   @override
   void initState() {
@@ -36,6 +51,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
     // TODO: implement dispose
     super.dispose();
     _phoneController.dispose();
+    _groupNameController.dispose();
   }
 
   PopupMenuButton getPopupMenuButton(BuildContext context) {
@@ -65,25 +81,72 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                     ),
                   ),
                   value: 2,
+                ),
+                PopupMenuItem(
+                  child: GestureDetector(
+                    onTap: () {
+                      _showRenameDialog(context, widget.familyId);
+                    },
+                    child: ListTile(
+                      leading: Icon(Icons.drive_file_rename_outline),
+                      title: Text('Rename'),
+                    ),
+                  ),
+                  value: 3,
+                ),
+                PopupMenuItem(
+                  child: GestureDetector(
+                    onTap: () {
+                      _imgFromGallery();
+                    },
+                    child: ListTile(
+                      leading: Icon(Icons.image),
+                      title: Text('Change avatar'),
+                    ),
+                  ),
+                  value: 4,
                 )
               ]);
     } else {
       return PopupMenuButton(
           itemBuilder: (context) => [
-            PopupMenuItem(
-              child: GestureDetector(
-                onTap: () {
-                  _showEditDialog(context, widget.familyId);
-                },
-                child: ListTile(
-                  leading: Icon(Icons.edit),
-                  title: Text('Edit'),
+                PopupMenuItem(
+                  child: GestureDetector(
+                    onTap: () {
+                      _showEditDialog(context, widget.familyId);
+                    },
+                    child: ListTile(
+                      leading: Icon(Icons.edit),
+                      title: Text('Edit'),
+                    ),
+                  ),
+                  value: 1,
                 ),
-              ),
-              value: 1,
-            )
-          ]
-      );
+                PopupMenuItem(
+                  child: GestureDetector(
+                    onTap: () {
+                      _showRenameDialog(context, widget.familyId);
+                    },
+                    child: ListTile(
+                      leading: Icon(Icons.drive_file_rename_outline),
+                      title: Text('Rename'),
+                    ),
+                  ),
+                  value: 2,
+                ),
+                PopupMenuItem(
+                  child: GestureDetector(
+                    onTap: () {
+                      _imgFromGallery();
+                    },
+                    child: ListTile(
+                      leading: Icon(Icons.image),
+                      title: Text('Change avatar'),
+                    ),
+                  ),
+                  value: 3,
+                )
+              ]);
     }
   }
 
@@ -149,12 +212,18 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                                   ),
                                 ),
                               ),
-                              widget.roleInGroup.compareTo('leader') == 0 ? TextButton(
-                                  onPressed: () {
-                                    _groupFamilyBloc.add(GroupFamilyDeleteMember(familyId: widget.familyId, patientId: state.groupFamily!.patients[index].id, index: index));
-                                  },
-                                  child: Text('Delete')
-                              ) : Text(''),
+                              widget.roleInGroup.compareTo('leader') == 0
+                                  ? TextButton(
+                                      onPressed: () {
+                                        _groupFamilyBloc.add(
+                                            GroupFamilyDeleteMember(
+                                                familyId: widget.familyId,
+                                                patientId: state.groupFamily!
+                                                    .patients[index].id,
+                                                index: index));
+                                      },
+                                      child: Text('Delete'))
+                                  : Text(''),
                             ],
                           ),
                           children: [
@@ -184,6 +253,10 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                                         ListTile(
                                           title: Text(
                                               'Phone: ${state.listPatient[index].phone}'),
+                                        ),
+                                        ListTile(
+                                          title: Text(
+                                              'Address: ${state.listPatient[index].address}'),
                                         ),
                                         ListTile(
                                           title: Text(
@@ -338,6 +411,84 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
         });
   }
 
+  _showRenameSuccess(BuildContext buildContext) {
+    showDialog(
+        context: context,
+        builder: (BuildContext buildContext) {
+          return AlertDialog(
+            content: Text('Rename successfully.'),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('Close'))
+            ],
+          );
+        });
+  }
+
+  _showRenameDialog(BuildContext buildContext, int familyGroupId) {
+    showDialog(
+        context: context,
+        builder: (BuildContext buildContext) {
+          return _renameGroup(familyGroupId);
+        });
+  }
+
+  Widget _renameGroup(int familyGroupId) {
+    return AlertDialog(
+      title: Center(child: Text('Rename group')),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text('Close'),
+        ),
+        TextButton(
+          onPressed: () {
+            _groupFamilyBloc.add(GroupFamilyRename(
+                familyId: widget.familyId,
+                name: _groupNameController.value.text));
+            Navigator.pop(context);
+            _showRenameSuccess(context);
+          },
+          child: Text('Rename'),
+        ),
+      ],
+      content: StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+          return Container(
+            height: 50,
+            child: Column(
+              children: [
+                TextField(
+                  controller: _groupNameController,
+                  decoration: InputDecoration(
+                    hintText: "Group name",
+                    hintStyle: TextStyle(color: Colors.grey.shade600),
+                    prefixIcon: Icon(
+                      Icons.drive_file_rename_outline,
+                      color: Colors.grey.shade600,
+                      size: 20,
+                    ),
+                    filled: true,
+                    fillColor: Colors.grey.shade100,
+                    contentPadding: EdgeInsets.all(8),
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(color: Colors.grey.shade100)),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   _showAddDialog(BuildContext buildContext, int familyGroupId) {
     showDialog(
         context: context,
@@ -374,6 +525,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
             child: Column(
               children: [
                 TextField(
+                  keyboardType: TextInputType.number,
                   controller: _phoneController,
                   decoration: InputDecoration(
                     hintText: "Phone",
@@ -397,6 +549,23 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
         },
       ),
     );
+  }
+
+  _showEditSuccess(BuildContext buildContext) {
+    showDialog(
+        context: context,
+        builder: (BuildContext buildContext) {
+          return AlertDialog(
+            content: Text('Edit successfully.'),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('Close'))
+            ],
+          );
+        });
   }
 
   _showEditDialog(BuildContext buildContext, int familyGroupId) {
@@ -425,6 +594,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                 legalInformation: valueFirst,
                 prehistoricInformation: valueThird));
             Navigator.pop(context);
+            _showEditSuccess(context);
           },
           child: Text('Edit'),
         ),

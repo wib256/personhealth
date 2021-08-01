@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:personhealth/blocs/group_family_blocs.dart';
 
 class GroupFamilyFetchEvent extends GroupFamilyBloc {
@@ -36,4 +37,18 @@ class GroupFamilyDeleteMember extends GroupFamilyBloc {
   final int index;
 
   GroupFamilyDeleteMember({required this.familyId, required this.patientId, required this.index});
+}
+
+class GroupFamilyRename extends GroupFamilyBloc {
+  final int familyId;
+  final String name;
+
+  GroupFamilyRename({required this.familyId, required this.name});
+}
+
+class GroupFamilyChangeImage extends GroupFamilyBloc {
+  final int familyId;
+  final File? image;
+
+  GroupFamilyChangeImage({required this.familyId, required this.image});
 }

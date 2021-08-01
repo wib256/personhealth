@@ -20,6 +20,11 @@ class _PersonalScreenState extends State<PersonalScreen> {
   final _genderController = TextEditingController();
   final _phoneController = TextEditingController();
   final _addressController = TextEditingController();
+  final _bloodTypeController = TextEditingController();
+  final _heightController = TextEditingController();
+  final _weightController = TextEditingController();
+  final _eyesightController = TextEditingController();
+  final _medicalNoteController = TextEditingController();
 
   late XFile? _image;
   final picker = ImagePicker();
@@ -38,6 +43,11 @@ class _PersonalScreenState extends State<PersonalScreen> {
     _genderController.dispose();
     _phoneController.dispose();
     _addressController.dispose();
+    _bloodTypeController.dispose();
+    _heightController.dispose();
+    _weightController.dispose();
+    _eyesightController.dispose();
+    _medicalNoteController.dispose();
     super.dispose();
   }
 
@@ -51,11 +61,13 @@ class _PersonalScreenState extends State<PersonalScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: DefaultTabController(
-        length: 2,
+        length: 3,
         child:
             BlocBuilder<PatientBloc, PatientState>(builder: (context, state) {
           if (state is PatientStateInitial) {
             return Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
                   height: 200,
@@ -68,22 +80,28 @@ class _PersonalScreenState extends State<PersonalScreen> {
                     tabs: [
                       Tab(
                           icon: Icon(
+                        Icons.person,
+                        color: Colors.black,
+                      )),
+                      Tab(
+                          icon: Icon(
                         Icons.info,
                         color: Colors.black,
                       )),
                       Tab(
                           icon: Icon(
-                        Icons.sentiment_very_dissatisfied,
-                        color: Colors.black,
-                      )),
+                            Icons.medical_services,
+                            color: Colors.black,
+                          )),
                     ],
                   ),
                 ),
                 Expanded(
                   child: TabBarView(
                     children: [
-                      Icon(Icons.directions_car),
-                      Icon(Icons.directions_transit),
+                      Icon(Icons.person),
+                      Icon(Icons.info),
+                      Icon(Icons.medical_services),
                     ],
                   ),
                 ),
@@ -93,6 +111,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
             return Text('Fail');
           } else if (state is PatientStateSuccess) {
             return Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 SizedBox(
                   height: 200,
@@ -117,8 +136,14 @@ class _PersonalScreenState extends State<PersonalScreen> {
                   ),
                 ),
                 Material(
+                  color: Colors.blue[50],
                   child: TabBar(
                     tabs: [
+                      Tab(
+                          icon: Icon(
+                        Icons.person,
+                        color: Colors.black,
+                      )),
                       Tab(
                           icon: Icon(
                         Icons.info,
@@ -126,24 +151,29 @@ class _PersonalScreenState extends State<PersonalScreen> {
                       )),
                       Tab(
                           icon: Icon(
-                        Icons.sentiment_very_dissatisfied,
+                        Icons.medical_services,
                         color: Colors.black,
                       )),
                     ],
                   ),
                 ),
+                Divider(
+
+                ),
                 Expanded(
                   child: TabBarView(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 5, 15, 0),
-                        child: SingleChildScrollView(
-                          physics: BouncingScrollPhysics(),
+                      SingleChildScrollView(
+                        physics: BouncingScrollPhysics(),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(15, 5, 15, 0),
                           child: Column(
+                            mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               TextField(
-                                controller: _nameController..text = state.patient.name,
+                                controller: _nameController
+                                  ..text = state.patient.name,
                                 decoration: InputDecoration(
                                   labelText: 'Name',
                                   hintText: '${state.patient.name}',
@@ -151,7 +181,10 @@ class _PersonalScreenState extends State<PersonalScreen> {
                                     onPressed: () {
                                       print('aaaaa');
                                     },
-                                    icon: Icon(Icons.edit, color: Colors.blue,),
+                                    icon: Icon(
+                                      Icons.edit,
+                                      color: Colors.blue,
+                                    ),
                                   ),
                                   focusedBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(color: Colors.white),
@@ -159,7 +192,8 @@ class _PersonalScreenState extends State<PersonalScreen> {
                                 ),
                               ),
                               TextField(
-                                controller: _dobController..text = state.patient.dob,
+                                controller: _dobController
+                                  ..text = state.patient.dob,
                                 decoration: InputDecoration(
                                   labelText: 'Date of birth',
                                   hintText: '${state.patient.name}',
@@ -167,7 +201,10 @@ class _PersonalScreenState extends State<PersonalScreen> {
                                     onPressed: () {
                                       print('aaaaa');
                                     },
-                                    icon: Icon(Icons.edit, color: Colors.blue,),
+                                    icon: Icon(
+                                      Icons.edit,
+                                      color: Colors.blue,
+                                    ),
                                   ),
                                   focusedBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(color: Colors.white),
@@ -175,39 +212,33 @@ class _PersonalScreenState extends State<PersonalScreen> {
                                 ),
                               ),
                               TextField(
-                                controller: _genderController..text = state.patient.gender,
+                                controller: _genderController
+                                  ..text = state.patient.gender,
+                                enabled: false,
                                 decoration: InputDecoration(
                                   labelText: 'Gender',
                                   hintText: '${state.patient.name}',
-                                  suffixIcon: IconButton(
-                                    onPressed: () {
-                                      print('aaaaa');
-                                    },
-                                    icon: Icon(Icons.edit, color: Colors.blue,),
-                                  ),
                                   focusedBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(color: Colors.white),
                                   ),
                                 ),
                               ),
                               TextField(
-                                controller: _phoneController..text = state.patient.phone,
+                                controller: _phoneController
+                                  ..text = state.patient.phone,
+                                enabled: false,
                                 decoration: InputDecoration(
                                   labelText: 'Phone',
                                   hintText: '${state.patient.name}',
-                                  suffixIcon: IconButton(
-                                    onPressed: () {
-                                      print('aaaaa');
-                                    },
-                                    icon: Icon(Icons.edit, color: Colors.blue,),
-                                  ),
                                   focusedBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(color: Colors.white),
                                   ),
                                 ),
                               ),
                               TextField(
-                                controller: _addressController..text = state.patient.address,
+                                controller: _addressController
+                                  ..text = state.patient.address,
+                                maxLines: 2,
                                 decoration: InputDecoration(
                                   labelText: 'Address',
                                   hintText: '${state.patient.name}',
@@ -215,7 +246,30 @@ class _PersonalScreenState extends State<PersonalScreen> {
                                     onPressed: () {
                                       print('aaaaa');
                                     },
-                                    icon: Icon(Icons.edit, color: Colors.blue,),
+                                    icon: Icon(
+                                      Icons.edit,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                              TextField(
+                                controller: _bloodTypeController
+                                  ..text = state.patient.bloodType,
+                                decoration: InputDecoration(
+                                  labelText: 'Blood Type',
+                                  hintText: '${state.patient.name}',
+                                  suffixIcon: IconButton(
+                                    onPressed: () {
+                                      print('aaaaa');
+                                    },
+                                    icon: Icon(
+                                      Icons.edit,
+                                      color: Colors.blue,
+                                    ),
                                   ),
                                   focusedBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(color: Colors.white),
@@ -226,7 +280,115 @@ class _PersonalScreenState extends State<PersonalScreen> {
                           ),
                         ),
                       ),
-                      Icon(Icons.directions_transit),
+                      SingleChildScrollView(
+                        physics: BouncingScrollPhysics(),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(15, 5, 15, 0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TextField(
+                                controller: _heightController
+                                  ..text = state.patient.height.toString(),
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                  labelText: 'Height',
+                                  hintText: '${state.patient.name}',
+                                  suffixIcon: IconButton(
+                                    onPressed: () {
+                                      print('aaaaa');
+                                    },
+                                    icon: Icon(
+                                      Icons.edit,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                              TextField(
+                                controller: _weightController
+                                  ..text = state.patient.weight.toString(),
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                  labelText: 'Weight',
+                                  hintText: '${state.patient.name}',
+                                  suffixIcon: IconButton(
+                                    onPressed: () {
+                                      print('aaaaa');
+                                    },
+                                    icon: Icon(
+                                      Icons.edit,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                              TextField(
+                                controller: _eyesightController
+                                  ..text = state.patient.eyesight.toString(),
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                  labelText: 'Eyesight',
+                                  hintText: '${state.patient.name}',
+                                  suffixIcon: IconButton(
+                                    onPressed: () {
+                                      print('aaaaa');
+                                    },
+                                    icon: Icon(
+                                      Icons.edit,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SingleChildScrollView(
+                        physics: BouncingScrollPhysics(),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(15, 5, 15, 0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TextField(
+                                controller: _eyesightController
+                                  ..text = state.patient.medicalNote,
+                                maxLines: 2,
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                  labelText: 'Allergic things',
+                                  hintText: '${state.patient.name}',
+                                  suffixIcon: IconButton(
+                                    onPressed: () {
+                                      print('aaaaa');
+                                    },
+                                    icon: Icon(
+                                      Icons.edit,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),

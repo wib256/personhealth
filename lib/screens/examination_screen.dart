@@ -217,7 +217,7 @@ class _ExaminationScreenState extends State<ExaminationScreen> {
                               },
                               child: ListTile(
                                 leading: Icon(Icons.description),
-                                title: Text('Test',
+                                title: Text('Examination',
                                     style: TextStyle(fontSize: 20)),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,

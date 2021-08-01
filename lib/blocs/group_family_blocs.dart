@@ -5,6 +5,7 @@ import 'package:personhealth/repositorys/group_family_repository.dart';
 import 'package:personhealth/repositorys/patient_repository.dart';
 import 'package:personhealth/repositorys/sharing_repository.dart';
 import 'package:personhealth/states/group_family_states.dart';
+import 'dart:io' as local;
 
 class GroupFamilyBloc extends Bloc<GroupFamilyBloc, GroupFamilyState> {
   GroupFamilyBloc():super(GroupFamilyStateInitial());
@@ -88,6 +89,31 @@ class GroupFamilyBloc extends Bloc<GroupFamilyBloc, GroupFamilyState> {
           currentState.listPatient.removeAt(event.index);
           yield currentState;
         } else {
+          yield GroupFamilyStateFailure();
+        }
+      }
+    }
+    if (event is GroupFamilyRename) {
+      if (state is GroupFamilyStateSuccess) {
+        var currentState = state as GroupFamilyStateSuccess;
+        bool isRename = await renameGroup(event.familyId, event.name);
+        if (isRename) {
+          currentState.groupFamily!.setName(event.name);
+          yield currentState;
+        } else {
+          yield GroupFamilyStateFailure();
+        }
+      }
+    }
+    if (event is GroupFamilyChangeImage) {
+      if (state is GroupFamilyStateSuccess) {
+        var currentState = state as GroupFamilyStateSuccess;
+        bool isChange = await changeAvatar(event.familyId, event.image as local.File);
+        if (isChange) {
+          print('Da thanh cong');
+          yield currentState;
+        } else {
+          print('Da that bai');
           yield GroupFamilyStateFailure();
         }
       }

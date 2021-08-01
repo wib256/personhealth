@@ -8,7 +8,11 @@ import 'package:personhealth/repositorys/local_data.dart';
 
 Future<bool> acceptInvited(int familyId, int patientId) async {
   try {
-    final response = await http.put(Uri.parse('$ACCEPT_INVITED$familyId/$patientId'));
+    String? token = await LocalData().getToken();
+    token = 'Bearer ' + token!;
+    final response = await http.put(Uri.parse('$ACCEPT_INVITED$familyId/$patientId'), headers: {
+      HttpHeaders.authorizationHeader: token
+    });
     if (response.statusCode == 200) {
       return true;
     } else {
