@@ -68,10 +68,8 @@ Future<bool> changeAvatar(int familyId, File? image) async {
     request.fields["role"] = "group";
     request.fields["Id"] = "$familyId";
     print(request.url);
-    print(image.path);
     print(request.fields);
     print(request.files.length);
-    print(request.method);
     final response = await request.send();
     print(response.statusCode);
     response.stream.transform(utf8.decoder).listen((value) {

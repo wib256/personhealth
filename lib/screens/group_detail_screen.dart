@@ -7,6 +7,8 @@ import 'package:personhealth/blocs/group_family_blocs.dart';
 import 'package:personhealth/events/group_family_events.dart';
 import 'package:personhealth/states/group_family_states.dart';
 
+import 'home_screen.dart';
+
 class GroupDetailScreen extends StatefulWidget {
   final int familyId;
   final String roleInGroup;
@@ -34,7 +36,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
   final picker = ImagePicker();
 
   _imgFromGallery() async {
-    XFile? imageT = (await picker.pickImage(source: ImageSource.gallery));
+    XFile? imageT = (await picker.pickImage(source: ImageSource.gallery, imageQuality: 50));
     local.File image = local.File(imageT!.path);
     _groupFamilyBloc.add(GroupFamilyChangeImage(familyId: widget.familyId, image: image));
   }
@@ -155,6 +157,13 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(index: 2)));
+          },
+          icon: Icon(Icons.arrow_back),
+        ),
         actions: [
           getPopupMenuButton(context),
         ],

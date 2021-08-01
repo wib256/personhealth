@@ -96,7 +96,7 @@ class Card2 extends StatelessWidget {
               softWrap: true,
             ),
             Text(
-              'Location: ${clinic.address}, ${clinic.district} Districts',
+              'Location: ${clinic.address}',
               softWrap: true,
             ),
             Text(

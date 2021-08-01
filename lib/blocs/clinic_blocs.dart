@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:personhealth/events/clinic_events.dart';
+import 'package:personhealth/models/clinic.dart';
 import 'package:personhealth/repositorys/clinic_repository.dart';
 import 'package:personhealth/states/clinic_states.dart';
 
@@ -27,12 +28,23 @@ class ClinicBloc extends Bloc<ClinicBloc, ClinicState> {
       try {
         String searchName = event.search;
         if (state is ClinicStateInitial) {
-          final clinics = await getClinicsByNameFromApi(searchName);
+          final clinicsT = await getClinicsFromApi();
+          List<Clinic> clinics = [];
+          for (int i =0; i < clinicsT.length;i++) {
+            if (clinicsT[i].district.contains(searchName)) {
+              clinics.add(clinicsT[i]);
+            }
+          }
           yield ClinicStateSuccess(clinics: clinics);
         } else if (state is ClinicStateSuccess) {
-          final currentState = state as ClinicStateSuccess;
-          final clinics = await getClinicsByNameFromApi(searchName);
-          yield currentState.cloneWith(clinics: clinics);
+          final clinicsT = await getClinicsFromApi();
+          List<Clinic> clinics = [];
+          for (int i =0; i < clinicsT.length;i++) {
+            if (clinicsT[i].district.contains(searchName)) {
+              clinics.add(clinicsT[i]);
+            }
+          }
+          yield ClinicStateSuccess(clinics: clinics);
         }
       } catch (exception) {
         yield ClinicStateFailure();

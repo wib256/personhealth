@@ -49,11 +49,11 @@ class _FirstScreenState extends State<FirstScreen> {
             Card(
               child: TextField(
                 controller: _searchClinicController,
-                onEditingComplete: () {
+                onSubmitted: (value) {
                   _clinicBloc.add(ClinicSearchEvent(search: _searchClinicController.text));
                 },
                 decoration: InputDecoration(
-                  labelText: 'Search',
+                  labelText: 'Search by district',
                   icon: Icon(
                     Icons.search,
                   ),
@@ -88,7 +88,7 @@ class _FirstScreenState extends State<FirstScreen> {
                 }
                 if (state is ClinicStateSuccess) {
                   if (state.clinics.isEmpty) {
-                    return Center(child: Text('Empty clinic !'));
+                    return Center(child: Text('No result!'));
                   }
                   return ListView.builder(
                     itemBuilder: (BuildContext buildContext, int index) {

@@ -100,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       username: _userController.value.text,
                       password: _passwordController.value.text));
                   if (isLogin) {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(index: 0)));
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen(index: 0)));
                   }
                 },
                 child: Text('Login'),
