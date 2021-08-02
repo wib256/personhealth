@@ -15,7 +15,7 @@ Future<List<UserFamilyGroup>> getListGroup(patientId) async {
       HttpHeaders.authorizationHeader: token
     });
     if (response.statusCode == 200) {
-      final responseData = json.decode(response.body).cast<Map<String, dynamic>>();
+      final responseData = json.decode(utf8.decode(response.bodyBytes)).cast<Map<String, dynamic>>();
       final List<UserFamilyGroup> list = responseData.map<UserFamilyGroup>((json) => UserFamilyGroup.fromJson(json)).toList();
       return list;
     } else {

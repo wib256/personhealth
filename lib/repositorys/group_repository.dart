@@ -48,7 +48,6 @@ Future<bool> createGroup(String groupName, int leaderId) async {
     String? token = await LocalData().getToken();
     token = 'Bearer ' + token!;
     var params = {
-      "avatar": "none",
       "leaderId": leaderId,
       "name": groupName,
       "status": "enable"
