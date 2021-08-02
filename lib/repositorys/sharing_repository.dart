@@ -28,7 +28,7 @@ Future<bool> addMember(int familyGroupId, String phone) async {
   try {
     String? token = await LocalData().getToken();
     token = 'Bearer ' + token!;
-    final response = await http.post(Uri.parse('$ADD_MEMBER/$familyGroupId/$phone'), headers: {
+    final response = await http.post(Uri.parse('$ADD_MEMBER$familyGroupId/$phone'), headers: {
       HttpHeaders.authorizationHeader: token
     });
     if (response.statusCode == 200) {
@@ -71,12 +71,13 @@ Future<List<Shared>> getSharedList() async {
     });
     if (response.statusCode == 200) {
       final responseData = json.decode(utf8.decode(response.bodyBytes)).cast<Map<String, dynamic>>();
-      final List<Shared> sharedList = responseData.map<Sharing>((json) => Shared.fromJson(json)).toList();
+      final List<Shared> sharedList = responseData.map<Shared>((json) => Shared.fromJson(json)).toList();
       return sharedList;
     } else {
       return List.empty();
     }
   } catch (exception) {
+    print(exception);
     return List.empty();
   }
 }

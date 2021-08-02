@@ -39,6 +39,22 @@ class PatientBloc extends Bloc<PatientBloc, PatientState> {
     } else if (event is PatientSharingEvent) {
       await postSharingInformationToPatient(event.bodyIndex, event.legalInformation, event.prehistoricInformation, event.phoneOfSharedPatient);
       yield PatientStateInitial();
+    } else if (event is PatientEditAvatarEvent) {
+      int? patientId = await LocalData().getPatientId();
+      bool isChange = await changeAvatarPatient(patientId!,event.image);
+      if (isChange) {
+        final patient = await getPatientByIdFromApi(patientId);
+        if (patient != null) {
+          await LocalData().saveImage(patient.image);
+          yield PatientStateSuccess(patient: patient);
+        } else {
+          print('Get patient ko thanh cong');
+          yield PatientStateFailure();
+        }
+      } else {
+        print('Change avatar khong thanh cong');
+        yield PatientStateFailure();
+      }
     } else {
       yield PatientStateFailure();
     }

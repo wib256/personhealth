@@ -224,7 +224,7 @@ class _GroupScreenState extends State<GroupScreen> {
                                 child: Text(
                                   'You have not joined any groups yet',
                                   style: TextStyle(
-                                      fontSize: 22, color: Colors.red),
+                                      fontSize: 18,),
                                 ),
                               );
                             } else {
@@ -581,6 +581,7 @@ class _GroupScreenState extends State<GroupScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        listInvitedGroup.length == 0 ? Center(child: Text('No new invitations'),) :
                         ListView.builder(
                           itemCount: listInvitedGroup.length,
                             shrinkWrap: true,
@@ -593,7 +594,11 @@ class _GroupScreenState extends State<GroupScreen> {
                                   TextButton(
                                     onPressed: () {
                                       _groupBloc.add(GroupAcceptEvent(familyId: listInvitedGroup[index].id));
-                                      listInvitedGroup.removeAt(index);
+                                      Navigator.pop(context);
+                                      if (listInvitedGroup.length > index) {
+                                        listInvitedGroup.removeAt(index);
+                                      }
+                                      _showNotiDialog(context);
                                     },
                                     child: Text('Accept'),
                                   ),

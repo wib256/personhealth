@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:personhealth/blocs/patient_blocs.dart';
+import 'package:personhealth/events/patient_events.dart';
 import 'package:personhealth/states/patient_states.dart';
+import 'dart:io';
 
 class PersonalScreen extends StatefulWidget {
   const PersonalScreen({Key? key}) : super(key: key);
@@ -16,25 +18,67 @@ class PersonalScreen extends StatefulWidget {
 class _PersonalScreenState extends State<PersonalScreen> {
   late PatientBloc _patientBloc;
   final _nameController = TextEditingController();
+  late bool isEditName = false;
+  late FocusNode myFocusNodeName;
   final _dobController = TextEditingController();
+  late bool isEditDob = false;
+  late FocusNode myFocusNodeDob;
   final _genderController = TextEditingController();
   final _phoneController = TextEditingController();
   final _addressController = TextEditingController();
+  late bool isEditAddress = false;
+  late FocusNode myFocusNodeAddress;
   final _bloodTypeController = TextEditingController();
+  late bool isEditBloodType = false;
+  late FocusNode myFocusNodeBloodType;
   final _heightController = TextEditingController();
+  late bool isEditHeight = false;
+  late FocusNode myFocusNodeHeight;
   final _weightController = TextEditingController();
+  late bool isEditWeight = false;
+  late FocusNode myFocusNodeWeight;
   final _eyesightController = TextEditingController();
+  late bool isEditEyesight = false;
+  late FocusNode myFocusNodeEyesight;
   final _medicalNoteController = TextEditingController();
 
-  late XFile? _image;
+
   final picker = ImagePicker();
 
   _imgFromGallery() async {
-    XFile? image = await picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = image;
-    });
+    XFile? imageT = await picker.pickImage(source: ImageSource.gallery,  imageQuality: 50);
+    File image = File(imageT!.path);
+    _patientBloc.add(PatientEditAvatarEvent(image: image));
   }
+
+  Widget buildImage(String imagePath) {
+    final image = NetworkImage(imagePath);
+    return ClipOval(
+      child: Material(
+        color: Colors.transparent,
+        child: Ink.image(
+          image: image,
+          height: 200,
+          child: InkWell(onTap: () {
+            print('Click Edit');
+          }),
+        ),
+      ),
+    );
+  }
+
+  Widget buildCircle({
+    required Widget child,
+    required double all,
+    required Color color,
+  }) =>
+      ClipOval(
+        child: Container(
+          padding: EdgeInsets.all(all),
+          color: color,
+          child: child,
+        ),
+      );
 
   @override
   void dispose() {
@@ -48,6 +92,13 @@ class _PersonalScreenState extends State<PersonalScreen> {
     _weightController.dispose();
     _eyesightController.dispose();
     _medicalNoteController.dispose();
+    myFocusNodeName.dispose();
+    myFocusNodeDob.dispose();
+    myFocusNodeAddress.dispose();
+    myFocusNodeBloodType.dispose();
+    myFocusNodeHeight.dispose();
+    myFocusNodeWeight.dispose();
+    myFocusNodeEyesight.dispose();
     super.dispose();
   }
 
@@ -55,24 +106,32 @@ class _PersonalScreenState extends State<PersonalScreen> {
   void initState() {
     super.initState();
     _patientBloc = BlocProvider.of(context);
+    myFocusNodeName = FocusNode();
+    myFocusNodeDob = FocusNode();
+    myFocusNodeAddress = FocusNode();
+    myFocusNodeBloodType = FocusNode();
+    myFocusNodeHeight = FocusNode();
+    myFocusNodeWeight = FocusNode();
+    myFocusNodeEyesight = FocusNode();
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: DefaultTabController(
         length: 3,
         child:
             BlocBuilder<PatientBloc, PatientState>(builder: (context, state) {
           if (state is PatientStateInitial) {
             return Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
                   height: 200,
                   child: Container(
-                    child: CircularProgressIndicator(),
+                    child: LinearProgressIndicator(),
                   ),
                 ),
                 Material(
@@ -90,9 +149,9 @@ class _PersonalScreenState extends State<PersonalScreen> {
                       )),
                       Tab(
                           icon: Icon(
-                            Icons.medical_services,
-                            color: Colors.black,
-                          )),
+                        Icons.medical_services,
+                        color: Colors.black,
+                      )),
                     ],
                   ),
                 ),
@@ -113,25 +172,36 @@ class _PersonalScreenState extends State<PersonalScreen> {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(
+                Container(
                   height: 200,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                    ),
-                    child: Container(
-                      child: GestureDetector(
-                        onLongPress: () {
-                          _showEditAlert(context);
-                        },
-                        child: Image.network(
+                  color: Colors.grey.withOpacity(0.2),
+                  child: Center(
+                    child: Stack(
+                      children: [
+                        Image.network(
                           '${state.patient.image}',
                           errorBuilder: (context, exception, stracktrace) {
                             return Image.network(
                                 'https://static2.yan.vn/YanNews/2167221/202102/facebook-cap-nhat-avatar-doi-voi-tai-khoan-khong-su-dung-anh-dai-dien-e4abd14d.jpg');
                           },
                         ),
-                      ),
+                        Positioned(
+                          bottom: 0,
+                          right: 4,
+                          child: buildCircle(
+                              child: IconButton(
+                                onPressed: () {
+                                  _imgFromGallery();
+                                },
+                                icon: Icon(
+                                  Icons.edit,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              all: 0,
+                              color: Colors.grey.withOpacity(0.5)),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -157,9 +227,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
                     ],
                   ),
                 ),
-                Divider(
-
-                ),
+                Divider(),
                 Expanded(
                   child: TabBarView(
                     children: [
@@ -171,111 +239,204 @@ class _PersonalScreenState extends State<PersonalScreen> {
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              TextField(
-                                controller: _nameController
-                                  ..text = state.patient.name,
-                                decoration: InputDecoration(
-                                  labelText: 'Name',
-                                  hintText: '${state.patient.name}',
-                                  suffixIcon: IconButton(
-                                    onPressed: () {
-                                      print('aaaaa');
-                                    },
-                                    icon: Icon(
-                                      Icons.edit,
-                                      color: Colors.blue,
+                              ListTile(
+                                title: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Name',
+                                      style: TextStyle(
+                                        color: Colors.deepPurpleAccent,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                  ),
+                                    IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          isEditName = true;
+                                        });
+                                        myFocusNodeName.requestFocus();
+                                      },
+                                      icon: Icon(Icons.edit),
+                                    )
+                                  ],
+                                ),
+                                subtitle: TextField(
+                                  controller: _nameController
+                                    ..text = state.patient.name,
+                                  decoration: null,
+                                  enabled: isEditName,
+                                  focusNode: myFocusNodeName,
+                                  onSubmitted: (value) {
+                                    setState(() {
+                                      isEditName = false;
+                                    });
+                                    FocusScope.of(context).unfocus();
+                                  },
                                 ),
                               ),
-                              TextField(
-                                controller: _dobController
-                                  ..text = state.patient.dob,
-                                decoration: InputDecoration(
-                                  labelText: 'Date of birth',
-                                  hintText: '${state.patient.name}',
-                                  suffixIcon: IconButton(
-                                    onPressed: () {
-                                      print('aaaaa');
-                                    },
-                                    icon: Icon(
-                                      Icons.edit,
-                                      color: Colors.blue,
+                              Divider(),
+                              ListTile(
+                                title: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Date of birth',
+                                      style: TextStyle(
+                                        color: Colors.deepPurpleAccent,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                  ),
+                                    IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          isEditDob = true;
+                                        });
+                                        myFocusNodeDob.requestFocus();
+                                      },
+                                      icon: Icon(Icons.edit),
+                                    )
+                                  ],
+                                ),
+                                subtitle: TextField(
+                                  controller: _dobController
+                                    ..text = state.patient.dob,
+                                  decoration: null,
+                                  enabled: isEditDob,
+                                  focusNode: myFocusNodeDob,
+                                  onSubmitted: (value) {
+                                    setState(() {
+                                      isEditDob = false;
+                                    });
+                                    FocusScope.of(context).unfocus();
+                                  },
                                 ),
                               ),
-                              TextField(
-                                controller: _genderController
-                                  ..text = state.patient.gender,
-                                enabled: false,
-                                decoration: InputDecoration(
-                                  labelText: 'Gender',
-                                  hintText: '${state.patient.name}',
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                              TextField(
-                                controller: _phoneController
-                                  ..text = state.patient.phone,
-                                enabled: false,
-                                decoration: InputDecoration(
-                                  labelText: 'Phone',
-                                  hintText: '${state.patient.name}',
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                              TextField(
-                                controller: _addressController
-                                  ..text = state.patient.address,
-                                maxLines: 2,
-                                decoration: InputDecoration(
-                                  labelText: 'Address',
-                                  hintText: '${state.patient.name}',
-                                  suffixIcon: IconButton(
-                                    onPressed: () {
-                                      print('aaaaa');
-                                    },
-                                    icon: Icon(
-                                      Icons.edit,
-                                      color: Colors.blue,
+                              Divider(),
+                              ListTile(
+                                title: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Gender',
+                                      style: TextStyle(
+                                        color: Colors.deepPurpleAccent,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                  ),
+                                    SizedBox(height: 40,)
+                                  ],
+                                ),
+                                subtitle: TextField(
+                                  controller: _genderController
+                                    ..text = state.patient.gender,
+                                  decoration: null,
+                                  enabled: false,
                                 ),
                               ),
-                              TextField(
-                                controller: _bloodTypeController
-                                  ..text = state.patient.bloodType,
-                                decoration: InputDecoration(
-                                  labelText: 'Blood Type',
-                                  hintText: '${state.patient.name}',
-                                  suffixIcon: IconButton(
-                                    onPressed: () {
-                                      print('aaaaa');
-                                    },
-                                    icon: Icon(
-                                      Icons.edit,
-                                      color: Colors.blue,
+                              Divider(),
+                              ListTile(
+                                title: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Phone',
+                                      style: TextStyle(
+                                        color: Colors.deepPurpleAccent,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                  ),
+                                    SizedBox(height: 40,)
+                                  ],
+                                ),
+                                subtitle: TextField(
+                                  controller: _phoneController
+                                    ..text = state.patient.phone,
+                                  decoration: null,
+                                  enabled: false,
                                 ),
                               ),
+                              Divider(),
+                              ListTile(
+                                title: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Address',
+                                      style: TextStyle(
+                                        color: Colors.deepPurpleAccent,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          isEditAddress = true;
+                                        });
+                                        myFocusNodeAddress.requestFocus();
+                                      },
+                                      icon: Icon(Icons.edit),
+                                    )
+                                  ],
+                                ),
+                                subtitle: TextField(
+                                  controller: _addressController
+                                    ..text = state.patient.address,
+                                  decoration: null,
+                                  enabled: isEditAddress,
+                                  focusNode: myFocusNodeAddress,
+                                  onSubmitted: (value) {
+                                    setState(() {
+                                      isEditAddress = false;
+                                    });
+                                    FocusScope.of(context).unfocus();
+                                  },
+                                ),
+                              ),
+                              Divider(),
+                              ListTile(
+                                title: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Blood Type',
+                                      style: TextStyle(
+                                        color: Colors.deepPurpleAccent,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          isEditBloodType = true;
+                                        });
+                                        myFocusNodeBloodType.requestFocus();
+                                      },
+                                      icon: Icon(Icons.edit),
+                                    )
+                                  ],
+                                ),
+                                subtitle: TextField(
+                                  controller: _bloodTypeController
+                                    ..text = state.patient.bloodType,
+                                  decoration: null,
+                                  enabled: isEditBloodType,
+                                  focusNode: myFocusNodeBloodType,
+                                  onSubmitted: (value) {
+                                    setState(() {
+                                      isEditBloodType = false;
+                                    });
+                                    FocusScope.of(context).unfocus();
+                                  },
+                                ),
+                              ),
+                              Divider(),
                             ],
                           ),
                         ),

@@ -32,7 +32,7 @@ class LoginBloc extends Bloc<LoginBloc, LoginState> {
                 await LocalData().saveGender(patient.gender);
                 await LocalData().savePatientId(patient.id);
                 await LocalData().saveName(patient.name);
-                await LocalData().saveImage(patient.image);
+                await LocalData().setIsLogin();
                 yield LoginStateSuccess();
               } else {
                 yield LoginStateFailure(errorMessage: 'Incorrect phone or password');

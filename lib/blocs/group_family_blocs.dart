@@ -110,10 +110,8 @@ class GroupFamilyBloc extends Bloc<GroupFamilyBloc, GroupFamilyState> {
         var currentState = state as GroupFamilyStateSuccess;
         bool isChange = await changeAvatar(event.familyId, event.image as local.File);
         if (isChange) {
-          print('Da thanh cong');
           yield currentState;
         } else {
-          print('Da that bai');
           yield GroupFamilyStateFailure();
         }
       }

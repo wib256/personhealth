@@ -1,6 +1,16 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalData {
+  Future<bool?> isLogin() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    return sp.getBool('isLogin');
+  }
+
+  Future<void> setIsLogin() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.setBool('isLogin', true);
+  }
+
   Future<void> saveImage(String image) async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     sp.setString('image', image);
@@ -59,5 +69,10 @@ class LocalData {
   Future<int?> getPatientId() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     return sp.getInt('patientId');
+  }
+
+  Future<void> logOut() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.clear();
   }
 }

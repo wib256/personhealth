@@ -4,15 +4,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:personhealth/blocs/clinic_blocs.dart';
 import 'package:personhealth/blocs/examination_blocs.dart';
 import 'package:personhealth/blocs/group_blocs.dart';
+import 'package:personhealth/blocs/login_blocs.dart';
 import 'package:personhealth/blocs/patient_blocs.dart';
 import 'package:personhealth/events/clinic_events.dart';
 import 'package:personhealth/events/examination_events.dart';
 import 'package:personhealth/events/group_event.dart';
+import 'package:personhealth/events/login_events.dart';
 import 'package:personhealth/events/patient_events.dart';
+import 'package:personhealth/repositorys/local_data.dart';
 import 'package:personhealth/screens/clinic_screen.dart';
 import 'package:personhealth/screens/personal_screen.dart';
 import 'package:personhealth/screens/examination_screen.dart';
 import 'package:personhealth/screens/group_screen.dart';
+
+import 'login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final int index;
@@ -50,6 +55,22 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Future<void> logout() async {
+    await LocalData().logOut();
+    await Future.delayed(Duration(seconds: 2));
+    Navigator.of(context).pushAndRemoveUntil(
+      // the new route
+      MaterialPageRoute(
+        builder: (BuildContext context) => BlocProvider(create: (context) => LoginBloc()..add(LoginFetchEvent()), child: LoginScreen()),
+      ),
+
+      // this function should return true when we're done removing routes
+      // but because we want to remove all other screens, we make it
+      // always return false
+          (Route route) => false,
+    );
+  }
+
   AppBar getAppBar() {
     switch (selectedIndex) {
       case 0:
@@ -75,6 +96,19 @@ class _HomeScreenState extends State<HomeScreen> {
           automaticallyImplyLeading: false,
           title: Text('Personal Health'),
           centerTitle: true,
+          actions: [
+            PopupMenuButton(
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                child: GestureDetector(
+                  onTap: () {
+                    logout();
+                  },
+                  child: Text('Log out'),
+                ),
+              ),
+            ])
+          ],
         );
     }
     return AppBar(

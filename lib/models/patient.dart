@@ -4,7 +4,7 @@ class Patient {
   int id;
   final int accountId;
   final String medicalNote;
-  final String image;
+  String image;
   final int height;
   final int weight;
   final int eyesight;
@@ -19,6 +19,10 @@ class Patient {
   final bool hasLegal;
   final bool hasBody;
   final bool hasPreHistoric;
+
+  void setImage(String newImage) {
+    image = newImage;
+  }
 
   Patient(
       {required this.id,

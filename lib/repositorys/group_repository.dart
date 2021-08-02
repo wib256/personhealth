@@ -13,6 +13,8 @@ Future<bool> acceptInvited(int familyId, int patientId) async {
     final response = await http.put(Uri.parse('$ACCEPT_INVITED$familyId/$patientId'), headers: {
       HttpHeaders.authorizationHeader: token
     });
+    print('$ACCEPT_INVITED$familyId/$patientId');
+    print(response.statusCode);
     if (response.statusCode == 200) {
       return true;
     } else {
