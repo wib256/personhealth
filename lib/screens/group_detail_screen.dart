@@ -66,7 +66,6 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                       _showAddDialog(context, widget.familyId);
                     },
                     child: ListTile(
-                      leading: Icon(Icons.add),
                       title: Text('Add member'),
                     ),
                   ),
@@ -78,7 +77,6 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                       _showEditDialog(context, widget.familyId);
                     },
                     child: ListTile(
-                      leading: Icon(Icons.edit),
                       title: Text('Edit'),
                     ),
                   ),
@@ -90,7 +88,6 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                       _showRenameDialog(context, widget.familyId);
                     },
                     child: ListTile(
-                      leading: Icon(Icons.drive_file_rename_outline),
                       title: Text('Rename'),
                     ),
                   ),
@@ -102,7 +99,6 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                       _imgFromGallery();
                     },
                     child: ListTile(
-                      leading: Icon(Icons.image),
                       title: Text('Change avatar'),
                     ),
                   ),
@@ -118,7 +114,6 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                       _showEditDialog(context, widget.familyId);
                     },
                     child: ListTile(
-                      leading: Icon(Icons.edit),
                       title: Text('Edit'),
                     ),
                   ),
@@ -130,7 +125,6 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                       _showRenameDialog(context, widget.familyId);
                     },
                     child: ListTile(
-                      leading: Icon(Icons.drive_file_rename_outline),
                       title: Text('Rename'),
                     ),
                   ),
@@ -142,7 +136,6 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                       _imgFromGallery();
                     },
                     child: ListTile(
-                      leading: Icon(Icons.image),
                       title: Text('Change avatar'),
                     ),
                   ),
@@ -285,6 +278,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                                         ListTile(
                                           leading: Icon(Icons.person),
                                           title: Text('Personal information'),
+                                          subtitle: Text('Information is not allowed to be shared.'),
                                         ),
                                       ],
                                     ),
@@ -359,7 +353,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                                         ListTile(
                                           title: Text('Medical history'),
                                           subtitle: Text(
-                                              '${state.listPatient[index].diseaseHealthRecordList.toString()}'),
+                                              ''),
                                         ),
                                       ],
                                     ),

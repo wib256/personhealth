@@ -110,3 +110,30 @@ Future<Patient?> getDataSharingOfPatient(int familyId, int patientId) async {
     return null;
   }
 }
+
+Future<Patient?> getDataSharingOfPatientWithOtherPatient(int sharingPatientId, int patientId) async {
+  try {
+    String? token = await LocalData().getToken();
+    token = 'Bearer ' + token!;
+    var params = {"sharedPatientId": patientId, "sharingPatientId": sharingPatientId};
+    Uri uri = Uri.parse('$GET_DATA_SHARING_OF_PATIENT');
+    final response = await http.post(uri, body: json.encode(params), headers: {
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.acceptHeader: "application/json",
+      HttpHeaders.authorizationHeader: token
+    });
+    print('$GET_DATA_SHARING_OF_PATIENT');
+    print(response.body);
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      Map<String, dynamic> parse = jsonDecode(utf8.decode(response.bodyBytes));
+      var patient = Patient.fromJson(parse);
+      patient.setId(patientId);
+      return patient;
+    } else {
+      return null;
+    }
+  } catch (exception) {
+    return null;
+  }
+}

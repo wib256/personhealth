@@ -55,6 +55,15 @@ class PatientBloc extends Bloc<PatientBloc, PatientState> {
         print('Change avatar khong thanh cong');
         yield PatientStateFailure();
       }
+    } else if (event is PatientShowInformationEvent) {
+      int? sharedPatientId = await LocalData().getPatientId();
+      Patient? patient = await getDataSharingOfPatientWithOtherPatient(event.sharingPatientId, sharedPatientId!);
+      if (patient != null) {
+        print('Patient da khac null');
+        yield PatientStateSuccess(patient: patient);
+      } else {
+        yield PatientStateSuccess(patient: Patient(id: 0, accountId: 0, medicalNote: '', image: '', height: 0, weight: 0, eyesight: 0, name: '', dob: '', gender: '', bloodType: '', address: '', diseaseHealthRecordList: List.empty(), phone: '', status: '', hasLegal: false, hasBody: false,  hasPreHistoric: false));
+      }
     } else {
       yield PatientStateFailure();
     }
