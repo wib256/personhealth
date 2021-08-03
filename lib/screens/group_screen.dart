@@ -7,6 +7,7 @@ import 'package:personhealth/events/group_event.dart';
 import 'package:personhealth/events/patient_events.dart';
 import 'package:personhealth/models/group.dart';
 import 'package:personhealth/screens/conservation_list.dart';
+import 'package:personhealth/screens/patient_alert.dart';
 import 'package:personhealth/screens/sharing_patient_screen.dart';
 import 'package:personhealth/states/group_states.dart';
 
@@ -398,54 +399,59 @@ class _GroupScreenState extends State<GroupScreen> {
                                               int index) {
                                             return Container(
                                               margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                                              child: Row(
-                                                children: <Widget>[
-                                                  Expanded(
-                                                    child: Row(
-                                                      children: <Widget>[
-                                                        SizedBox(
-                                                          width: 10,
-                                                        ),
-                                                        CircleAvatar(
-                                                          backgroundImage:
-                                                          NetworkImage(state
-                                                              .listShared[
-                                                          index]
-                                                              .image),
-                                                          maxRadius: 20,
-                                                        ),
-                                                        SizedBox(
-                                                          width: 16,
-                                                        ),
-                                                        Expanded(
-                                                          child: Container(
-                                                            color: Colors
-                                                                .transparent,
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                              children: <Widget>[
-                                                                Text(
-                                                                  state
-                                                                      .listShared[
-                                                                  index]
-                                                                      .name,
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                      16),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 6,
-                                                                ),
-                                                              ],
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => BlocProvider(create: (context) => PatientBloc()..add(PatientShowInformationEvent(sharingPatientId: state.listShared[index].id)), child: PatientSharing(),)));
+                                                },
+                                                child: Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      child: Row(
+                                                        children: <Widget>[
+                                                          SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          CircleAvatar(
+                                                            backgroundImage:
+                                                            NetworkImage(state
+                                                                .listShared[
+                                                            index]
+                                                                .image),
+                                                            maxRadius: 20,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 16,
+                                                          ),
+                                                          Expanded(
+                                                            child: Container(
+                                                              color: Colors
+                                                                  .transparent,
+                                                              child: Column(
+                                                                crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                                children: <Widget>[
+                                                                  Text(
+                                                                    state
+                                                                        .listShared[
+                                                                    index]
+                                                                        .name,
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                        16),
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 6,
+                                                                  ),
+                                                                ],
+                                                              ),
                                                             ),
                                                           ),
-                                                        ),
-                                                      ],
+                                                        ],
+                                                      ),
                                                     ),
-                                                  ),
-                                                ],
+                                                  ],
+                                                ),
                                               ),
                                             );
                                           }),

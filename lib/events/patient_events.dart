@@ -22,3 +22,8 @@ class PatientEditAvatarEvent extends PatientBloc {
   final File? image;
    PatientEditAvatarEvent({required this.image});
 }
+
+class PatientShowInformationEvent extends PatientBloc {
+  final int sharingPatientId;
+  PatientShowInformationEvent({required this.sharingPatientId});
+}
