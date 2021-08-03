@@ -23,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     _loginBloc = BlocProvider.of(context);
     super.initState();
-  }
+  } //end initialize
 
   @override
   void dispose() {
@@ -100,7 +100,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       username: _userController.value.text,
                       password: _passwordController.value.text));
                   if (isLogin) {
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen(index: 0)));
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => HomeScreen(index: 0)));
                   }
                 },
                 child: Text('Login'),

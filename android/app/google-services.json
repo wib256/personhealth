@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "612057377858",
+    "project_id": "phrsystem-a395a",
+    "storage_bucket": "phrsystem-a395a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:612057377858:android:59bd4683323724c577d1db",
+        "android_client_info": {
+          "package_name": "com.example.personhealth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "612057377858-sc4qv9lgkf2o379te8ge401tet7rho1q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.personhealth",
+            "certificate_hash": "bcbc76b3f9728ce4be98f94c0c7daa6f8517b708"
+          }
+        },
+        {
+          "client_id": "612057377858-fphlemcju93jv57pd7cufn0jjhic1qcm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGUOiPk4gulLz2Giex8Sbh-GOaPrmyjuI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "612057377858-fphlemcju93jv57pd7cufn0jjhic1qcm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

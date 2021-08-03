@@ -27,8 +27,9 @@ class GroupFamilyEditSharingToGroupEvent extends GroupFamilyBloc {
 class GroupFamilyAddMemberToGroup extends GroupFamilyBloc {
   final int familyGroupId;
   final String phone;
+  final String groupName;
 
-  GroupFamilyAddMemberToGroup({required this.familyGroupId, required this.phone});
+  GroupFamilyAddMemberToGroup({required this.familyGroupId, required this.phone, required this.groupName});
 }
 
 class GroupFamilyDeleteMember extends GroupFamilyBloc {

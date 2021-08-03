@@ -520,7 +520,8 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
           onPressed: () {
             _groupFamilyBloc.add(GroupFamilyAddMemberToGroup(
                 familyGroupId: widget.familyId,
-                phone: _phoneController.value.text));
+                phone: _phoneController.value.text,
+                groupName: widget.groupName));
             Navigator.pop(context);
             _showAddSuccess(context);
           },

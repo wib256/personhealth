@@ -42,3 +42,7 @@ const EDIT_SHARING_INFORMATION_TO_PATIENT = 'http://14.161.47.36:8080/PHR_System
 const POST_SHARING_INFORMATION_TO_PATIENT = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/sharings/sharing/patient';
 const GET_SHARED_LIST = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/sharings/sharing/shared/';
 const GET_SHARING_LIST = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/sharings/sharing/sharing/';
+
+//Account
+const UPDATE_TOKEN = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/accounts/account';
+const SENT_NOTIFICATION = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/commons/notification';
