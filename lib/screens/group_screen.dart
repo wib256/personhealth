@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +11,7 @@ import 'package:personhealth/screens/conservation_list.dart';
 import 'package:personhealth/screens/patient_alert.dart';
 import 'package:personhealth/screens/sharing_patient_screen.dart';
 import 'package:personhealth/states/group_states.dart';
+import 'package:personhealth/utils/local_notification_service.dart';
 
 class GroupScreen extends StatefulWidget {
   const GroupScreen({Key? key}) : super(key: key);
@@ -34,6 +36,9 @@ class _GroupScreenState extends State<GroupScreen> {
     super.initState();
     _groupBloc = BlocProvider.of(context);
     _groupBloc.add(GroupFetchEvent());
+
+    
+
   }
 
   @override

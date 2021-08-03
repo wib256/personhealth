@@ -36,6 +36,11 @@ dependencies:
   shared_preferences: ^2.0.6
   mime_type: ^1.0.0
 
+  # haudq
+  firebase_core: ^1.4.0
+  firebase_messaging: ^10.0.4
+  flutter_local_notifications: ^6.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

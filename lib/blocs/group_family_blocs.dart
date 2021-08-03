@@ -2,6 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:personhealth/events/group_family_events.dart';
 import 'package:personhealth/models/patient.dart';
 import 'package:personhealth/repositorys/group_family_repository.dart';
+import 'package:personhealth/repositorys/local_data.dart';
+import 'package:personhealth/repositorys/notification.dart';
 import 'package:personhealth/repositorys/patient_repository.dart';
 import 'package:personhealth/repositorys/sharing_repository.dart';
 import 'package:personhealth/states/group_family_states.dart';
@@ -76,7 +78,14 @@ class GroupFamilyBloc extends Bloc<GroupFamilyBloc, GroupFamilyState> {
     if (event is GroupFamilyAddMemberToGroup) {
       if (state is GroupFamilyStateSuccess) {
         var currentState = state as GroupFamilyStateSuccess;
+        var receiver = await getPatientByPhoneFromApi(event.phone);
+        String? name = await LocalData().getName();
+        int receiverAccountId = receiver!.accountId;
+
         await addMember(event.familyGroupId, event.phone);
+
+        String message = name! + " had added you to group ${event.groupName}";
+        await sentNotification(receiverAccountId, message);
         yield currentState;
       }
     }

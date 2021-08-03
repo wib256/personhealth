@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,10 +13,12 @@ import 'package:personhealth/events/group_event.dart';
 import 'package:personhealth/events/login_events.dart';
 import 'package:personhealth/events/patient_events.dart';
 import 'package:personhealth/repositorys/local_data.dart';
+import 'package:personhealth/repositorys/notification.dart';
 import 'package:personhealth/screens/clinic_screen.dart';
 import 'package:personhealth/screens/personal_screen.dart';
 import 'package:personhealth/screens/examination_screen.dart';
 import 'package:personhealth/screens/group_screen.dart';
+import 'package:personhealth/utils/local_notification_service.dart';
 
 import 'login_screen.dart';
 
@@ -29,6 +32,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+
+
   int selectedIndex = 0;
 
   Widget getBody() {
@@ -126,11 +132,52 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     this.setState(() {
       selectedIndex = widget.index;
     });
+
+
+    FirebaseMessaging.instance
+        .getToken()
+        .then((value) async {
+          String? fcm_token = await updateToken(value!); 
+          print(value);
+          if (fcm_token != null) {
+            if (fcm_token.isNotEmpty) {
+              print('value token: ' + fcm_token);
+            } else {
+              print('Get update tokent fail');
+            }
+          }
+        });
+
+    LocalNotificationService.initialize(context);
+
+    // FirebaseMessaging.instance.getInitialMessage().then((message) {
+    //   if (message != null) {
+    //     print("tao day ne");
+    //     // final routeFromMessage = message.data["route"];
+
+    //     // Navigator.of(context).pushNamed(routeFromMessage);
+    //   }
+    // });
+
+    // FirebaseMessaging.onMessage.listen((message) {
+    //   if (message.notification != null) {
+    //     print(message.notification!.body);
+    //     print(message.notification!.title);
+    //   }
+
+    //   LocalNotificationService.display(message);
+    // });
+
+    // FirebaseMessaging.onMessageOpenedApp.listen((message) {
+    //   final routeFromMessage = message.data["route"];
+
+    //   Navigator.of(context).pushNamed(routeFromMessage);
+    // });
+
   }
 
   @override
