@@ -5,20 +5,47 @@ class Patient {
   final int accountId;
   final String medicalNote;
   String image;
-  final int height;
-  final int weight;
-  final int eyesight;
-  final String name;
-  final String dob;
-  final String gender;
-  final String bloodType;
-  final String address;
+  int height;
+  int weight;
+  int eyesight;
+  String name;
+  String dob;
+  String gender;
+  String bloodType;
+  String address;
   List<DiseaseHealthRecord> diseaseHealthRecordList;
   final String phone;
   final String status;
   final bool hasLegal;
   final bool hasBody;
   final bool hasPreHistoric;
+
+  void setAddress(String address) {
+    this.address = address;
+  }
+
+  void setBloodType(String bloodType) {
+    this.bloodType = bloodType;
+  }
+
+  void setDob(String dob) {
+    this.dob = dob;
+  }
+
+  void setName(String name) {
+    this.name = name;
+  }
+
+  void setEyesight(String eyesight) {
+    this.eyesight = int.parse(eyesight);
+  }
+
+  void setHeight(String height) {
+    this.height = int.parse(height);
+  }
+  void setWeight(String weight) {
+    this.weight = int.parse(weight);
+  }
 
   void setImage(String newImage) {
     image = newImage;
@@ -105,36 +132,4 @@ class Patient {
     // TODO: implement toString
     return diseaseHealthRecordList.isNotEmpty ? diseaseHealthRecordList.toString() : 'None';
   }
-
-// factory Patient.fromJson(dynamic json) {
-//   String medicalNoteT = json['medicalNote'] == null ? '' : json['medicalNote'];
-//   String imageT = json['image'] == null ? '' : json['image'];
-//   int heightT = json['height'] == null ? '' : json['height'];
-//   int weightT = json['weight'] == null ? '' : json['weight'];
-//   int eyesightT = json['eyesight'] == null ? '' : json['eyesight'];
-//   String nameT = json['name'] == null ? '' : json['name'];
-//   String doBT = json['dob'] == null ? '' : json['dob'];
-//   String genderT = json['gender'] == null ? '' : json['gender'];
-//   String bloodTypeT = json['bloodType'] == null ? '' : json['bloodType'];
-//   String addressT = json['address'] == null ? '' : json['address'];
-//   String phone = json['phone'] == null ? '' : json['phone'];
-//   String status = json['status'] == null ? '' : json['status'];
-//   List<DiseaseHealthRecord> diseaseHealthRecordList = json['diseaseHealthRecordList'] != null ? json.map<DiseaseHealthRecord>((json) => DiseaseHealthRecord.fromJson(json)).toList() : List.empty();
-//   return Patient(
-//       json['id'] as int,
-//       json['accountId'] as int,
-//       medicalNoteT,
-//       imageT,
-//       heightT,
-//       weightT,
-//       eyesightT,
-//       nameT,
-//       doBT,
-//       genderT,
-//       bloodTypeT,
-//       addressT,
-//       diseaseHealthRecordList,
-//       phone,
-//       status);
-// }
 }

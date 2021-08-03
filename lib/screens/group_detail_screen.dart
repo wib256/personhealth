@@ -252,10 +252,10 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                                           title: Text(
                                               'Gender: ${state.listPatient[index].gender}'),
                                         ),
-                                        ListTile(
-                                          title: Text(
-                                              'Phone: ${state.listPatient[index].phone}'),
-                                        ),
+                                        // ListTile(
+                                        //   title: Text(
+                                        //       'Phone: ${state.listPatient[index].phone}'),
+                                        // ),
                                         ListTile(
                                           title: Text(
                                               'Address: ${state.listPatient[index].address}'),
@@ -299,16 +299,16 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                                           title: Text('Body information'),
                                         ),
                                         ListTile(
-                                          title: Text(
-                                              'Height: ${state.listPatient[index].height}'),
+                                          title: state.listPatient[index].height != 0 ? Text(
+                                              'Height: ' +  (state.listPatient[index].height == 0 ?  state.listPatient[index].height.toString() : '')) : Text('Height: '),
                                         ),
                                         ListTile(
-                                          title: Text(
-                                              'Weight: ${state.listPatient[index].weight}'),
+                                          title: state.listPatient[index].weight != 0 ? Text(
+                                              'Weight: ' +  (state.listPatient[index].weight == 0 ?  state.listPatient[index].weight.toString() : '')) : Text('Weight: '),
                                         ),
                                         ListTile(
-                                          title: Text(
-                                              'Eyesight: ${state.listPatient[index].eyesight}'),
+                                          title: state.listPatient[index].eyesight != 0 ? Text(
+                                              'Eyesight: ' +  (state.listPatient[index].eyesight == 0 ?  state.listPatient[index].eyesight.toString() : '')) : Text('Eyesight: '),
                                         ),
                                       ],
                                     ),
@@ -324,6 +324,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                                         ListTile(
                                           leading: Icon(Icons.info),
                                           title: Text('Body information'),
+                                            subtitle: Text('Information is not allowed to be shared.')
                                         ),
                                       ],
                                     ),
@@ -369,6 +370,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                                         ListTile(
                                           leading: Icon(Icons.medical_services),
                                           title: Text('Medical history'),
+                                            subtitle: Text('Information is not allowed to be shared.')
                                         ),
                                       ],
                                     ),

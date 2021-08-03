@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:personhealth/blocs/patient_blocs.dart';
 import 'package:personhealth/events/patient_events.dart';
+import 'package:personhealth/models/patient.dart';
+import 'package:personhealth/repositorys/patient_repository.dart';
 import 'package:personhealth/states/patient_states.dart';
 import 'dart:io';
 
@@ -17,6 +19,7 @@ class PersonalScreen extends StatefulWidget {
 
 class _PersonalScreenState extends State<PersonalScreen> {
   late PatientBloc _patientBloc;
+  late Patient patient;
   final _nameController = TextEditingController();
   late bool isEditName = false;
   late FocusNode myFocusNodeName;
@@ -268,7 +271,19 @@ class _PersonalScreenState extends State<PersonalScreen> {
                                   decoration: null,
                                   enabled: isEditName,
                                   focusNode: myFocusNodeName,
-                                  onSubmitted: (value) {
+                                  onSubmitted: (value) async {
+                                    patient = state.patient;
+                                    patient.setName(_nameController.text);
+                                    // bool? isEdit = await editPatientInformation(patient);
+                                    // editImage();
+                                    // await Future.delayed(Duration(seconds: 2));
+                                    // if (isEdit != null && isEdit == true) {
+                                    //   Navigator.pop(context);
+                                    //   editImageSuccess();
+                                    // } else {
+                                    //   Navigator.pop(context);
+                                    //   editImageSuccess();
+                                    // }
                                     setState(() {
                                       isEditName = false;
                                     });
@@ -449,69 +464,120 @@ class _PersonalScreenState extends State<PersonalScreen> {
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              TextField(
-                                controller: _heightController
-                                  ..text = state.patient.height.toString(),
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  labelText: 'Height',
-                                  hintText: '${state.patient.name}',
-                                  suffixIcon: IconButton(
-                                    onPressed: () {
-                                      print('aaaaa');
-                                    },
-                                    icon: Icon(
-                                      Icons.edit,
-                                      color: Colors.blue,
+                              ListTile(
+                                title: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Height',
+                                      style: TextStyle(
+                                        color: Colors.deepPurpleAccent,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                  ),
+                                    IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          isEditHeight = true;
+                                        });
+                                        myFocusNodeHeight.requestFocus();
+                                      },
+                                      icon: Icon(Icons.edit),
+                                    )
+                                  ],
+                                ),
+                                subtitle: TextField(
+                                  controller: _heightController
+                                    ..text = (state.patient.height.toString().compareTo('0') == 0 ? '' : state.patient.height.toString()),
+                                  decoration: null,
+                                  enabled: isEditHeight,
+                                  focusNode: myFocusNodeHeight,
+                                  onSubmitted: (value) {
+                                    setState(() {
+                                      isEditHeight = false;
+                                    });
+                                    FocusScope.of(context).unfocus();
+                                  },
                                 ),
                               ),
-                              TextField(
-                                controller: _weightController
-                                  ..text = state.patient.weight.toString(),
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  labelText: 'Weight',
-                                  hintText: '${state.patient.name}',
-                                  suffixIcon: IconButton(
-                                    onPressed: () {
-                                      print('aaaaa');
-                                    },
-                                    icon: Icon(
-                                      Icons.edit,
-                                      color: Colors.blue,
+                              Divider(),
+                              ListTile(
+                                title: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Weight',
+                                      style: TextStyle(
+                                        color: Colors.deepPurpleAccent,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                  ),
+                                    IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          isEditWeight = true;
+                                        });
+                                        myFocusNodeWeight.requestFocus();
+                                      },
+                                      icon: Icon(Icons.edit),
+                                    )
+                                  ],
+                                ),
+                                subtitle: TextField(
+                                  controller: _weightController
+                                    ..text = (state.patient.weight.toString().compareTo('0') == 0 ? '' : state.patient.weight.toString()),
+                                  decoration: null,
+                                  enabled: isEditWeight,
+                                  focusNode: myFocusNodeWeight,
+                                  onSubmitted: (value) {
+                                    setState(() {
+                                      isEditWeight = false;
+                                    });
+                                    FocusScope.of(context).unfocus();
+                                  },
                                 ),
                               ),
-                              TextField(
-                                controller: _eyesightController
-                                  ..text = state.patient.eyesight.toString(),
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  labelText: 'Eyesight',
-                                  hintText: '${state.patient.name}',
-                                  suffixIcon: IconButton(
-                                    onPressed: () {
-                                      print('aaaaa');
-                                    },
-                                    icon: Icon(
-                                      Icons.edit,
-                                      color: Colors.blue,
+                              Divider(),
+                              ListTile(
+                                title: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Eyesight',
+                                      style: TextStyle(
+                                        color: Colors.deepPurpleAccent,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                  ),
+                                    IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          isEditEyesight = true;
+                                        });
+                                        myFocusNodeEyesight.requestFocus();
+                                      },
+                                      icon: Icon(Icons.edit),
+                                    )
+                                  ],
+                                ),
+                                subtitle: TextField(
+                                  controller: _eyesightController
+                                    ..text = (state.patient.eyesight.toString().compareTo('0') == 0 ? '' : state.patient.eyesight.toString()),
+                                  decoration: null,
+                                  enabled: isEditEyesight,
+                                  focusNode: myFocusNodeEyesight,
+                                  onSubmitted: (value) {
+                                    setState(() {
+                                      isEditEyesight = false;
+                                    });
+                                    FocusScope.of(context).unfocus();
+                                  },
                                 ),
                               ),
+                              Divider(),
                             ],
                           ),
                         ),
@@ -525,7 +591,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               TextField(
-                                controller: _eyesightController
+                                controller: _medicalNoteController
                                   ..text = state.patient.medicalNote,
                                 maxLines: 2,
                                 keyboardType: TextInputType.number,
@@ -572,15 +638,17 @@ class _PersonalScreenState extends State<PersonalScreen> {
 
   Widget editImage() {
     return AlertDialog(
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextButton(
-            onPressed: () {},
-            child: Text('Edit'),
-          ),
-        ],
-      ),
+      content: CircularProgressIndicator(),
+    );
+  }
+  Widget editImageSuccess() {
+    return AlertDialog(
+      content: Center(child: Text('Successfully!'),),
+    );
+  }
+  Widget editImageFail() {
+    return AlertDialog(
+      content: Center(child: Text('Try again!'),),
     );
   }
 }

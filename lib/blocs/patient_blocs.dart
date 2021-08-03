@@ -64,6 +64,9 @@ class PatientBloc extends Bloc<PatientBloc, PatientState> {
       } else {
         yield PatientStateSuccess(patient: Patient(id: 0, accountId: 0, medicalNote: '', image: '', height: 0, weight: 0, eyesight: 0, name: '', dob: '', gender: '', bloodType: '', address: '', diseaseHealthRecordList: List.empty(), phone: '', status: '', hasLegal: false, hasBody: false,  hasPreHistoric: false));
       }
+    } else if (event is PatientEditInformationEvent) {
+      bool? isEdit = await editPatientInformation(event.patient);
+
     } else {
       yield PatientStateFailure();
     }

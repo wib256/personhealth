@@ -58,9 +58,9 @@ class _PatientSharingState extends State<PatientSharing> {
                                   title:
                                       Text('Gender: ${state.patient.gender}'),
                                 ),
-                                ListTile(
-                                  title: Text('Phone: ${state.patient.phone}'),
-                                ),
+                                // ListTile(
+                                //   title: Text('Phone: ${state.patient.phone}'),
+                                // ),
                                 ListTile(
                                   title:
                                       Text('Address: ${state.patient.address}'),
@@ -103,16 +103,16 @@ class _PatientSharingState extends State<PatientSharing> {
                                   title: Text('Body information'),
                                 ),
                                 ListTile(
-                                  title:
-                                      Text('Height: ${state.patient.height}'),
+                                  title: state.patient.height != 0 ? Text(
+                                      'Height: ' +  (state.patient.height == 0 ?  state.patient.height.toString() : '')) : Text('Height: '),
                                 ),
                                 ListTile(
-                                  title:
-                                      Text('Weight: ${state.patient.weight}'),
+                                  title: state.patient.weight != 0 ? Text(
+                                      'Weight: ' +  (state.patient.weight == 0 ?  state.patient.weight.toString() : '')) : Text('Weight: '),
                                 ),
                                 ListTile(
-                                  title: Text(
-                                      'Eyesight: ${state.patient.eyesight}'),
+                                  title: state.patient.eyesight != 0 ? Text(
+                                      'Eyesight: ' +  (state.patient.eyesight == 0 ?  state.patient.eyesight.toString() : '')) : Text('Eyesight: '),
                                 ),
                               ],
                             ),

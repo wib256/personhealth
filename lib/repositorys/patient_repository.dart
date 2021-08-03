@@ -137,3 +137,27 @@ Future<Patient?> getDataSharingOfPatientWithOtherPatient(int sharingPatientId, i
     return null;
   }
 }
+
+Future<bool?> editPatientInformation(Patient patient) async {
+  try {
+    int? patientId = await LocalData().getPatientId();
+    String? token = await LocalData().getToken();
+    token = 'Bearer ' + token!;
+    var params = patient.toJson();
+    final response = await http.put(Uri.parse('$EDIT_PATIENT_INFORMATION$patientId'), body: json.encode(params), headers: {
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.acceptHeader: "application/json",
+      HttpHeaders.authorizationHeader: token
+    });
+    print(response.body);
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (exception) {
+    print('edit Patient information error: ' + exception.toString());
+    return false;
+  }
+}

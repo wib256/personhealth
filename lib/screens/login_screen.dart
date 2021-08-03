@@ -95,10 +95,11 @@ class _LoginScreenState extends State<LoginScreen> {
             Padding(
               padding: EdgeInsets.fromLTRB(30, 5, 30, 10),
               child: RaisedButton(
-                onPressed: () {
+                onPressed: () async {
                   _loginBloc.add(LoginEvent(
                       username: _userController.value.text,
                       password: _passwordController.value.text));
+                  await Future.delayed(Duration(seconds: 2));
                   if (isLogin) {
                     Navigator.pushReplacement(
                         context,
