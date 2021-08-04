@@ -592,12 +592,10 @@ class _PersonalScreenState extends State<PersonalScreen> {
                             children: [
                               TextField(
                                 controller: _medicalNoteController
-                                  ..text = state.patient.medicalNote,
+                                  ..text = state.patient.diseaseHealthRecordList.toString(),
                                 maxLines: 2,
-                                keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
-                                  labelText: 'Allergic things',
-                                  hintText: '${state.patient.name}',
+                                  labelText: 'Medical history',
                                   suffixIcon: IconButton(
                                     onPressed: () {
                                       print('aaaaa');
@@ -612,6 +610,26 @@ class _PersonalScreenState extends State<PersonalScreen> {
                                   ),
                                 ),
                               ),
+                              // TextField(
+                              //   controller: _medicalNoteController
+                              //     ..text = state.patient.medicalNote,
+                              //   maxLines: 2,
+                              //   decoration: InputDecoration(
+                              //     labelText: 'Allergic things',
+                              //     suffixIcon: IconButton(
+                              //       onPressed: () {
+                              //         print('aaaaa');
+                              //       },
+                              //       icon: Icon(
+                              //         Icons.edit,
+                              //         color: Colors.blue,
+                              //       ),
+                              //     ),
+                              //     focusedBorder: UnderlineInputBorder(
+                              //       borderSide: BorderSide(color: Colors.white),
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),

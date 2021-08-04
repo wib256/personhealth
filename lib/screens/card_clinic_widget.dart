@@ -92,7 +92,7 @@ class Card2 extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              'Phone: ${clinic.phone}',
+              'Hotline: ${clinic.phone}',
               softWrap: true,
             ),
             Text(

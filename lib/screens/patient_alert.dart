@@ -104,15 +104,15 @@ class _PatientSharingState extends State<PatientSharing> {
                                 ),
                                 ListTile(
                                   title: state.patient.height != 0 ? Text(
-                                      'Height: ' +  (state.patient.height == 0 ?  state.patient.height.toString() : '')) : Text('Height: '),
+                                      'Height: ' +  state.patient.height.toString()) : Text('Height: '),
                                 ),
                                 ListTile(
                                   title: state.patient.weight != 0 ? Text(
-                                      'Weight: ' +  (state.patient.weight == 0 ?  state.patient.weight.toString() : '')) : Text('Weight: '),
+                                      'Weight: ' +  state.patient.weight.toString()) : Text('Weight: '),
                                 ),
                                 ListTile(
                                   title: state.patient.eyesight != 0 ? Text(
-                                      'Eyesight: ' +  (state.patient.eyesight == 0 ?  state.patient.eyesight.toString() : '')) : Text('Eyesight: '),
+                                      'Eyesight: ' +  state.patient.eyesight.toString()) : Text('Eyesight: '),
                                 ),
                               ],
                             ),
@@ -147,15 +147,15 @@ class _PatientSharingState extends State<PatientSharing> {
                                   leading: Icon(Icons.medical_services),
                                   title: Text('Medical history'),
                                 ),
-                                ListTile(
-                                  title: Text('Allergic things'),
-                                  subtitle:
-                                      Text('${state.patient.medicalNote}'),
-                                  isThreeLine: true,
-                                ),
+                                // ListTile(
+                                //   title: Text('Allergic things'),
+                                //   subtitle:
+                                //       Text('${state.patient.medicalNote}'),
+                                //   isThreeLine: true,
+                                // ),
                                 ListTile(
                                   title: Text('Medical history'),
-                                  subtitle: Text(''),
+                                  subtitle: Text('${state.patient.diseaseHealthRecordList.toString()}'),
                                 ),
                               ],
                             ),

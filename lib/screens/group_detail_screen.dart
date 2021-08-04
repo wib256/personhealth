@@ -300,15 +300,15 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                                         ),
                                         ListTile(
                                           title: state.listPatient[index].height != 0 ? Text(
-                                              'Height: ' +  (state.listPatient[index].height == 0 ?  state.listPatient[index].height.toString() : '')) : Text('Height: '),
+                                              'Height: ' + state.listPatient[index].height.toString()) : Text('Height: '),
                                         ),
                                         ListTile(
                                           title: state.listPatient[index].weight != 0 ? Text(
-                                              'Weight: ' +  (state.listPatient[index].weight == 0 ?  state.listPatient[index].weight.toString() : '')) : Text('Weight: '),
+                                              'Weight: ' + state.listPatient[index].weight.toString()) : Text('Weight: '),
                                         ),
                                         ListTile(
                                           title: state.listPatient[index].eyesight != 0 ? Text(
-                                              'Eyesight: ' +  (state.listPatient[index].eyesight == 0 ?  state.listPatient[index].eyesight.toString() : '')) : Text('Eyesight: '),
+                                              'Eyesight: ' + state.listPatient[index].eyesight.toString()) : Text('Eyesight: '),
                                         ),
                                       ],
                                     ),
@@ -345,16 +345,16 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                                           leading: Icon(Icons.medical_services),
                                           title: Text('Medical history'),
                                         ),
-                                        ListTile(
-                                          title: Text('Allergic things'),
-                                          subtitle: Text(
-                                              '${state.listPatient[index].medicalNote}'),
-                                          isThreeLine: true,
-                                        ),
+                                        // ListTile(
+                                        //   title: Text('Allergic things'),
+                                        //   subtitle: Text(
+                                        //       '${state.listPatient[index].medicalNote}'),
+                                        //   isThreeLine: true,
+                                        // ),
                                         ListTile(
                                           title: Text('Medical history'),
                                           subtitle: Text(
-                                              ''),
+                                              '${state.listPatient[index].diseaseHealthRecordList.toString()}'),
                                         ),
                                       ],
                                     ),
