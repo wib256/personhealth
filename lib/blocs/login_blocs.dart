@@ -9,16 +9,19 @@ import 'package:personhealth/repositorys/patient_repository.dart';
 import 'package:personhealth/states/login_states.dart';
 
 class LoginBloc extends Bloc<LoginBloc, LoginState> {
-  LoginBloc():super(LoginStateInitial());
+  LoginBloc() : super(LoginStateInitial());
+
 
   @override
   Stream<LoginState> mapEventToState(LoginBloc event) async* {
     if (event is LoginFetchEvent) {
-      yield LoginStateFailure(errorMessage: '');
+      yield LoginStateInitial();
     }
     if (event is LoginEvent) {
-      try {
-        if (state is LoginStateFailure) {
+      if (event.username.trim().isEmpty || event.password.trim().isEmpty) {
+        yield LoginEmptyState();
+      } else {
+        try {
           bool isLogin = await login(event.username, event.password);
           if (isLogin) {
             String? phone = await LocalData().getPhone();
@@ -35,16 +38,18 @@ class LoginBloc extends Bloc<LoginBloc, LoginState> {
                 await LocalData().setIsLogin();
                 yield LoginStateSuccess();
               } else {
-                yield LoginStateFailure(errorMessage: 'Incorrect phone or password');
+                yield LoginStateFailure(
+                    errorMessage: 'Incorrect phone or password');
               }
             }
           } else {
-            yield LoginStateFailure(errorMessage: 'Incorrect phone or password');
+            yield LoginStateFailure(
+                errorMessage: 'Incorrect phone or password');
           }
+        } catch (exception) {
+          print(exception);
+          yield LoginStateFailure(errorMessage: 'Incorrect phone or password');
         }
-      } catch (exception) {
-        print(exception);
-        yield LoginStateFailure(errorMessage: 'Incorrect phone or password');
       }
     }
   }

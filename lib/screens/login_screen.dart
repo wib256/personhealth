@@ -1,6 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:motion_toast/motion_toast.dart';
+import 'package:motion_toast/resources/arrays.dart';
 import 'package:personhealth/blocs/login_blocs.dart';
 import 'package:personhealth/events/login_events.dart';
 import 'package:personhealth/screens/home_screen.dart';
@@ -36,90 +41,210 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
+      body: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(begin: Alignment.topCenter, colors: [
+          Colors.cyan.shade500,
+          Colors.cyan.shade300,
+          Colors.cyan.shade400
+        ])),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.fromLTRB(30, 50, 30, 10),
-              child: Image(
-                image: AssetImage('assets/logo.png'),
-                height: 200,
-                width: 200,
-              ),
+          children: [
+            SizedBox(
+              height: 80,
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
-              child: TextField(
-                keyboardType: TextInputType.phone,
-                controller: _userController,
-                decoration: InputDecoration(
-                  labelText: 'Phone',
-                  icon: Icon(
-                    Icons.phone,
+              padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Image(
+                      image: AssetImage('assets/white.png'),
+                      height: 150,
+                      width: 150,
+                    ),
                   ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                  ),
-                ),
+                ],
               ),
             ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
-              child: TextField(
-                obscureText: true,
-                controller: _passwordController,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  icon: Icon(
-                    Icons.vpn_key,
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                  ),
-                ),
-              ),
+            SizedBox(
+              height: 10,
             ),
-            BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
-              if (state is LoginStateFailure) {
-                return Text('${state.errorMessage}');
-              }
-              if (state is LoginStateInitial) {
-                return Text('Please enter phone and password');
-              }
-              if (state is LoginStateSuccess) {
-                isLogin = true;
-              }
-              return Text('');
-            }),
-            Padding(
-              padding: EdgeInsets.fromLTRB(30, 5, 30, 10),
-              child: RaisedButton(
-                onPressed: () async {
-                  _loginBloc.add(LoginEvent(
-                      username: _userController.value.text,
-                      password: _passwordController.value.text));
-                  await Future.delayed(Duration(seconds: 2));
-                  if (isLogin) {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => HomeScreen(index: 0)));
-                  }
-                },
-                child: Text('Login'),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
+            Center(
               child: Text(
-                'Forgot password',
+                "Welcome to PHR system",
+                style: TextStyle(color: Colors.white, fontSize: 18),
               ),
             ),
+            SizedBox(
+              height: 40,
+            ),
+            Expanded(
+                child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(60),
+                      topRight: Radius.circular(60))),
+              child: Padding(
+                padding: EdgeInsets.all(30),
+                child: Column(
+                  children: [
+                    Column(
+                      children: [
+                        Center(
+                          child: Text(
+                            "Login",
+                            style: TextStyle(
+                                color: Colors.grey.shade500,
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 40,
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              border: Border(
+                                  bottom:
+                                      BorderSide(color: Colors.grey.shade200))),
+                          child: TextField(
+                            controller: _userController,
+                            decoration: InputDecoration(
+                                hintText: "Your phone",
+                                hintStyle: TextStyle(color: Colors.grey),
+                                border: InputBorder.none),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              border: Border(
+                                  bottom:
+                                      BorderSide(color: Colors.grey.shade200))),
+                          child: TextField(
+                            controller: _passwordController,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                                hintText: "password",
+                                hintStyle: TextStyle(color: Colors.grey),
+                                border: InputBorder.none),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    BlocListener<LoginBloc, LoginState>(
+                      listener: (context, state) {
+                      print(state);
+                        if (state is LoginStateFailure) {
+                          return _displayTopMotionToast(context,"fail");
+                        }
+                        if (state is LoginEmptyState) {
+                          return _displayTopMotionToast(context, "empty");
+                        }
+                        if (state is LoginStateSuccess) {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomeScreen(index: 0)));
+                        }
+                      },
+                      child: InkWell(
+                        onTap: () async {
+                          _loginBloc.add(LoginEvent(
+                              username: _userController.value.text,
+                              password: _passwordController.value.text));
+                          // await Future.delayed(Duration(seconds: 2));
+                          // if (isLogin) {
+                          //   Navigator.pushReplacement(
+                          //       context,
+                          //       MaterialPageRoute(
+                          //           builder: (context) => HomeScreen(index: 0)));
+                          // }
+                        },
+                        child: Container(
+                          height: 50,
+                          margin: EdgeInsets.symmetric(horizontal: 50),
+                          decoration: BoxDecoration(
+                              color: Colors.cyan.shade500,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Center(
+                            child: Text(
+                              "login",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    // BlocBuilder<LoginBloc, LoginState>(
+                    //     builder: (context, state) {
+                    //   if (state is LoginStateFailure) {
+                    //     return Text(" ");
+                    //   }
+                    //   if (state is LoginStateInitial) {
+                    //     return Text(" ");
+                    //   }
+                    //   if (state is LoginStateSuccess) {
+                    //     isLogin = true;
+                    //   }
+                    //   return Text(" ");
+                    //   ;
+                    // }),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    Text(
+                      "Create new account?",
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ],
+                ),
+              ),
+            ))
           ],
         ),
       ),
       backgroundColor: Colors.white,
     );
   }
+
+ 
+  _displayTopMotionToast(BuildContext context, String msg) {
+    switch (msg) {
+      case "fail":
+        MotionToast.error(
+          title: "ERROR",
+          titleStyle: TextStyle(fontWeight: FontWeight.bold),
+          description: "Username and password is invalid",
+          animationType: ANIMATION.FROM_BOTTOM,
+          position: MOTION_TOAST_POSITION.BOTTOM,
+          width: 300,
+        ).show(context);
+        break;
+      case "empty":
+        MotionToast.warning(
+          title: "WARNING",
+          titleStyle: TextStyle(fontWeight: FontWeight.bold),
+          description: "Username and password is not blank",
+          animationType: ANIMATION.FROM_BOTTOM,
+          position: MOTION_TOAST_POSITION.BOTTOM,
+          width: 300,
+        ).show(context);
+        break;
+    }
+  }
+}
+
+mixin AnimationControllers {
 }
