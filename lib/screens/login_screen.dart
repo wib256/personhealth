@@ -1,8 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
@@ -114,6 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       BorderSide(color: Colors.grey.shade200))),
                           child: TextField(
                             controller: _userController,
+                            keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                                 hintText: "Your phone",
                                 hintStyle: TextStyle(color: Colors.grey),
@@ -161,13 +159,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           _loginBloc.add(LoginEvent(
                               username: _userController.value.text,
                               password: _passwordController.value.text));
-                          // await Future.delayed(Duration(seconds: 2));
-                          // if (isLogin) {
-                          //   Navigator.pushReplacement(
-                          //       context,
-                          //       MaterialPageRoute(
-                          //           builder: (context) => HomeScreen(index: 0)));
-                          // }
                         },
                         child: Container(
                           height: 50,
@@ -187,20 +178,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                    // BlocBuilder<LoginBloc, LoginState>(
-                    //     builder: (context, state) {
-                    //   if (state is LoginStateFailure) {
-                    //     return Text(" ");
-                    //   }
-                    //   if (state is LoginStateInitial) {
-                    //     return Text(" ");
-                    //   }
-                    //   if (state is LoginStateSuccess) {
-                    //     isLogin = true;
-                    //   }
-                    //   return Text(" ");
-                    //   ;
-                    // }),
                     SizedBox(
                       height: 40,
                     ),
@@ -219,7 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
- 
+
   _displayTopMotionToast(BuildContext context, String msg) {
     switch (msg) {
       case "fail":
@@ -246,5 +223,3 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-mixin AnimationControllers {
-}
