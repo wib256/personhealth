@@ -8,3 +8,4 @@ class LoginStateFailure extends LoginState {
   LoginStateFailure({required this.errorMessage});
 }
 class LoginStateSuccess extends LoginState {}
+class LoginEmptyState extends LoginState{}
