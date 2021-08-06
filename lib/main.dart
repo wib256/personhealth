@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:personhealth/blocs/login_blocs.dart';
 import 'package:personhealth/events/login_events.dart';
+import 'package:personhealth/screens/haudq/home.dart';
+import 'package:personhealth/screens/haudq/new_patient_screen.dart';
 import 'package:personhealth/screens/login_screen.dart';
 import 'package:personhealth/utils/local_notification_service.dart';
 Future<void> backgroundHandler(RemoteMessage message) async {
@@ -25,7 +27,8 @@ class MyApp extends StatelessWidget{
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: BlocProvider(create: (context) => LoginBloc()..add(LoginFetchEvent()), child: LoginScreen(),),
+      home: 
+      NewPatient(),
     );
   }
 }
