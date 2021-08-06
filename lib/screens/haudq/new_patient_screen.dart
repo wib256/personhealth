@@ -74,6 +74,11 @@
 // }
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:localstorage/localstorage.dart';
+import 'package:personhealth/blocs/login_blocs.dart';
+import 'package:personhealth/events/login_events.dart';
+import 'package:personhealth/screens/login_screen.dart';
 
 class NewPatient extends StatelessWidget {
   @override
@@ -97,25 +102,33 @@ class NewPatient extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("PHR system", style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.w900,
-                    ),),
-                    Text("It has never been so easy to share and care for and store personal patient information", style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                    ),)
+                    Text(
+                      "PHR system",
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    Text(
+                      "It has never been so easy to share and care for and store personal patient information",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    )
                   ],
                 ),
               ),
               Positioned(
-                bottom: MediaQuery.of(context).size.height*0.2,
+                bottom: MediaQuery.of(context).size.height * 0.2,
                 child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: Center(
-                    child: Image.asset('assets/img/new1.png', height: 400,),
-                  )
-                ),
+                    width: MediaQuery.of(context).size.width,
+                    child: Center(
+                      child: Image.asset(
+                        'assets/img/new1.png',
+                        height: 400,
+                      ),
+                    )),
               ),
               Positioned(
                 bottom: 0,
@@ -125,26 +138,34 @@ class NewPatient extends StatelessWidget {
                     height: 80,
                     width: 200,
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        stops: [0,1],
-                        colors: [Color(0xff54D579),Color(0xff00AABF)],
-                      ),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(25),
-                      )
-                    ),
+                        gradient: LinearGradient(
+                          stops: [0, 1],
+                          colors: [Color(0xff54D579), Color(0xff00AABF)],
+                        ),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(25),
+                        )),
                     child: Center(
                       child: Text(
-                        "Get Started", style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w800,
-                      ),
+                        "Get Started",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
                     ),
                   ),
-                  onTap: (){
+                  onTap: () {
                     //navigator
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => BlocProvider(
+                                  create: (context) =>
+                                      LoginBloc()..add(LoginFetchEvent()),
+                                  child: LoginScreen(),
+                                )));
                   },
                 ),
               )
@@ -155,17 +176,21 @@ class NewPatient extends StatelessWidget {
     );
   }
 }
-class pathPainter extends CustomPainter{
+
+class pathPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var paint = Paint();
     paint.color = Color(0xffE4E2FF);
     paint.style = PaintingStyle.fill;
     var path = Path();
-    path.moveTo(0, size.height*0.4);
-    path.quadraticBezierTo(size.width*0.35, size.height*0.40, size.width*0.58, size.height*0.6);
-    path.quadraticBezierTo(size.width*0.72, size.height*0.8, size.width*0.92, size.height*0.6);
-    path.quadraticBezierTo(size.width*0.98, size.height*0.5, size.width, size.height*0.42);
+    path.moveTo(0, size.height * 0.4);
+    path.quadraticBezierTo(size.width * 0.35, size.height * 0.40,
+        size.width * 0.58, size.height * 0.6);
+    path.quadraticBezierTo(size.width * 0.72, size.height * 0.8,
+        size.width * 0.92, size.height * 0.6);
+    path.quadraticBezierTo(
+        size.width * 0.98, size.height * 0.5, size.width, size.height * 0.42);
     path.lineTo(size.width, size.height);
     path.lineTo(0, size.height);
     path.close();
