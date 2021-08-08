@@ -75,6 +75,7 @@ Future<Patient?> getPatientByPhoneFromApi(String phone) async {
         await http.get(Uri.parse('$GET_PATIENT_BY_PHONE_FROM_API$phone'), headers:{
           HttpHeaders.authorizationHeader: token
         });
+    print(response.body);
     if (response.statusCode == 200) {
       Map<String, dynamic> parse = jsonDecode(utf8.decode(response.bodyBytes));
       var patient = Patient.fromJson(parse);
@@ -83,6 +84,7 @@ Future<Patient?> getPatientByPhoneFromApi(String phone) async {
       return null;
     }
   } catch (exception) {
+    print(exception);
     return null;
   }
 }

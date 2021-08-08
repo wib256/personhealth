@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
+import 'package:personhealth/blocs/home_blocs.dart';
 import 'package:personhealth/blocs/login_blocs.dart';
+import 'package:personhealth/events/home_events.dart';
 import 'package:personhealth/events/login_events.dart';
-import 'package:personhealth/screens/home_screen.dart';
+import 'package:personhealth/screens/haudq/home.dart';
 import 'package:personhealth/states/login_states.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -49,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Column(
           children: [
             SizedBox(
-              height: 80,
+              height: 40,
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
@@ -76,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             SizedBox(
-              height: 40,
+              height: 30,
             ),
             Expanded(
                 child: Container(
@@ -86,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       topLeft: Radius.circular(60),
                       topRight: Radius.circular(60))),
               child: Padding(
-                padding: EdgeInsets.all(30),
+                padding: EdgeInsets.all(20),
                 child: Column(
                   children: [
                     Column(
@@ -101,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         SizedBox(
-                          height: 40,
+                          height: 20,
                         ),
                         Container(
                           padding: EdgeInsets.all(10),
@@ -140,9 +142,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     BlocListener<LoginBloc, LoginState>(
                       listener: (context, state) {
-                      print(state);
+                        print(state);
                         if (state is LoginStateFailure) {
-                          return _displayTopMotionToast(context,"fail");
+                          return _displayTopMotionToast(context, "fail");
                         }
                         if (state is LoginEmptyState) {
                           return _displayTopMotionToast(context, "empty");
@@ -151,7 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => HomeScreen(index: 0)));
+                                  builder: (context) => BlocProvider(create: (context) => HomeBloc()..add(HomeFetchEvent()), child: HomeScreen(),)));
                         }
                       },
                       child: InkWell(
@@ -196,7 +198,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-
   _displayTopMotionToast(BuildContext context, String msg) {
     switch (msg) {
       case "fail":
@@ -222,4 +223,3 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 }
-

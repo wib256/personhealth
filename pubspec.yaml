@@ -35,6 +35,7 @@ dependencies:
   image_picker: ^0.8.2
   shared_preferences: ^2.0.6
   mime_type: ^1.0.0
+  draw_graph: ^1.0.0
 
   # haudq
   firebase_core: ^1.4.0

@@ -11,6 +11,16 @@ class LocalData {
     sp.setBool('isLogin', true);
   }
 
+  Future<void> saveDob(String dob) async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.setString('dob', dob);
+  }
+
+  Future<String?> getDob() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    return sp.getString('dob');
+  }
+
   Future<void> saveImage(String image) async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     sp.setString('image', image);

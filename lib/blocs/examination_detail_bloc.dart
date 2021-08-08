@@ -18,6 +18,15 @@ class ExaminationDetailExpandBloc
         int examinationID = event.examinationID;
         String date = event.date;
         var gender = await LocalData().getGender();
+        var dob = await LocalData().getDob();
+        List<String> dobArray = [];
+        if (dob != null) {
+          dobArray = dob.split('/');
+          DateTime currentDate = DateTime.now();
+          if (int.parse(dobArray[0]) - currentDate.year <= 12) {
+            gender = 'Child-' + gender!;
+          }
+        }
         var patientID = await LocalData().getPatientId();
         if (state is ExaminationDetailStateInitial) {
           final List<ExaminationDetailExpand> list = [];

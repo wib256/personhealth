@@ -65,14 +65,9 @@ class _HomeScreenState extends State<HomeScreen> {
     await LocalData().logOut();
     await Future.delayed(Duration(seconds: 2));
     Navigator.of(context).pushAndRemoveUntil(
-      // the new route
       MaterialPageRoute(
         builder: (BuildContext context) => BlocProvider(create: (context) => LoginBloc()..add(LoginFetchEvent()), child: LoginScreen()),
       ),
-
-      // this function should return true when we're done removing routes
-      // but because we want to remove all other screens, we make it
-      // always return false
           (Route route) => false,
     );
   }

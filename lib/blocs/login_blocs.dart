@@ -35,6 +35,8 @@ class LoginBloc extends Bloc<LoginBloc, LoginState> {
                 await LocalData().saveGender(patient.gender);
                 await LocalData().savePatientId(patient.id);
                 await LocalData().saveName(patient.name);
+                await LocalData().saveDob(patient.dob);
+                await LocalData().saveImage(patient.image);
                 await LocalData().setIsLogin();
                 yield LoginStateSuccess();
               } else {
