@@ -16,8 +16,8 @@ Future<Examination?> getExaminationLast() async {
       HttpHeaders.authorizationHeader: token
     });
     if (response.statusCode == 200) {
-      final responseData = json.decode(utf8.decode(response.bodyBytes)).cast<Map<String, dynamic>>();
-      final examination = responseData.map<Examination>((json) => Examination.fromJson(json));
+      Map<String, dynamic> responseData = jsonDecode(utf8.decode(response.bodyBytes));
+      final examination = Examination.fromJson(responseData);
       return examination;
     } else {
       return null;

@@ -2,14 +2,21 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:personhealth/blocs/clinic_detail_blocs.dart';
 import 'package:personhealth/blocs/home_blocs.dart';
+import 'package:personhealth/blocs/list_clinic_blocs.dart';
 import 'package:personhealth/blocs/login_blocs.dart';
+import 'package:personhealth/events/clinic_detail_event.dart';
+import 'package:personhealth/events/list_clinic_events.dart';
 import 'package:personhealth/events/login_events.dart';
+import 'package:personhealth/models/clinic.dart';
 import 'package:personhealth/models/examination.dart';
 import 'package:personhealth/repositorys/local_data.dart';
+import 'package:personhealth/screens/haudq/list_clinic.dart';
 import 'package:personhealth/states/home_states.dart';
 
 import '../login_screen.dart';
+import 'clinic_details.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -268,9 +275,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                     children: [
-                                                      methodContainer(
-                                                          "clinic.png",
-                                                          "Clinics"),
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          Navigator.push(context, MaterialPageRoute(builder: (context) => BlocProvider(create: (context) => ListClinicBloc()..add(ListClinicFetchEvent()), child: ListClinic(),)));
+                                                        },
+                                                        child: methodContainer(
+                                                            "clinic.png",
+                                                            "Clinics"),
+                                                      ),
                                                       SizedBox(
                                                         width: 4,
                                                       ),
@@ -335,7 +347,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             return Padding(
                                                               padding: const EdgeInsets.only(right: 10),
                                                               child: Container(
-                                                                child: cardClinic(state.clinics[index].image, state.clinics[index].name, state.clinics[index].address),
+                                                                child: cardClinic(state.clinics[index]),
                                                               ),
                                                             );
                                                           },
@@ -348,7 +360,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 height: 20,
                                               ),
                                               Text(
-                                                "Examination today",
+                                                "Examination last",
                                                 style: TextStyle(
                                                   fontSize: 25,
                                                   fontWeight: FontWeight.w800,
@@ -496,7 +508,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget cardClinic(String imgName, String clinicName, String address) {
+  Widget cardClinic(Clinic clinic) {
     return Card(
       elevation: 5,
       child: Container(
@@ -515,7 +527,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Padding(
                   padding: EdgeInsets.all(5),
-                  child: Text(clinicName, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), softWrap: true, overflow: TextOverflow.ellipsis,),
+                  child: Text(clinic.name, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), softWrap: true, overflow: TextOverflow.ellipsis,),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(5,0,5,0),
@@ -523,7 +535,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 160,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: NetworkImage(imgName),
+                        image: NetworkImage(clinic.image),
                         fit: BoxFit.fitWidth,
                       )
                     ),
@@ -531,13 +543,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(5, 5, 5, 0),
-                  child: Text('Location: $address', softWrap: true, overflow: TextOverflow.ellipsis, maxLines: 2,),
+                  child: Text('Location: ${clinic.address}', softWrap: true, overflow: TextOverflow.ellipsis, maxLines: 2,),
                 ),
               ],
             ),
           ),
           onTap: () {
-            //navigator
+            Navigator.push(context, MaterialPageRoute(builder: (context) =>  BlocProvider(create: (context) => ClinicDetailBloc()..add(ClinicDetailFetchEvent(clinic: clinic)), child: ClinicDetail(),)));
           },
         ),
       ),
