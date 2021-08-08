@@ -85,12 +85,8 @@ class Patient {
         bloodType: json['bloodType'] == null ? '' : json['bloodType'],
         address: json['address'] == null ? '' : json['address'],
         diseaseHealthRecordList: List<DiseaseHealthRecord>.from(
-                    json["diseaseHealthRecordList"]
-                        .map((x) => DiseaseHealthRecord.fromJson(x))) !=
-                null
-            ? List<DiseaseHealthRecord>.from(json["diseaseHealthRecordList"]
-                .map((x) => DiseaseHealthRecord.fromJson(x)))
-            : List.empty(),
+            json["diseaseHealthRecordList"]
+                .map((x) => DiseaseHealthRecord.fromJson(x))),
         phone: json['phone'] == null ? '' : json['phone'],
         status: json['status'] == null ? '' : json['status'],
         hasLegal: json['haslegal'] == null ? false : json['haslegal'],

@@ -12,13 +12,16 @@ const EDIT_PATIENT_INFORMATION = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAP
 //Clinic
 const GET_CLINIC_FROM_API = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/clinics/clinics';
 const GET_CLINICS_BY_NAME_FROM_API = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/clinics/clinic/sub/';
+const GET_CLINICS_BY_DISTRICT = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/clinics/clinics/district/';
 
 //Examination
 const GET_EXAMINATION_BY_PATIENTID_FROM_API = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/examinations/examination/test-request/';
 const GET_EXAMINATION_BY_DATE_FROM_API = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/examinations/examination/date-range/patient';
+const GET_EXAMINATION_LAST = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/examinations/examination/latest/';
 
 //Examination_Detail
 const GET_EXAMINATION_DETAIL_BY_EXAMINATIONID_FROM_API = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/examination-details/examination-detail/examination/';
+const GET_DATA_FOR_GRAPH = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/examination-details/examination-detail/test/';
 
 //Rating
 const POST_RATING = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/ratings/rating';

@@ -7,6 +7,27 @@ import 'package:http/http.dart' as http;
 
 import 'local_data.dart';
 
+Future<Examination?> getExaminationLast() async {
+  try {
+    int? patientId = await LocalData().getPatientId();
+    String? token = await LocalData().getToken();
+    token = 'Bearer ' + token!;
+    final response = await http.get(Uri.parse('$GET_EXAMINATION_LAST$patientId'), headers: {
+      HttpHeaders.authorizationHeader: token
+    });
+    if (response.statusCode == 200) {
+      final responseData = json.decode(utf8.decode(response.bodyBytes)).cast<Map<String, dynamic>>();
+      final examination = responseData.map<Examination>((json) => Examination.fromJson(json));
+      return examination;
+    } else {
+      return null;
+    }
+  } catch (exception) {
+    print(exception);
+    return null;
+  }
+}
+
 Future<List<Examination>> getExaminationsByPatientIdFromApi(int patientID) async {
   try {
     String? token = await LocalData().getToken();
