@@ -75,12 +75,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:localstorage/localstorage.dart';
 import 'package:personhealth/blocs/login_blocs.dart';
 import 'package:personhealth/events/login_events.dart';
 import 'package:personhealth/screens/login_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class NewPatient extends StatelessWidget {
+class NewPatient extends StatefulWidget {
+  @override
+  State<NewPatient> createState() => _NewPatientState();
+}
+Future<void> changeState(int check) async{
+  final pref = await SharedPreferences.getInstance();
+  pref.setInt("check", check);
+  print(pref.getInt("check"));
+}
+
+Future<int> getItemState() async{
+  final pref = await SharedPreferences.getInstance();
+  return pref.getInt("check") ?? 0;
+}
+class _NewPatientState extends State<NewPatient> {
+  int check = 0;
+  @override
+  void initState() {
+    getItemState().then((value) => check = value);
+    if (check != 0) {
+      print("///////");
+      print(check);
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => BlocProvider(
+                    create: (context) => LoginBloc()..add(LoginFetchEvent()),
+                    child: LoginScreen(),
+                  )));
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -157,6 +189,7 @@ class NewPatient extends StatelessWidget {
                     ),
                   ),
                   onTap: () {
+                    changeState(1);
                     //navigator
                     Navigator.pushReplacement(
                         context,
