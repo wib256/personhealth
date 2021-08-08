@@ -5,14 +5,11 @@ import 'package:flutter/material.dart';
 import '../mycolor.dart';
 
 class MasterLayout extends StatefulWidget {
-  MasterLayout({
-    Key? key,
-    this.child,
-  });
+  MasterLayout({Key? key, this.child, required this.title});
 
   @override
   State<MasterLayout> createState() => _MasterLayoutState();
-
+  String title;
   final Widget? child;
 }
 
@@ -21,6 +18,7 @@ class _MasterLayoutState extends State<MasterLayout> {
 
   @override
   Widget build(BuildContext context) {
+    String name = widget.title;
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
 
@@ -54,7 +52,7 @@ class _MasterLayoutState extends State<MasterLayout> {
                         backgroundColor: Color(0xffF9F9F9),
                         body: Column(
                           children: [
-                            _buildAppBar(),
+                            _buildAppBar(name),
                             SizedBox(
                               height: 10,
                             ),
@@ -69,7 +67,7 @@ class _MasterLayoutState extends State<MasterLayout> {
     );
   }
 
-  Container _buildAppBar() {
+  Container _buildAppBar(String name) {
     return Container(
       height: 100,
       decoration: BoxDecoration(
@@ -115,7 +113,7 @@ class _MasterLayoutState extends State<MasterLayout> {
                     left: 20,
                   ),
                   child: Text(
-                    "All clinic",
+                    "$name",
                     style: TextStyle(
                         fontSize: 20,
                         color: Colors.blueGrey,
