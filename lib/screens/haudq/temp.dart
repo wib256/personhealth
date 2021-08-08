@@ -1,172 +1,256 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-final Color backgroundColor = Color(0xFF4A4A58);
 
-class MenuDashboardPage extends StatefulWidget {
+class RatingPage extends StatefulWidget {
   @override
-  _MenuDashboardPageState createState() => _MenuDashboardPageState();
+  _RatingPageState createState() => _RatingPageState();
 }
 
-class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTickerProviderStateMixin {
-  bool isCollapsed = true;
-  late double screenWidth, screenHeight;
-  final Duration duration = const Duration(milliseconds: 300);
-  late AnimationController _controller;
-  late Animation<double> _scaleAnimation;
-  late Animation<double> _menuScaleAnimation;
-  late Animation<Offset> _slideAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(vsync: this, duration: duration);
-    _scaleAnimation = Tween<double>(begin: 1, end: 0.8).animate(_controller);
-    _menuScaleAnimation = Tween<double>(begin: 0.5, end: 1).animate(_controller);
-    _slideAnimation = Tween<Offset>(begin: Offset(-1, 0), end: Offset(0, 0)).animate(_controller);
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+class _RatingPageState extends State<RatingPage> {
+  double rating = 0.0;
+  List<int> ratings = [2, 1, 5, 2, 4, 3];
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    screenHeight = size.height;
-    screenWidth = size.width;
-
     return Scaffold(
-      backgroundColor: backgroundColor,
-      body: Stack(
-        children: <Widget>[
-          menu(context),
-          dashboard(context),
-        ],
-      ),
-    );
-  }
-
-  Widget menu(context) {
-    return SlideTransition(
-      position: _slideAnimation,
-      child: ScaleTransition(
-        scale: _menuScaleAnimation,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 16.0),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text("Dashboard", style: TextStyle(color: Colors.white, fontSize: 22)),
-                SizedBox(height: 10),
-                Text("Messages", style: TextStyle(color: Colors.white, fontSize: 22)),
-                SizedBox(height: 10),
-                Text("Utility Bills", style: TextStyle(color: Colors.white, fontSize: 22)),
-                SizedBox(height: 10),
-                Text("Funds Transfer", style: TextStyle(color: Colors.white, fontSize: 22)),
-                SizedBox(height: 10),
-                Text("Branches", style: TextStyle(color: Colors.white, fontSize: 22)),
-              ],
+        backgroundColor: Colors.grey[100],
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          brightness: Brightness.light,
+          iconTheme: IconThemeData(color: Colors.black),
+          elevation: 0.0,
+          actions: <Widget>[
+            IconButton(
+              icon: Image.asset('assets/icons/comment.png'),
+              onPressed: () {
+                // showDialog(
+                //     context: context,
+                //     child: Dialog(
+                //       shape: BeveledRectangleBorder(
+                //           borderRadius: BorderRadius.all(Radius.circular(10))),
+                //       child: RatingDialog(),
+                //     ));
+              },
+              color: Colors.black,
             ),
-          ),
+          ],
         ),
-      ),
-    );
-  }
-
-  Widget dashboard(context) {
-    return AnimatedPositioned(
-      duration: duration,
-      top: 0,
-      bottom: 0,
-      left: isCollapsed ? 0 : 0.6 * screenWidth,
-      right: isCollapsed ? 0 : -0.2 * screenWidth,
-      child: ScaleTransition(
-        scale: _scaleAnimation,
-        child: Material(
-          animationDuration: duration,
-          borderRadius: BorderRadius.all(Radius.circular(40)),
-          elevation: 8,
-          color: backgroundColor,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            physics: ClampingScrollPhysics(),
-            child: Container(
-              padding: const EdgeInsets.only(left: 16, right: 16, top: 48),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      InkWell(
-                        child: Icon(Icons.menu, color: Colors.white),
-                        onTap: () {
-                          setState(() {
-                            if (isCollapsed)
-                              _controller.forward();
-                            else
-                              _controller.reverse();
-
-                            isCollapsed = !isCollapsed;
-                          });
-                        },
+        body: SafeArea(
+          child: LayoutBuilder(
+            builder: (b, constraints) => Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: Column(
+                    children: <Widget>[
+                      Column(
+                        children: <Widget>[
+                          Container(
+                            padding: const EdgeInsets.all(8.0),
+                            height: 92,
+                            width: 92,
+                            decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                    width: 8.0, color: Colors.white)),
+                            child: Image.asset('assets/headphones.png'),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 72.0, vertical: 16.0),
+                            child: Text(
+                              'Boat Rockerz 350 On-Ear Bluetooth Headphones',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
+                          )
+                        ],
                       ),
-                      Text("My Cards", style: TextStyle(fontSize: 24, color: Colors.white)),
-                      Icon(Icons.settings, color: Colors.white),
+                      Divider(),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 40),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(right: 16.0),
+                              child: Text(
+                                '4.8',
+                                style: TextStyle(fontSize: 48),
+                              ),
+                            ),
+                            Column(
+                              children: <Widget>[
+                                RatingBar(
+//                      borderColor: Color(0xffFF8993),
+//                      fillColor: Color(0xffFF8993),
+                                  ignoreGestures: true,
+                                  itemSize: 20,
+                                  allowHalfRating: true,
+                                  initialRating: 1,
+                                  itemPadding:
+                                      EdgeInsets.symmetric(horizontal: 4.0),
+                                  ratingWidget: RatingWidget(
+                                    empty: Icon(Icons.favorite_border,
+                                        color: Color(0xffFF8993), size: 20),
+                                    full: Icon(
+                                      Icons.favorite,
+                                      color: Color(0xffFF8993),
+                                      size: 20,
+                                    ),
+                                    half: Text("data"),
+                                  ),
+                                  onRatingUpdate: (value) {
+                                    setState(() {
+                                      rating = value;
+                                    });
+                                    print(value);
+                                  },
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 4.0),
+                                  child: Text('from 25 people'),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 16.0),
+                        child: Align(
+                            alignment: Alignment(-1, 0),
+                            child: Text('Recent Reviews')),
+                      ),
+                      Column(
+                        children: <Widget>[
+                          ...ratings
+                              .map((val) => Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 4.0),
+                                  padding: const EdgeInsets.all(8.0),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(5.0))),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 16.0),
+                                        child: CircleAvatar(
+                                          maxRadius: 14,
+                                          backgroundImage: AssetImage(
+                                              'assets/background.jpg'),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: <Widget>[
+                                                Text(
+                                                  'Billy Holand',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Text(
+                                                  '10 am, Via iOS',
+                                                  style: TextStyle(
+                                                      color: Colors.grey,
+                                                      fontSize: 10.0),
+                                                )
+                                              ],
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 8.0),
+                                              child: RatingBar(
+                                                ignoreGestures: true,
+                                                itemSize: 20,
+                                                allowHalfRating: true,
+                                                initialRating: val.toDouble(),
+                                                itemPadding:
+                                                    EdgeInsets.symmetric(
+                                                        horizontal: 4.0),
+                                                ratingWidget: RatingWidget(
+                                                  empty: Icon(
+                                                      Icons.favorite_border,
+                                                      color: Color(0xffFF8993),
+                                                      size: 20),
+                                                  full: Icon(
+                                                    Icons.favorite,
+                                                    color: Color(0xffFF8993),
+                                                    size: 20,
+                                                  ), half: Text("data"),
+                                                ),
+                                                onRatingUpdate: (value) {
+                                                  setState(() {
+                                                    rating = value;
+                                                  });
+                                                  print(value);
+                                                },
+                                              ),
+                                            ),
+                                            Text(
+                                              'Not as I expected! ... I`m really sad',
+                                              style: TextStyle(
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 16.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Text(
+                                                    '21 likes',
+                                                    style: TextStyle(
+                                                        color: Colors.grey[400],
+                                                        fontSize: 10.0),
+                                                  ),
+                                                  Text(
+                                                    '1 Comment',
+                                                    style: TextStyle(
+                                                        color: Colors.blue,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 10.0),
+                                                  )
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  )))
+                              .toList()
+                        ],
+                      )
                     ],
                   ),
-                  SizedBox(height: 50),
-                  Container(
-                    height: 200,
-                    child: PageView(
-                      controller: PageController(viewportFraction: 0.8),
-                      scrollDirection: Axis.horizontal,
-                      pageSnapping: true,
-                      children: <Widget>[
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 8),
-                          color: Colors.redAccent,
-                          width: 100,
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 8),
-                          color: Colors.blueAccent,
-                          width: 100,
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 8),
-                          color: Colors.greenAccent,
-                          width: 100,
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Text("Transactions", style: TextStyle(color: Colors.white, fontSize: 20),),
-                  ListView.separated(
-                    shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text("Macbook"),
-                      subtitle: Text("Apple"),
-                      trailing: Text("-2900"),
-                    );
-                  }, separatorBuilder: (context, index) {
-                    return Divider(height: 16);
-                  }, itemCount: 10)
-                ],
+                ),
               ),
             ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }

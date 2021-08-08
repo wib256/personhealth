@@ -8,11 +8,7 @@ class clinicDetail extends StatefulWidget {
 
 class _clinicDetailState extends State<clinicDetail> {
   get color => null;
-  var list = [
-    'k',
-    'a',
-    'b'
-  ];
+  var list = ['k', 'a', 'b'];
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +33,12 @@ class _clinicDetailState extends State<clinicDetail> {
             ),
           ),
           Positioned(
-            top: MediaQuery.of(context).size.height * 0.26,
+            top: MediaQuery.of(context).size.height * 0.35,
             left: 0,
             right: 0,
             child: Container(
-              margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.1),
               padding: EdgeInsets.all(30),
-              height: MediaQuery.of(context).size.height * 0.74,
+              height: MediaQuery.of(context).size.height * 0.65,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.vertical(
@@ -55,8 +50,7 @@ class _clinicDetailState extends State<clinicDetail> {
                 children: <Widget>[
                   Text(
                     "Phòng Khám Đa Khoa DHA",
-                    style: TextStyle(
-                        fontSize: 30, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     maxLines: 2,
                   ),
                   SizedBox(
@@ -111,16 +105,9 @@ class _clinicDetailState extends State<clinicDetail> {
                             ),
                           ),
                           SizedBox(
-                            height: 20,
+                            height: 10,
                           ),
-                          Container(
-                            height:
-                                MediaQuery.of(context).size.height * 0.4,
-                            child: ListView.builder(itemBuilder: (context, index) {
-                              var item = list[index];
-                              return Text(item);
-                            }, itemCount: list.length),
-                          )
+                          _listComments(context)
                         ],
                       ),
                     ),
@@ -129,15 +116,79 @@ class _clinicDetailState extends State<clinicDetail> {
               ),
             ),
           ),
-          Positioned(
-            child: _buildAppBar(),
-            top: 0,
-            left: 0,
-            right: 0
-          ),
+          Positioned(child: _buildAppBar(), top: 0, left: 0, right: 0),
         ],
       ),
     );
+  }
+
+  Container _listComments(BuildContext context) {
+    return Container(
+                          height: MediaQuery.of(context).size.height * 0.35,
+                          color: Colors.white,
+                          child: ListView.builder(
+                            itemCount: 5,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Card(
+                                margin: EdgeInsets.only(bottom: 20),
+                                color: Colors.white,
+                                shadowColor: Colors.green[100],
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          0, 8, 8, 8),
+                                      child: CircleAvatar(
+                                        radius: 30,
+                                        backgroundImage: NetworkImage(
+                                            "https://firebasestorage.googleapis.com/v0/b/phrsystem-a595c.appspot.com/o/75cdb357-c2a5-4af9-b559-298b1ae47edb.jpg?alt=media"),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Name",
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text("08-08-2021 10:26 PM"),
+                                          RatingBarIndicator(
+                                            rating: 2.75,
+                                            itemBuilder: (context, index) =>
+                                                Icon(
+                                              Icons.star,
+                                              color: Colors.amber,
+                                            ),
+                                            itemCount: 5,
+                                            itemSize: 15,
+                                            direction: Axis.horizontal,
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          Column(
+                                            children: [
+                                              Text(
+                                                "dịch vụ ở đây khá tốt, Nhân viên nhiệt tình , môi trường sạch sẽ",
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        );
   }
 
   Container _buildAppBar() {
