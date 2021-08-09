@@ -2,8 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import '../mycolor.dart';
-
 class MasterLayout extends StatefulWidget {
   MasterLayout({Key? key, this.child, required this.title});
 
@@ -19,8 +17,6 @@ class _MasterLayoutState extends State<MasterLayout> {
   @override
   Widget build(BuildContext context) {
     String name = widget.title;
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       body: Stack(
@@ -49,17 +45,19 @@ class _MasterLayoutState extends State<MasterLayout> {
                         ..setEntry(0, 3, 200 * val)
                         ..rotateY((pi / 6) * val),
                       child: Scaffold(
-                        backgroundColor: Color(0xffF9F9F9),
-                        body: Column(
-                          children: [
-                            _buildAppBar(name),
-                            SizedBox(
-                              height: 10,
+                          backgroundColor: Color(0xffF9F9F9),
+                          body: SingleChildScrollView(
+                            physics: BouncingScrollPhysics(),
+                            child: Column(
+                              children: [
+                                _buildAppBar(name),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                widget.child!
+                              ],
                             ),
-                            widget.child!
-                          ],
-                        ),
-                      )));
+                          ))));
             },
           ),
         ],
@@ -131,7 +129,7 @@ class _MasterLayoutState extends State<MasterLayout> {
   SafeArea _buildSideNav() {
     return SafeArea(
       child: Container(
-        width: 200,
+        width: 210,
         padding: EdgeInsets.all(8.0),
         child: Column(
           children: [

@@ -43,11 +43,8 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-            gradient: LinearGradient(begin: Alignment.topCenter, colors: [
-          Colors.cyan.shade500,
-          Colors.cyan.shade300,
-          Colors.cyan.shade400
-        ])),
+          color: Colors.green[300],
+        ),
         child: Column(
           children: [
             SizedBox(
@@ -153,7 +150,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => BlocProvider(create: (context) => HomeBloc()..add(HomeFetchEvent()), child: HomeScreen(),)));
+                                  builder: (context) => BlocProvider(
+                                        create: (context) =>
+                                            HomeBloc()..add(HomeFetchEvent()),
+                                        child: HomeScreen(),
+                                      )));
                         }
                       },
                       child: InkWell(
@@ -166,7 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 50,
                           margin: EdgeInsets.symmetric(horizontal: 50),
                           decoration: BoxDecoration(
-                              color: Colors.cyan.shade500,
+                              color: Colors.green[300],
                               borderRadius: BorderRadius.circular(10)),
                           child: Center(
                             child: Text(

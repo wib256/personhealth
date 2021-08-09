@@ -25,6 +25,7 @@ const GET_DATA_FOR_GRAPH = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/e
 
 //Rating
 const POST_RATING = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/ratings/rating';
+const GET_COMMENT = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/ratings/ratings/';
 
 //User Family Group
 const GET_LIST_GROUP = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/user-family-groups/user-family-group/family-group/patient/';
