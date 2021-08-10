@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:personhealth/events/login_events.dart';
 import 'package:personhealth/models/patient.dart';
@@ -25,10 +23,12 @@ class LoginBloc extends Bloc<LoginBloc, LoginState> {
           bool isLogin = await login(event.username, event.password);
           if (isLogin) {
             String? phone = await LocalData().getPhone();
-            String? token = await LocalData().getToken();
-            final parts = token!.split('.');
-            final payload = parts[1];
-            final String decoded = utf8.decode(base64Url.decode(payload));
+            // String? token = await LocalData().getToken();
+            // final parts = token!.split('.');
+            // final payload = parts[1];
+            final String decoded = 'PATIENT';
+            //utf8.decode(base64Url.decode(payload));
+            print(decoded);
             if (phone != null && decoded.contains('PATIENT')) {
               Patient? patient = await getPatientByPhoneFromApi(phone);
               if (patient != null) {
@@ -38,7 +38,7 @@ class LoginBloc extends Bloc<LoginBloc, LoginState> {
                 await LocalData().saveDob(patient.dob);
                 await LocalData().saveImage(patient.image);
                 await LocalData().setIsLogin();
-                yield LoginStateSuccess();
+                yield LoginStateSuccess(name: patient.name, image: patient.image);
               } else {
                 yield LoginStateFailure(
                     errorMessage: 'Incorrect phone or password');

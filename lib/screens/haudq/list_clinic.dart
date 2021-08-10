@@ -9,6 +9,10 @@ import 'package:personhealth/screens/haudq/layout/master_layout.dart';
 import 'package:personhealth/states/list_clinic_states.dart';
 
 class ListClinic extends StatefulWidget {
+  final String name;
+  final String image;
+  const ListClinic({required this.name, required this.image});
+
   @override
   State<ListClinic> createState() => _ListClinicState();
 }
@@ -33,6 +37,8 @@ class _ListClinicState extends State<ListClinic> {
   Widget build(BuildContext context) {
     return MasterLayout(
         title: 'All clinic',
+        name: '${widget.name}',
+        image: '${widget.image}',
         child: Container(
           width: MediaQuery.of(context).size.width * 0.9,
           child: Column(

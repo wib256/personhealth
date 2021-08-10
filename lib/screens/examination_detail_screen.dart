@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:personhealth/blocs/examination_detail_bloc.dart';
+import 'package:personhealth/blocs/examination_detail_expand_bloc.dart';
 import 'package:personhealth/screens/draw_graph.dart';
 import 'package:personhealth/states/examination_detail_states.dart';
 
@@ -38,10 +38,10 @@ class _ExaminationDetailScreenState extends State<ExaminationDetailScreen> {
             children: [
               BlocBuilder<ExaminationDetailExpandBloc,
                   ExaminationDetailExpandState>(builder: (context, state) {
-                if (state is ExaminationDetailStateInitial) {
+                if (state is ExaminationDetailExpandStateInitial) {
                   return Center(child: CircularProgressIndicator());
                 }
-                if (state is ExaminationDetailStateInitial) {
+                if (state is ExaminationDetailExpandStateInitial) {
                   return Center(
                     child: Text(
                       'Cannot load examination detail from Server',
@@ -49,7 +49,7 @@ class _ExaminationDetailScreenState extends State<ExaminationDetailScreen> {
                     ),
                   );
                 }
-                if (state is ExaminationDetailStateSuccess) {
+                if (state is ExaminationDetailExpandStateSuccess) {
                   if (state.list.isEmpty) {
                     return Center(child: Text('Currently no test results!'));
                   } else {

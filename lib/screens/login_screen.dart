@@ -153,7 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   builder: (context) => BlocProvider(
                                         create: (context) =>
                                             HomeBloc()..add(HomeFetchEvent()),
-                                        child: HomeScreen(),
+                                        child: HomeScreen(name: state.name, image: state.image,),
                                       )));
                         }
                       },

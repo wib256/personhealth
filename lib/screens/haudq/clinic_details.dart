@@ -13,7 +13,6 @@ class ClinicDetail extends StatefulWidget {
 class _ClinicDetailState extends State<ClinicDetail> {
   late ClinicDetailBloc _clinicDetailBloc;
   get color => null;
-  var list = ['k', 'a', 'b'];
 
   @override
   void initState() {

@@ -51,16 +51,17 @@ Future<List<Examination>> getExaminationsByDateFromApi(int patientID, String dat
   try {
     String? token = await LocalData().getToken();
     token = 'Bearer ' + token!;
+    print(dateFrom +' aaaa ' + dateTo);
     var params = {
         "dateF": dateFrom,
         "dateT": dateTo,
         "patientId": patientID
     };
     Uri uri = Uri.parse('$GET_EXAMINATION_BY_DATE_FROM_API');
-
     final response = await http.post(uri, body: json.encode(params), headers: {
       HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.acceptHeader: "application/json", HttpHeaders.authorizationHeader: token
     });
+    print(response.body);
     if (response.statusCode == 200) {
       final responseData = json.decode(utf8.decode(response.bodyBytes)).cast<Map<String, dynamic>>();
       final List<Examination> examinations = responseData.map<Examination>((json) => Examination.fromJson(json)).toList();
