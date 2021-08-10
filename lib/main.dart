@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:personhealth/screens/group_screen.dart';
 import 'package:personhealth/screens/haudq/examination_detail.dart';
 import 'package:personhealth/screens/haudq/clinic_details.dart';
 import 'package:personhealth/screens/haudq/list-examination.dart';
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget{
       // clinicDetail()
       // ListClinic()
       // BlocProvider(create: (context) =>LoginBloc()..add(LoginFetchEvent()),child: LoginScreen(),)
-      NewPatient(),
+      NewPatient(), 
     );
   }
 }
