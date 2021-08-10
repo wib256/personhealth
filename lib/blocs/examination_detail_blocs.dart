@@ -4,6 +4,7 @@ import 'package:personhealth/models/examination_detail.dart';
 import 'package:personhealth/repositorys/examination_detail_respository.dart';
 import 'package:personhealth/repositorys/examination_repository.dart';
 import 'package:personhealth/repositorys/local_data.dart';
+import 'package:personhealth/repositorys/rating_repository.dart';
 import 'package:personhealth/states/examination_detail_states.dart';
 
 class ExaminationDetailBloc extends Bloc<ExaminationDetailBloc, ExaminationDetailState>{
@@ -106,7 +107,22 @@ class ExaminationDetailBloc extends Bloc<ExaminationDetailBloc, ExaminationDetai
               list.add(temp);
             }
           }
-          yield ExaminationDetailStateSuccess(list: list);
+          yield ExaminationDetailStateSuccess(list: list, isRated: false);
+        }
+      } catch (exception) {
+        print(exception);
+        yield ExaminationDetailStateFailure();
+      }
+    }
+
+    if (event is ExaminationDetailRateEvent) {
+      try {
+        bool isRated = await rateExamination(event.rating);
+        var currentState = state as ExaminationDetailStateSuccess;
+        if (isRated) {
+          yield ExaminationDetailStateSuccess(list: currentState.list, isRated: true);
+        } else {
+          yield currentState;
         }
       } catch (exception) {
         print(exception);
