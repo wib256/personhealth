@@ -9,18 +9,31 @@ abstract class ExaminationDetailExpandState extends Equatable {
   List<Object?> get props => [];
 }
 
-class ExaminationDetailStateInitial extends ExaminationDetailExpandState {}
-class ExaminationDetailStateFailure extends ExaminationDetailExpandState {}
-class ExaminationDetailStateSuccess extends ExaminationDetailExpandState {
+class ExaminationDetailExpandStateInitial extends ExaminationDetailExpandState {}
+class ExaminationDetailExpandStateFailure extends ExaminationDetailExpandState {}
+class ExaminationDetailExpandStateSuccess extends ExaminationDetailExpandState {
   final List<ExaminationDetailExpand> list;
 
-  const ExaminationDetailStateSuccess({required this.list});
+  const ExaminationDetailExpandStateSuccess({required this.list});
 
   @override
   // TODO: implement props
   List<Object?> get props => [list];
 
-  ExaminationDetailStateSuccess cloneWith({required List<ExaminationDetailExpand> list}) {
-    return ExaminationDetailStateSuccess(list: list);
+  ExaminationDetailExpandStateSuccess cloneWith({required List<ExaminationDetailExpand> list}) {
+    return ExaminationDetailExpandStateSuccess(list: list);
   }
 }
+
+class ExaminationDetailState {
+  const ExaminationDetailState();
+}
+
+class ExaminationDetailStateInitial extends ExaminationDetailState{}
+class ExaminationDetailStateFailure extends ExaminationDetailState{}
+class ExaminationDetailStateSuccess extends ExaminationDetailState{
+  final List<ExaminationDetailExpand> list;
+  ExaminationDetailStateSuccess({required this.list});
+}
+
+

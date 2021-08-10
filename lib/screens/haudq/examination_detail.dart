@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:personhealth/blocs/examination_detail_blocs.dart';
+import 'package:personhealth/models/examination.dart';
+import 'package:personhealth/states/examination_detail_states.dart';
 import 'package:rating_dialog/rating_dialog.dart';
 
 class ExaminationDetail extends StatefulWidget {
+  final Examination examination;
+  const ExaminationDetail({required this.examination});
+
   @override
   _ExaminationDetailState createState() => _ExaminationDetailState();
 }
@@ -18,95 +24,98 @@ class _ExaminationDetailState extends State<ExaminationDetail> {
       body: Stack(
         children: [
           Positioned(
-            top: 100,
+            top: 80,
             left: 0,
             right: 0,
             child: Container(
               padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
               width: double.infinity,
-              height: height * 0.4,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Phòng Khám Đa Khoa DHA",
-                        style: TextStyle(
-                          fontSize: 25,
-                          color: Colors.blueGrey[500],
-                          fontWeight: FontWeight.bold,
+              height: height * 0.3,
+              child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "${widget.examination.clinicName}",
+                          style: TextStyle(
+                            fontSize: 25,
+                            color: Colors.blueGrey[500],
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          _showRatingAppDialog();
-                        },
-                        icon: Image.asset(
-                          "assets/img/rating.png",
-                          height: 50,
+                        IconButton(
+                          onPressed: () {
+                            _showRatingAppDialog();
+                          },
+                          icon: Image.asset(
+                            "assets/img/rating.png",
+                            height: 50,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  SizedBox(
-                    width: 25,
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    "09-08-2021 1:18 AM",
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.blueGrey[500],
-                      fontWeight: FontWeight.bold,
+                      ],
                     ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Dignore",
-                        style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          fontSize: 15,
-                          color: Colors.blueGrey[500],
-                          fontWeight: FontWeight.bold,
+                    SizedBox(height: 10),
+                    SizedBox(
+                      width: 25,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      "Date: ${widget.examination.date}",
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.blueGrey[500],
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Diagnose",
+                          style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            fontSize: 15,
+                            color: Colors.blueGrey[500],
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                          "rat binh thuong kagfkagfk  aufhkua kgahfkughakf kahfkahfk akfh  kagfkagfk  aufhkua kgahfkughakf kahfkahfk akfh kagfkagfk  aufhkua kgahfkughakf kahfkahfk akfh kagfkagfk  aufhkua kgahfkughakf kahfkahfk akfh kagfkagfk  aufhkua kgahfkughakf kahfkahfk akfh kagfkagfk  aufhkua kgahfkughakf kahfkahfk akfh"),
-                      Text(
-                        "Dignore",
-                        style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          fontSize: 15,
-                          color: Colors.blueGrey[500],
-                          fontWeight: FontWeight.bold,
+                        SizedBox(
+                          height: 5,
                         ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text("rat binh thuong kagfkagfkaaaaaaaaaa"),
-                    ],
-                  )
-                ],
+                        Text(
+                            "  ${widget.examination.diagnose}", style: TextStyle(fontSize: 15),),
+                        Text(
+                          "Advise",
+                          style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            fontSize: 15,
+                            color: Colors.blueGrey[500],
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text("  ${widget.examination.advise}", style: TextStyle(fontSize: 15),),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),
           Positioned(
-            top: MediaQuery.of(context).size.height * 0.45,
+            top: MediaQuery.of(context).size.height * 0.3 + 100,
             left: 0,
             right: 0,
             child: Container(
@@ -125,237 +134,191 @@ class _ExaminationDetailState extends State<ExaminationDetail> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 5,
-                  ),
                   Expanded(
                     child: SingleChildScrollView(
+                      physics: BouncingScrollPhysics(),
                       scrollDirection: Axis.vertical,
                       child: Column(
                         children: [
                           SizedBox(
-                            height: 20,
+                            height: 10,
                           ),
-                          Card(
-                            child: Container(
-                              height: height * 0.23,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5)),
-                              ),
-                              child: Column(
-                                children: [
-                                  Container(
+                          BlocBuilder<ExaminationDetailBloc, ExaminationDetailState>(
+                              builder: (context, state) {
+                                if (state is ExaminationDetailExpandStateInitial) {
+                                  return Container(
+                                    height: height * 0.23,
                                     width: width,
-                                    color: Color(0xffcef4e8),
-                                    child: Center(
-                                      child: Padding(
-                                        padding: EdgeInsets.all(10),
-                                        child: Text(
-                                          "Khám mắt",
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            color: Colors.blueGrey[500],
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: width * 0.5 - 10,
-                                        height: height * 0.082 - 20,
-                                        decoration: BoxDecoration(
-                                          border: Border(
-                                            bottom: BorderSide(
-                                                color: Colors.grey.shade300),
-                                          ),
-                                        ),
-                                        child: Center(
-                                          child: Text("Standard"),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: width * 0.5 - 10,
-                                        height: height * 0.082 - 20,
-                                        decoration: BoxDecoration(
-                                          border: Border(
-                                            bottom: BorderSide(
-                                                color: Colors.grey.shade300),
-                                          ),
-                                        ),
-                                        child: Center(
-                                          child: Text("120 - 320"),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: width * 0.5 - 10,
-                                        height: height * 0.082 - 20,
-                                        decoration: BoxDecoration(
-                                          border: Border(
-                                            bottom: BorderSide(
-                                                color: Colors.grey.shade300),
-                                          ),
-                                        ),
-                                        child: Center(
-                                          child: Text("This time"),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: width * 0.5 - 10,
-                                        height: height * 0.082 - 20,
-                                        decoration: BoxDecoration(
-                                          border: Border(
-                                            bottom: BorderSide(
-                                                color: Colors.grey.shade300),
-                                          ),
-                                        ),
-                                        child: Center(
-                                          child: Text("220"),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: width * 0.5 - 10,
-                                        height: height * 0.082 - 20,
-                                        child: Center(
-                                          child: Text("Last"),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: width * 0.5 - 10,
-                                        height: height * 0.082 - 20,
-                                        child: Center(
-                                          child: Text("--"),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Card(
-                            child: Container(
-                              height: height * 0.23,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5)),
-                              ),
-                              child: Column(
-                                children: [
-                                  Container(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+                                if (state is ExaminationDetailExpandStateFailure) {
+                                  return Container(
+                                    height: height * 0.23,
                                     width: width,
-                                    color: Color(0xffcef4e8),
-                                    child: Center(
-                                      child: Padding(
-                                        padding: EdgeInsets.all(10),
-                                        child: Text(
-                                          "Khám mũi",
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            color: Colors.blueGrey[500],
-                                            fontWeight: FontWeight.bold,
+                                    child: Center(child: Text('Unable to connect to the system'),),
+                                  );
+                                }
+                                if (state is ExaminationDetailStateSuccess) {
+                                  if (state.list.isEmpty) {
+                                    return Container(
+                                      height: height * 0.23,
+                                      width: width,
+                                      child: Center(child: Text('No examination results yet'),),
+                                    );
+                                  }
+                                  return ListView.builder(
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemCount: state.list.length,
+                                      itemBuilder: (context, index) {
+                                        return Card(
+                                          child: Container(
+                                            height: height * 0.23,
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                              BorderRadius.all(Radius.circular(5)),
+                                            ),
+                                            child: Column(
+                                              children: [
+                                                Container(
+                                                  width: width,
+                                                  color: Color(0xffcef4e8),
+                                                  child: Center(
+                                                    child: Padding(
+                                                      padding: EdgeInsets.all(10),
+                                                      child: Text(
+                                                        "${state.list[index].testName}",
+                                                        style: TextStyle(
+                                                          fontSize: 20,
+                                                          color: Colors.blueGrey[500],
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Container(
+                                                      width: width * 0.5 - 10,
+                                                      height: height * 0.082 - 20,
+                                                      decoration: BoxDecoration(
+                                                        border: Border(
+                                                          bottom: BorderSide(
+                                                              color: Colors.grey.shade300),
+                                                        ),
+                                                      ),
+                                                      child: Center(
+                                                        child: Text("Standard"),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      width: width * 0.5 - 10,
+                                                      height: height * 0.082 - 20,
+                                                      decoration: BoxDecoration(
+                                                        border: Border(
+                                                          bottom: BorderSide(
+                                                              color: Colors.grey.shade300),
+                                                        ),
+                                                      ),
+                                                      child: Center(
+                                                        child: state.list[index].indexValueMin == -9999 ? Text("Negative") : Text("${state.list[index].indexValueMin} - ${state.list[index].indexValueMax}"),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Container(
+                                                      width: width * 0.5 - 10,
+                                                      height: height * 0.082 - 20,
+                                                      decoration: BoxDecoration(
+                                                        border: Border(
+                                                          bottom: BorderSide(
+                                                              color: Colors.grey.shade300),
+                                                        ),
+                                                      ),
+                                                      child: Center(
+                                                        child: Text("This time"),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      width: width * 0.5 - 10,
+                                                      height: height * 0.082 - 20,
+                                                      decoration: BoxDecoration(
+                                                        color: ((state.list[index].result <=
+                                                            state.list[index].indexValueMax &&
+                                                            state.list[index].result >=
+                                                                state.list[index].indexValueMin) ||
+                                                            (state.list[index].result == -9999))
+                                                            ? Colors.white : Colors.red.shade200,
+                                                        border: Border(
+                                                          bottom: BorderSide(
+                                                              color: Colors.grey.shade300),
+                                                        ),
+                                                      ),
+                                                      child: Center(
+                                                        child: state.list[index].result == -9999 ? Text("Negative") : state.list[index].result == 9999 ? Text("Positive") : Text("${state.list[index].result}"),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Container(
+                                                      width: width * 0.5 - 10,
+                                                      height: height * 0.082 - 20,
+                                                      child: Center(
+                                                        child: Text("Last"),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      width: width * 0.5 - 10,
+                                                      height: height * 0.082 - 20,
+                                                      child: Center(
+                                                        child: state.list[index]
+                                                            .indexValueMin ==
+                                                            -9999
+                                                            ? (state.list[index]
+                                                            .lastResul ==
+                                                            9999
+                                                            ? Text(
+                                                          'Positive',
+                                                          textAlign:
+                                                          TextAlign.center,
+                                                        )
+                                                            : Text(
+                                                          'Negative',
+                                                          textAlign:
+                                                          TextAlign.center,
+                                                        ))
+                                                            : state.list[index]
+                                                            .lastResul !=
+                                                            0
+                                                            ? Text(
+                                                          '${state.list[index].lastResul}',
+                                                          textAlign:
+                                                          TextAlign.center,
+                                                        )
+                                                            : Text(
+                                                          '--',
+                                                          textAlign:
+                                                          TextAlign.center,
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: width * 0.5 - 10,
-                                        height: height * 0.082 - 20,
-                                        decoration: BoxDecoration(
-                                          border: Border(
-                                            bottom: BorderSide(
-                                                color: Colors.grey.shade300),
-                                          ),
-                                        ),
-                                        child: Center(
-                                          child: Text("Standard"),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: width * 0.5 - 10,
-                                        height: height * 0.082 - 20,
-                                        decoration: BoxDecoration(
-                                          border: Border(
-                                            bottom: BorderSide(
-                                                color: Colors.grey.shade300),
-                                          ),
-                                        ),
-                                        child: Center(
-                                          child: Text("120 - 320"),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: width * 0.5 - 10,
-                                        height: height * 0.082 - 20,
-                                        decoration: BoxDecoration(
-                                          color: Colors.red[200],
-                                          border: Border(
-                                            bottom: BorderSide(
-                                                color: Colors.grey.shade300),
-                                          ),
-                                        ),
-                                        child: Center(
-                                          child: Text("This time"),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: width * 0.5 - 10,
-                                        height: height * 0.082 - 20,
-                                        decoration: BoxDecoration(
-                                          color: Colors.red[200],
-                                          border: Border(
-                                            bottom: BorderSide(
-                                                color: Colors.grey.shade300),
-                                          ),
-                                        ),
-                                        child: Center(
-                                          child: Text("420"),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: width * 0.5 - 10,
-                                        height: height * 0.082 - 20,
-                                        child: Center(
-                                          child: Text("Last"),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: width * 0.5 - 10,
-                                        height: height * 0.082 - 20,
-                                        child: Center(
-                                          child: Text("--"),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                                        );
+                                      });
+                                }
+                                return Text('');
+                              }),
                         ],
                       ),
                     ),
@@ -418,7 +381,9 @@ class _ExaminationDetailState extends State<ExaminationDetail> {
             child: Row(
               children: [
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
                   child: Icon(
                     Icons.arrow_back,
                     color: Colors.black,

@@ -1,9 +1,25 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:personhealth/blocs/home_blocs.dart';
+import 'package:personhealth/blocs/list_clinic_blocs.dart';
+import 'package:personhealth/blocs/list_examination_blocs.dart';
+import 'package:personhealth/blocs/login_blocs.dart';
+import 'package:personhealth/events/home_events.dart';
+import 'package:personhealth/events/list_clinic_events.dart';
+import 'package:personhealth/events/list_examination_events.dart';
+import 'package:personhealth/events/login_events.dart';
+import 'package:personhealth/repositorys/local_data.dart';
+import 'package:personhealth/screens/haudq/home.dart';
+import 'package:personhealth/screens/haudq/list_clinic.dart';
+import 'package:personhealth/screens/haudq/list_examination.dart';
+import 'package:personhealth/screens/login_screen.dart';
 
 class MasterLayout extends StatefulWidget {
-  MasterLayout({Key? key, this.child, required this.title});
+  final String name;
+  final String image;
+  MasterLayout({Key? key, this.child, required this.title, required this.name, required this.image});
 
   @override
   State<MasterLayout> createState() => _MasterLayoutState();
@@ -13,6 +29,19 @@ class MasterLayout extends StatefulWidget {
 
 class _MasterLayoutState extends State<MasterLayout> {
   late double _value = 0;
+
+  Future<void> logout() async {
+    await LocalData().logOut();
+    await Future.delayed(Duration(seconds: 1));
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(
+        builder: (BuildContext context) => BlocProvider(
+            create: (context) => LoginBloc()..add(LoginFetchEvent()),
+            child: LoginScreen()),
+      ),
+          (Route route) => false,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,13 +169,13 @@ class _MasterLayoutState extends State<MasterLayout> {
                   CircleAvatar(
                     radius: 50.0,
                     backgroundImage: NetworkImage(
-                        "https://cdn2.vectorstock.com/i/1000x1000/20/76/man-avatar-profile-vector-21372076.jpg"),
+                        "${widget.image}"),
                   ),
                   SizedBox(
                     height: 10,
                   ),
                   Text(
-                    "Paul",
+                    "${widget.name}",
                     style: TextStyle(color: Colors.blueGrey, fontSize: 20),
                   ),
                 ],
@@ -156,7 +185,16 @@ class _MasterLayoutState extends State<MasterLayout> {
               child: ListView(
                 children: [
                   ListTile(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => BlocProvider(
+                                create: (context) =>
+                                HomeBloc()..add(HomeFetchEvent()),
+                                child: HomeScreen(name: widget.name, image: widget.image,),
+                              )));
+                    },
                     leading: Icon(
                       Icons.home,
                       color: Colors.blueGrey,
@@ -167,7 +205,19 @@ class _MasterLayoutState extends State<MasterLayout> {
                     ),
                   ),
                   ListTile(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder:
+                                  (context) =>
+                                  BlocProvider(
+                                    create: (context) => ListClinicBloc()
+                                      ..add(ListClinicFetchEvent()),
+                                    child:
+                                    ListClinic(name: widget.name, image: widget.image,),
+                                  )));
+                    },
                     leading: Icon(
                       Icons.local_hospital,
                       color: Colors.blueGrey,
@@ -178,7 +228,9 @@ class _MasterLayoutState extends State<MasterLayout> {
                     ),
                   ),
                   ListTile(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => BlocProvider(create: (context) => ListExaminationBloc()..add(ListExaminationFetchEvent()), child: ListExamination(name: widget.name, image: widget.image,),)));
+                    },
                     leading: Icon(
                       Icons.all_inbox_sharp,
                       color: Colors.blueGrey,
@@ -189,18 +241,9 @@ class _MasterLayoutState extends State<MasterLayout> {
                     ),
                   ),
                   ListTile(
-                    onTap: () {},
-                    leading: Icon(
-                      Icons.group_sharp,
-                      color: Colors.blueGrey,
-                    ),
-                    title: Text(
-                      "Home",
-                      style: TextStyle(color: Colors.blueGrey),
-                    ),
-                  ),
-                  ListTile(
-                    onTap: () {},
+                    onTap: () {
+                      logout();
+                    },
                     leading: Icon(
                       Icons.logout,
                       color: Colors.blueGrey,

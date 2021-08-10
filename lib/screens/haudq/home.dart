@@ -5,9 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:personhealth/blocs/clinic_detail_blocs.dart';
 import 'package:personhealth/blocs/home_blocs.dart';
 import 'package:personhealth/blocs/list_clinic_blocs.dart';
+import 'package:personhealth/blocs/list_examination_blocs.dart';
 import 'package:personhealth/blocs/login_blocs.dart';
 import 'package:personhealth/events/clinic_detail_event.dart';
+import 'package:personhealth/events/home_events.dart';
 import 'package:personhealth/events/list_clinic_events.dart';
+import 'package:personhealth/events/list_examination_events.dart';
 import 'package:personhealth/events/login_events.dart';
 import 'package:personhealth/models/clinic.dart';
 import 'package:personhealth/models/examination.dart';
@@ -17,8 +20,13 @@ import 'package:personhealth/states/home_states.dart';
 
 import '../login_screen.dart';
 import 'clinic_details.dart';
+import 'list_examination.dart';
 
 class HomeScreen extends StatefulWidget {
+  final String name;
+  final String image;
+  const HomeScreen({required this.name, required this.image});
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -129,7 +137,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: ListView(
                       children: [
                         ListTile(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => BlocProvider(
+                                      create: (context) =>
+                                      HomeBloc()..add(HomeFetchEvent()),
+                                      child: HomeScreen(name: widget.name, image: widget.image,),
+                                    )));
+                          },
                           leading: Icon(
                             Icons.home,
                             color: Colors.blueGrey,
@@ -140,7 +157,19 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         ListTile(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder:
+                                        (context) =>
+                                        BlocProvider(
+                                          create: (context) => ListClinicBloc()
+                                            ..add(ListClinicFetchEvent()),
+                                          child:
+                                          ListClinic(name: widget.name, image: widget.image,),
+                                        )));
+                          },
                           leading: Icon(
                             Icons.local_hospital,
                             color: Colors.blueGrey,
@@ -151,24 +180,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         ListTile(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => BlocProvider(create: (context) => ListExaminationBloc()..add(ListExaminationFetchEvent()), child: ListExamination(name: widget.name, image: widget.image,),)));
+                          },
                           leading: Icon(
                             Icons.all_inbox_sharp,
                             color: Colors.blueGrey,
                           ),
                           title: Text(
                             "Examination",
-                            style: TextStyle(color: Colors.blueGrey),
-                          ),
-                        ),
-                        ListTile(
-                          onTap: () {},
-                          leading: Icon(
-                            Icons.group_sharp,
-                            color: Colors.blueGrey,
-                          ),
-                          title: Text(
-                            "Home",
                             style: TextStyle(color: Colors.blueGrey),
                           ),
                         ),
@@ -193,7 +213,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
 
-          //tween animation to create animaiton
+          //tween animation to create animation
           TweenAnimationBuilder(
             tween: Tween<double>(begin: 0, end: _value),
             duration: Duration(milliseconds: 500),
@@ -284,7 +304,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                           create: (context) => ListClinicBloc()
                                                                             ..add(ListClinicFetchEvent()),
                                                                           child:
-                                                                              ListClinic(),
+                                                                              ListClinic(name: widget.name, image: widget.image,),
                                                                         )));
                                                       },
                                                       child: methodContainer(
@@ -294,9 +314,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     SizedBox(
                                                       width: 4,
                                                     ),
-                                                    methodContainer(
-                                                        "examination.png",
-                                                        "Examination"),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        Navigator.push(context, MaterialPageRoute(builder: (context) => BlocProvider(create: (context) => ListExaminationBloc()..add(ListExaminationFetchEvent()), child: ListExamination(name: widget.name, image: widget.image,),)));
+                                                      },
+                                                      child: methodContainer(
+                                                          "examination.png",
+                                                          "Examination"),
+                                                    ),
                                                     SizedBox(
                                                       width: 4,
                                                     ),
@@ -320,7 +345,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               height: 10,
                                             ),
                                             Container(
-                                              height: 250,
+                                              height: 300,
                                               child: BlocBuilder<HomeBloc,
                                                       HomeState>(
                                                   builder: (context, state) {
@@ -532,41 +557,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   height: 5,
                 ),
-                // Container(
-                //   alignment: Alignment.bottomRight,
-                //   child: GestureDetector(
-                //     onTap: (){},
-                //     child: Container(
-                //       height: 40,
-                //       width: 70,
-                //       margin: EdgeInsets.symmetric(horizontal: 50),
-                //       decoration: BoxDecoration(
-                //           color: examination.rateStatus == 'enable' ?  Colors.cyan.shade500 : examination.rateStatus,
-                //           borderRadius: BorderRadius.circular(10)),
-                //       child: Center(
-                //         child: examination.rateStatus == 'enable' ? Text(
-                //           "Rated",
-                //           style: TextStyle(
-                //               color: Colors.white,
-                //               fontSize: 15,
-                //               fontWeight: FontWeight.bold),
-                //         ) : examination.rateStatus == 'expire' ? Text(
-                //           "Expire",
-                //           style: TextStyle(
-                //               color: Colors.white,
-                //               fontSize: 15,
-                //               fontWeight: FontWeight.bold),
-                //         ) : Text(
-                //           "Rate",
-                //           style: TextStyle(
-                //               color: Colors.white,
-                //               fontSize: 15,
-                //               fontWeight: FontWeight.bold),
-                //         ),
-                //       ),
-                //     ),
-                //   ),
-                // )
               ],
             ),
           ),
@@ -579,7 +569,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Card(
       elevation: 5,
       child: Container(
-        height: 230,
+        width: MediaQuery.of(context).size.width *0.85,
         child: GestureDetector(
           onTap: () {
             Navigator.push(
@@ -592,8 +582,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         )));
           },
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Container(
+                width: MediaQuery.of(context).size.width *0.85,
                 decoration: BoxDecoration(
                   color: Colors.green,
                   borderRadius: BorderRadius.only(
@@ -605,7 +597,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     image: NetworkImage("${clinic.image}"),
                   ),
                 ),
-                height: MediaQuery.of(context).size.height * 0.23,
+                height: 180,
               ),
               SizedBox(
                 height: 10,
@@ -642,27 +634,30 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 5,
               ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15, right: 20),
-                    child: Icon(
-                      Icons.location_pin,
-                      size: 17,
-                      color: Colors.blue,
+              Container(
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15, right: 20),
+                      child: Icon(
+                        Icons.location_pin,
+                        size: 17,
+                        color: Colors.blue,
+                      ),
                     ),
-                  ),
-                  Flexible(
-                    child: Text(
-                      "${clinic.address}",
-                      style:
-                          TextStyle(fontSize: 15, color: Colors.blueGrey[500]),
-                      maxLines: 2,
-                      softWrap: true,
-                      overflow: TextOverflow.ellipsis,
+                    Container(
+                      width: MediaQuery.of(context).size.width *0.7,
+                      child: Text(
+                        "${clinic.address}",
+                        style:
+                            TextStyle(fontSize: 15, color: Colors.blueGrey[500]),
+                        maxLines: 2,
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),

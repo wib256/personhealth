@@ -1,8 +1,7 @@
-import 'package:personhealth/blocs/examination_detail_bloc.dart';
+import 'package:personhealth/blocs/examination_detail_blocs.dart';
 
-class ExaminationDetailExpandFetchEvent extends ExaminationDetailExpandBloc {
+class ExaminationDetailFetchEvent extends ExaminationDetailBloc{
   final int examinationID;
   final String date;
-
-  ExaminationDetailExpandFetchEvent(this.examinationID, this.date);
+  ExaminationDetailFetchEvent({required this.examinationID, required this.date});
 }

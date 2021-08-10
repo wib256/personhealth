@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:personhealth/events/examination_detail_events.dart';
+import 'package:personhealth/events/examination_detail_expand_events.dart';
 import 'package:personhealth/models/examination_detail.dart';
 import 'package:personhealth/repositorys/examination_detail_respository.dart';
 import 'package:personhealth/repositorys/examination_repository.dart';
@@ -8,7 +8,7 @@ import 'package:personhealth/states/examination_detail_states.dart';
 
 class ExaminationDetailExpandBloc
     extends Bloc<ExaminationDetailExpandBloc, ExaminationDetailExpandState> {
-  ExaminationDetailExpandBloc() : super(ExaminationDetailStateInitial());
+  ExaminationDetailExpandBloc() : super(ExaminationDetailExpandStateInitial());
 
   @override
   Stream<ExaminationDetailExpandState> mapEventToState(
@@ -28,7 +28,7 @@ class ExaminationDetailExpandBloc
           }
         }
         var patientID = await LocalData().getPatientId();
-        if (state is ExaminationDetailStateInitial) {
+        if (state is ExaminationDetailExpandStateInitial) {
           final List<ExaminationDetailExpand> list = [];
           final examinationsDetail =
               await getExaminationsDetailFromApi(examinationID, gender!);
@@ -108,10 +108,10 @@ class ExaminationDetailExpandBloc
               list.add(temp);
             }
           }
-          yield ExaminationDetailStateSuccess(list: list);
+          yield ExaminationDetailExpandStateSuccess(list: list);
         }
       } catch (exception) {
-        yield ExaminationDetailStateFailure();
+        yield ExaminationDetailExpandStateFailure();
       }
     }
   }
