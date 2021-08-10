@@ -10,31 +10,59 @@ class DrawGraphBloc extends Bloc<DrawGraphBloc, DrawGraphState> {
   Stream<DrawGraphState> mapEventToState(DrawGraphBloc event) async* {
     if (event is DrawGraphFetchEvent) {
       final listGraphData = await getDataForGraph(event.testId);
+      double maxData = 0;
       if (listGraphData.isNotEmpty) {
         //create label X
         List<String> labelX = [];
         List<double> data = [];
+        for (int i = 0; i < listGraphData.length; i++) {
+          if (maxData < listGraphData[i].result) {
+            maxData = listGraphData[i].result;
+          }
+        }
         //The default value returned is a list of length 5. Label X is date
         if (listGraphData.length >= 5) {
-          for (int i = 0; i < 5; i++) {
+          for (int i = listGraphData.length - 5; i < listGraphData.length; i++) {
             String label = listGraphData[i].date.day.toString() + '-' + listGraphData[i].date.month.toString();
             labelX.add(label);
-            data.add(listGraphData[i].result / event.max);
+            if (event.min == -9999) {
+              if (listGraphData[i].result / event.max == 1) {
+                data.add(0.5);
+              } else {
+                data.add(1);
+              }
+            } else {
+              data.add(listGraphData[i].result / maxData);
+            }
           }
         } else { //if less than 5 will return the length of the list based on the length returned by the api.
           for (int i =0; i < listGraphData.length; i++) {
             String label = listGraphData[i].date.day.toString() + '-' + listGraphData[i].date.month.toString();
             labelX.add(label);
-            data.add(listGraphData[i].result / event.max);
+            if (event.min == -9999) {
+              if (listGraphData[i].result / event.max == 1) {
+                data.add(0.5);
+              } else {
+                data.add(1);
+              }
+            } else {
+              data.add(listGraphData[i].result / event.max);
+            }
           }
         }
 
         //Label y has a constant length of 5. Divide into 5 equal parts.
-        double plus = (event.max - event.min) / 5;
-        var labelY = [event.min.toString(), (event.min + plus * 2).toString(), (event.min + plus * 3).toString(), event.max.toString()];
+        if (event.min == -9999) {
+          var labelY = ['Negative', 'Position'];
+          yield DrawGraphStateSuccess(data: data, labelX: labelX, labelY: labelY, graphData: listGraphData);
+        } else {
+          double plus = maxData / 5;
+          var labelY = [(plus).toString(), (plus * 2).toString(), (plus * 3).toString(), maxData.toString()];
 
-        //return yield success
-        yield DrawGraphStateSuccess(data: data, labelX: labelX, labelY: labelY, graphData: listGraphData);
+          //return yield success
+          yield DrawGraphStateSuccess(data: data, labelX: labelX, labelY: labelY, graphData: listGraphData);
+        }
+
       } else {
         yield DrawGraphStateFailure();
       }

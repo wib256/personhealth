@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 import 'local_data.dart';
 
-Future<String> rateExamination(Rating rating) async {
+Future<bool> rateExamination(Rating rating) async {
   try {
     var param = {
       "comment": rating.comment,
@@ -25,11 +25,12 @@ Future<String> rateExamination(Rating rating) async {
     });
     print('Body ne: ' + response.body);
     if (response.statusCode == 200) {
-      return "Succeeded!";
+      return true;
     } else {
-      return "The system is maintenance. Please try again later!";
+      return false;
     }
   } catch (exception) {
-    return "The system is maintenance. Please try again later!";
+    print(exception);
+    return false;
   }
 }

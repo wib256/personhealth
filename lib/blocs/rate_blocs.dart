@@ -10,8 +10,8 @@ class RateBloc extends Bloc<RateBloc, RateStates> {
   Future<void> rateClinic(RateBloc event) async {
     if (event is RateClinicEvent) {
         Rating rating = event.rating;
-        final String result = await rateExamination(rating);
-        if (result.compareTo('Succeeded!') == 0) {
+        final bool result = await rateExamination(rating);
+        if (result) {
           print('Thanh cong');
         } else {
           print('That bai');

@@ -33,7 +33,8 @@ class ExaminationDetailStateInitial extends ExaminationDetailState{}
 class ExaminationDetailStateFailure extends ExaminationDetailState{}
 class ExaminationDetailStateSuccess extends ExaminationDetailState{
   final List<ExaminationDetailExpand> list;
-  ExaminationDetailStateSuccess({required this.list});
+  final bool isRated;
+  ExaminationDetailStateSuccess({required this.list, required this.isRated});
 }
 
 
