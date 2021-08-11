@@ -125,8 +125,6 @@ Future<Patient?> getDataSharingOfPatientWithOtherPatient(int sharingPatientId, i
       HttpHeaders.authorizationHeader: token
     });
     print('$GET_DATA_SHARING_OF_PATIENT');
-    print(response.body);
-    print(response.statusCode);
     if (response.statusCode == 200) {
       Map<String, dynamic> parse = jsonDecode(utf8.decode(response.bodyBytes));
       var patient = Patient.fromJson(parse);

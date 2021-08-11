@@ -2,15 +2,15 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:personhealth/blocs/group_blocs.dart';
+import 'package:personhealth/blocs/old_group_blocs.dart';
 import 'package:personhealth/blocs/patient_blocs.dart';
-import 'package:personhealth/events/group_event.dart';
+import 'package:personhealth/events/old_group_event.dart';
 import 'package:personhealth/events/patient_events.dart';
 import 'package:personhealth/models/group.dart';
 import 'package:personhealth/screens/conservation_list.dart';
 import 'package:personhealth/screens/patient_alert.dart';
 import 'package:personhealth/screens/sharing_patient_screen.dart';
-import 'package:personhealth/states/group_states.dart';
+import 'package:personhealth/states/old_group_states.dart';
 import 'package:personhealth/utils/local_notification_service.dart';
 
 class GroupScreen extends StatefulWidget {

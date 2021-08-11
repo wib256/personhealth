@@ -14,11 +14,15 @@ class Patient {
   String bloodType;
   String address;
   List<DiseaseHealthRecord> diseaseHealthRecordList;
-  final String phone;
+  String phone;
   final String status;
   final bool hasLegal;
   final bool hasBody;
   final bool hasPreHistoric;
+
+  void setPhone(String phone) {
+    this.phone = phone;
+  }
 
   void setAddress(String address) {
     this.address = address;

@@ -125,7 +125,7 @@ class _NewPatientState extends State<NewPatient> {
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
                 child: CustomPaint(
-                  painter: pathPainter(),
+                  painter: PathPainter(),
                 ),
               ),
               Container(
@@ -210,7 +210,7 @@ class _NewPatientState extends State<NewPatient> {
   }
 }
 
-class pathPainter extends CustomPainter {
+class PathPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var paint = Paint();

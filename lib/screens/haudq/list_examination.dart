@@ -143,7 +143,6 @@ class _ListClinicState extends State<ListExamination> {
                                                 )));
                                   },
                                   child: Container(
-                                    height: height * 0.15,
                                     width: width * 0.95,
                                     decoration: BoxDecoration(
                                       color: Colors.white,
