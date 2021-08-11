@@ -1,8 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:personhealth/screens/haudq/Information.dart';
+import 'package:personhealth/screens/haudq/create_account.dart';
 import 'package:personhealth/screens/haudq/group.dart';
 import 'package:personhealth/screens/haudq/group_detail.dart';
+import 'package:personhealth/screens/haudq/profile.dart';
 import 'package:personhealth/screens/haudq/temp.dart';
 import 'package:personhealth/utils/local_notification_service.dart';
 Future<void> backgroundHandler(RemoteMessage message) async {
@@ -31,7 +34,7 @@ class MyApp extends StatelessWidget{
       // clinicDetail()
       // ListClinic()
       // BlocProvider(create: (context) =>LoginBloc()..add(LoginFetchEvent()),child: LoginScreen(),)
-      GroupDetail(), 
+      CreateAccount(), 
     );
   }
 }
