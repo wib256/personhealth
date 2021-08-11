@@ -1,10 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:personhealth/screens/haudq/group.dart';
-import 'package:personhealth/screens/haudq/group_detail.dart';
-import 'package:personhealth/screens/haudq/temp.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:personhealth/screens/login_screen.dart';
 import 'package:personhealth/utils/local_notification_service.dart';
+
+import 'blocs/login_blocs.dart';
+import 'events/login_events.dart';
 Future<void> backgroundHandler(RemoteMessage message) async {
   LocalNotificationService.display(message);
   print(message.data.toString());
@@ -24,14 +26,7 @@ class MyApp extends StatelessWidget{
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: 
-      // ExaminationDetail()
-      // ListExamination()
-      // HomeScreen()
-      // clinicDetail()
-      // ListClinic()
-      // BlocProvider(create: (context) =>LoginBloc()..add(LoginFetchEvent()),child: LoginScreen(),)
-      GroupDetail(), 
+      home: BlocProvider(create: (context) =>LoginBloc()..add(LoginFetchEvent()),child: LoginScreen(),),
     );
   }
 }
