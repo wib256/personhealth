@@ -142,10 +142,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => BlocProvider(
-                                      create: (context) =>
-                                      HomeBloc()..add(HomeFetchEvent()),
-                                      child: HomeScreen(name: widget.name, image: widget.image,),
-                                    )));
+                                          create: (context) =>
+                                              HomeBloc()..add(HomeFetchEvent()),
+                                          child: HomeScreen(
+                                            name: widget.name,
+                                            image: widget.image,
+                                          ),
+                                        )));
                           },
                           leading: Icon(
                             Icons.home,
@@ -161,13 +164,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder:
-                                        (context) =>
-                                        BlocProvider(
+                                    builder: (context) => BlocProvider(
                                           create: (context) => ListClinicBloc()
                                             ..add(ListClinicFetchEvent()),
-                                          child:
-                                          ListClinic(name: widget.name, image: widget.image,),
+                                          child: ListClinic(
+                                            name: widget.name,
+                                            image: widget.image,
+                                          ),
                                         )));
                           },
                           leading: Icon(
@@ -181,7 +184,19 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         ListTile(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => BlocProvider(create: (context) => ListExaminationBloc()..add(ListExaminationFetchEvent()), child: ListExamination(name: widget.name, image: widget.image,),)));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => BlocProvider(
+                                          create: (context) =>
+                                              ListExaminationBloc()
+                                                ..add(
+                                                    ListExaminationFetchEvent()),
+                                          child: ListExamination(
+                                            name: widget.name,
+                                            image: widget.image,
+                                          ),
+                                        )));
                           },
                           leading: Icon(
                             Icons.all_inbox_sharp,
@@ -304,7 +319,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                           create: (context) => ListClinicBloc()
                                                                             ..add(ListClinicFetchEvent()),
                                                                           child:
-                                                                              ListClinic(name: widget.name, image: widget.image,),
+                                                                              ListClinic(
+                                                                            name:
+                                                                                widget.name,
+                                                                            image:
+                                                                                widget.image,
+                                                                          ),
                                                                         )));
                                                       },
                                                       child: methodContainer(
@@ -316,7 +336,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     ),
                                                     GestureDetector(
                                                       onTap: () {
-                                                        Navigator.push(context, MaterialPageRoute(builder: (context) => BlocProvider(create: (context) => ListExaminationBloc()..add(ListExaminationFetchEvent()), child: ListExamination(name: widget.name, image: widget.image,),)));
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        BlocProvider(
+                                                                          create: (context) => ListExaminationBloc()
+                                                                            ..add(ListExaminationFetchEvent()),
+                                                                          child:
+                                                                              ListExamination(
+                                                                            name:
+                                                                                widget.name,
+                                                                            image:
+                                                                                widget.image,
+                                                                          ),
+                                                                        )));
                                                       },
                                                       child: methodContainer(
                                                           "examination.png",
@@ -405,7 +440,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         child: Container(
                                                           child: cardClinic(
                                                               state.clinics[
-                                                                  index]),
+                                                                  index],
+                                                              context),
                                                         ),
                                                       );
                                                     },
@@ -478,7 +514,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     );
                                                   }
                                                   return cardExamination(
-                                                      state.examination);
+                                                      state.examination,
+                                                      context);
                                                 }
                                                 return Text('Other state');
                                               }),
@@ -518,149 +555,220 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget cardExamination(Examination examination) {
-    return Card(
-      elevation: 5,
-      child: GestureDetector(
-        onTap: () {},
-        child: Container(
-          width: MediaQuery.of(context).size.width * 0.8,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(10),
-            ),
-            color: Color(0xffcef4e8),
-          ),
-          child: ListTile(
-            leading: Icon(Icons.file_copy_outlined),
-            title: Text('Examination',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Date: ${examination.date}'),
-                Text(
-                  'Diagnose: ${examination.diagnose}',
-                  softWrap: true,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Text(
-                  'Advise: ${examination.advise}',
-                  softWrap: true,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Text(
-                  'Clinic: ${examination.clinicName}',
-                  softWrap: true,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-              ],
+  Widget cardExamination(Examination examination, BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: height * 0.15,
+      width: width,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(15)),
+        boxShadow: [BoxShadow(color: Colors.green.shade100, blurRadius: 20)],
+      ),
+      child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Center(
+          child: Container(
+            height: height * 0.2,
+            width: width * 0.2,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/img/exam.png"),
+              ),
             ),
           ),
         ),
-      ),
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.05,
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 15),
+            Row(
+              children: [
+                Icon(
+                  Icons.local_hospital,
+                  size: MediaQuery.of(context).size.width * 0.05,
+                  color: Colors.cyan[800],
+                ),
+                SizedBox(
+                  width: width * 0.01,
+                ),
+                Container(
+                  width: width * 0.5,
+                  child: Center(
+                    child: Text(
+                      "${examination.clinicName}",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.blueGrey[500],
+                        fontWeight: FontWeight.bold,
+                      ),
+                      maxLines: 2,
+                      softWrap: true,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
+            Row(
+              children: [
+                SizedBox(
+                  width: 25,
+                ),
+                Icon(
+                  Icons.date_range,
+                  size: 18,
+                  color: Colors.cyan[800],
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  "${examination.date}",
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.blueGrey[500],
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Row(
+              children: [
+                SizedBox(
+                  width: width * 0.4,
+                ),
+                Text(
+                  "view details",
+                  textAlign: TextAlign.right,
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    color: Colors.cyan,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  size: 15,
+                  color: Colors.cyan,
+                ),
+              ],
+            ),
+          ],
+        )
+      ]),
     );
   }
 
-  Widget cardClinic(Clinic clinic) {
-    return Card(
-      elevation: 5,
-      child: Container(
-        width: MediaQuery.of(context).size.width *0.85,
-        child: GestureDetector(
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => BlocProvider(
-                          create: (context) => ClinicDetailBloc()
-                            ..add(ClinicDetailFetchEvent(clinic: clinic)),
-                          child: ClinicDetail(),
-                        )));
-          },
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width *0.85,
-                decoration: BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(15),
-                    topRight: Radius.circular(15),
-                  ),
-                  image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: NetworkImage("${clinic.image}"),
+  Widget cardClinic(Clinic clinic, BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.85,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => BlocProvider(
+                        create: (context) => ClinicDetailBloc()
+                          ..add(ClinicDetailFetchEvent(clinic: clinic)),
+                        child: ClinicDetail(),
+                      )));
+        },
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width * 0.85,
+              decoration: BoxDecoration(
+                color: Colors.green,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(15),
+                  topRight: Radius.circular(15),
+                ),
+                image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: NetworkImage(
+                    "${clinic.image}",
                   ),
                 ),
-                height: 180,
               ),
-              SizedBox(
-                height: 10,
+              height: height * 0.221,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: Text(
+                "${clinic.name}",
+                style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.blueGrey[500],
+                    fontWeight: FontWeight.bold),
               ),
-              Padding(
-                padding: EdgeInsets.only(left: 10),
-                child: Text(
-                  "${clinic.name}",
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.blueGrey[500],
-                      fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 20),
+                  child: Icon(
+                    Icons.phone,
+                    size: 17,
+                    color: Colors.blue,
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Row(
+                Text(
+                  "${clinic.phone}",
+                  style: TextStyle(fontSize: 15, color: Colors.blueGrey[500]),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Container(
+              child: Row(
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 15, right: 20),
                     child: Icon(
-                      Icons.phone,
+                      Icons.location_pin,
                       size: 17,
                       color: Colors.blue,
                     ),
                   ),
-                  Text(
-                    "${clinic.phone}",
-                    style: TextStyle(fontSize: 15, color: Colors.blueGrey[500]),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    child: Text(
+                      "${clinic.address}",
+                      style: TextStyle(
+                          fontSize: 15, color: Colors.blueGrey[500]),
+                      maxLines: 2,
+                      softWrap: true,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ],
               ),
-              SizedBox(
-                height: 5,
-              ),
-              Container(
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15, right: 20),
-                      child: Icon(
-                        Icons.location_pin,
-                        size: 17,
-                        color: Colors.blue,
-                      ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width *0.7,
-                      child: Text(
-                        "${clinic.address}",
-                        style:
-                            TextStyle(fontSize: 15, color: Colors.blueGrey[500]),
-                        maxLines: 2,
-                        softWrap: true,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -35,7 +35,13 @@ class _ListClinicState extends State<ListExamination> {
                     .format(args.value.endDate ?? args.value.startDate)
                     .toString();
         print(_range);
-        _listExaminationBloc.add(ListExaminationSearchEent(dateF: DateFormat('yyyy-MM-dd').format(args.value.startDate).toString(), dateT: DateFormat('yyyy-MM-dd').format(args.value.endDate ?? args.value.startDate).toString()));
+        _listExaminationBloc.add(ListExaminationSearchEent(
+            dateF: DateFormat('yyyy-MM-dd')
+                .format(args.value.startDate)
+                .toString(),
+            dateT: DateFormat('yyyy-MM-dd')
+                .format(args.value.endDate ?? args.value.startDate)
+                .toString()));
       }
     });
   }
@@ -58,27 +64,28 @@ class _ListClinicState extends State<ListExamination> {
       child: Container(
         child: Column(
           children: [
-
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: ExpansionTile(
-                title: ListTile(
-                  title: Row(
-                    children: [
-                      Text('Search'),
-                    ],
-                  ),
+            Container(
+              margin: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(15),
                 ),
-                trailing: Icon(Icons.search),
-                children:[
-                  SfDateRangePicker(
-                    onSelectionChanged: _onSelectionChanged,
-                    selectionMode: DateRangePickerSelectionMode.range,
-                    initialSelectedRange: PickerDateRange(
-                        DateTime.now().subtract(const Duration(days: 4)),
-                        DateTime.now().add(const Duration(days: 3))),
-                  ),
-                ],
+                border: Border.all(color: Colors.grey)
+              ),
+              child: Container(
+                child: ExpansionTile(
+                  title: Text('Search examination by date'),
+                  trailing: Icon(Icons.search),
+                  children: [
+                    SfDateRangePicker(
+                      onSelectionChanged: _onSelectionChanged,
+                      selectionMode: DateRangePickerSelectionMode.range,
+                      initialSelectedRange: PickerDateRange(
+                          DateTime.now().subtract(const Duration(days: 4)),
+                          DateTime.now().add(const Duration(days: 3))),
+                    ),
+                  ],
+                ),
               ),
             ),
             SingleChildScrollView(
@@ -114,10 +121,29 @@ class _ListClinicState extends State<ListExamination> {
                                 padding: EdgeInsets.only(bottom: 10),
                                 child: GestureDetector(
                                   onTap: () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => BlocProvider(create: (context) => ExaminationDetailBloc()..add(ExaminationDetailFetchEvent(examinationID: state.examinations[index].id, date: state.examinations[index].date)), child: ExaminationDetail(examination: state.examinations[index],),)));
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => BlocProvider(
+                                                  create: (context) =>
+                                                      ExaminationDetailBloc()
+                                                        ..add(ExaminationDetailFetchEvent(
+                                                            examinationID: state
+                                                                .examinations[
+                                                                    index]
+                                                                .id,
+                                                            date: state
+                                                                .examinations[
+                                                                    index]
+                                                                .date)),
+                                                  child: ExaminationDetail(
+                                                    examination: state
+                                                        .examinations[index],
+                                                  ),
+                                                )));
                                   },
                                   child: Container(
-                                    height: height * 0.20,
+                                    height: height * 0.15,
                                     width: width * 0.95,
                                     decoration: BoxDecoration(
                                       color: Colors.white,
@@ -134,6 +160,7 @@ class _ListClinicState extends State<ListExamination> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Container(
+                                            height: height * 0.2,
                                             width: MediaQuery.of(context)
                                                     .size
                                                     .width *
