@@ -1,17 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
-import 'package:personhealth/screens/haudq/Information.dart';
-import 'package:personhealth/screens/haudq/create_account.dart';
-import 'package:personhealth/screens/haudq/group.dart';
-import 'package:personhealth/screens/haudq/group_detail.dart';
-import 'package:personhealth/screens/haudq/profile.dart';
-import 'package:personhealth/screens/haudq/temp.dart';
-=======
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:personhealth/screens/login_screen.dart';
->>>>>>> dca053fabc7572a9a904529990798985e16df5f7
 import 'package:personhealth/utils/local_notification_service.dart';
 
 import 'blocs/login_blocs.dart';

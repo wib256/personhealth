@@ -194,7 +194,7 @@ class _ListGroupState extends State<ListGroup> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                               BlocProvider(create: (context) => GroupDetailBloc()..add(GroupDetailFetchEvent(familyId: state.listGroup[index].id)), child:  GroupDetail(roleInGroup: state.listGroup[index].roleInTheGroup,),)));
+                                               BlocProvider(create: (context) => GroupDetailBloc()..add(GroupDetailFetchEvent(familyId: state.listGroup[index].id)), child:  GroupDetail(roleInGroup: state.listGroup[index].roleInTheGroup, familyId: state.listGroup[index].id,),)));
                                   },
                                   child: Container(
                                     padding: EdgeInsets.only(left: 10),

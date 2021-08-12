@@ -5,6 +5,7 @@ import 'package:personhealth/constants/constant.dart';
 import 'package:http/http.dart' as http;
 import 'package:personhealth/models/group.dart';
 import 'package:personhealth/repositorys/local_data.dart';
+import 'package:personhealth/repositorys/sharing_repository.dart';
 
 Future<bool> acceptInvited(int familyId, int patientId) async {
   try {
@@ -61,6 +62,9 @@ Future<bool> createGroup(String groupName, int leaderId) async {
       HttpHeaders.authorizationHeader: token
     });
     if (response.statusCode == 200) {
+      Map<String, dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
+      var group = Group.fromJson(json);
+      await postSharingInformationToGroup(false, false, false, group.id);
       return true;
     } else {
       return false;

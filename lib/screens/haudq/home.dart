@@ -3,12 +3,14 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:personhealth/blocs/clinic_detail_blocs.dart';
+import 'package:personhealth/blocs/examination_detail_blocs.dart';
 import 'package:personhealth/blocs/group_blocs.dart';
 import 'package:personhealth/blocs/home_blocs.dart';
 import 'package:personhealth/blocs/list_clinic_blocs.dart';
 import 'package:personhealth/blocs/list_examination_blocs.dart';
 import 'package:personhealth/blocs/login_blocs.dart';
 import 'package:personhealth/events/clinic_detail_event.dart';
+import 'package:personhealth/events/examination_detail_events.dart';
 import 'package:personhealth/events/group_events.dart';
 import 'package:personhealth/events/home_events.dart';
 import 'package:personhealth/events/list_clinic_events.dart';
@@ -19,9 +21,11 @@ import 'package:personhealth/models/examination.dart';
 import 'package:personhealth/repositorys/local_data.dart';
 import 'package:personhealth/screens/haudq/list_clinic.dart';
 import 'package:personhealth/states/home_states.dart';
+import 'profile.dart';
 
 import '../login_screen.dart';
 import 'clinic_details.dart';
+import 'examination_detail.dart';
 import 'group.dart';
 import 'list_examination.dart';
 
@@ -93,41 +97,51 @@ class _HomeScreenState extends State<HomeScreen> {
                               ));
                             }
                             if (state is HomeStateFailure) {
-                              return Column(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 50.0,
-                                    backgroundImage: NetworkImage(
-                                        "https://cdn2.vectorstock.com/i/1000x1000/20/76/man-avatar-profile-vector-21372076.jpg"),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    "...",
-                                    style: TextStyle(
-                                        color: Colors.blueGrey, fontSize: 20),
-                                  ),
-                                ],
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()));
+                                },
+                                child: Column(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 50.0,
+                                      backgroundImage: NetworkImage(
+                                          "${widget.image}"),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      "${widget.image}",
+                                      style: TextStyle(
+                                          color: Colors.blueGrey, fontSize: 20),
+                                    ),
+                                  ],
+                                ),
                               );
                             }
                             if (state is HomeStateSuccess) {
-                              return Column(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 50.0,
-                                    backgroundImage:
-                                        NetworkImage("${state.image}"),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    "${state.name}",
-                                    style: TextStyle(
-                                        color: Colors.blueGrey, fontSize: 20),
-                                  ),
-                                ],
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()));
+                                },
+                                child: Column(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 50.0,
+                                      backgroundImage:
+                                          NetworkImage("${state.image}"),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      "${state.name}",
+                                      style: TextStyle(
+                                          color: Colors.blueGrey, fontSize: 20),
+                                    ),
+                                  ],
+                                ),
                               );
                             }
                             return Text('Other state');
@@ -567,111 +581,128 @@ class _HomeScreenState extends State<HomeScreen> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
 
-    return Container(
-      height: height * 0.15,
-      width: width * 0.9,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(15)),
-        boxShadow: [BoxShadow(color: Colors.green.shade100, blurRadius: 20)],
-      ),
-      child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Center(
-          child: Container(
-            width: width * 0.2,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/img/exam.png"),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => BlocProvider(
+                  create: (context) =>
+                  ExaminationDetailBloc()
+                    ..add(ExaminationDetailFetchEvent(
+                        examinationID: examination.id,
+                        date: examination.date)),
+                  child: ExaminationDetail(
+                    examination: examination,
+                  ),
+                )));
+      },
+      child: Container(
+        height: height * 0.15,
+        width: width * 0.9,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(15)),
+          boxShadow: [BoxShadow(color: Colors.green.shade100, blurRadius: 20)],
+        ),
+        child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Center(
+            child: Container(
+              width: width * 0.2,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/img/exam.png"),
+                ),
               ),
             ),
           ),
-        ),
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.05,
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.local_hospital,
-                  size: MediaQuery.of(context).size.width * 0.05,
-                  color: Colors.cyan[800],
-                ),
-                SizedBox(
-                  width: width * 0.01,
-                ),
-                Container(
-                  width: width * 0.5,
-                  child: Center(
-                    child: Text(
-                      "${examination.clinicName}",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.blueGrey[500],
-                        fontWeight: FontWeight.bold,
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.05,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    Icons.local_hospital,
+                    size: MediaQuery.of(context).size.width * 0.05,
+                    color: Colors.cyan[800],
+                  ),
+                  SizedBox(
+                    width: width * 0.01,
+                  ),
+                  Container(
+                    width: width * 0.5,
+                    child: Center(
+                      child: Text(
+                        "${examination.clinicName}",
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.blueGrey[500],
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 2,
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 2,
-                      softWrap: true,
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-            Row(
-              children: [
-                SizedBox(
-                  width: 25,
-                ),
-                Icon(
-                  Icons.date_range,
-                  size: 18,
-                  color: Colors.cyan[800],
-                ),
-                SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  "${examination.date}",
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.blueGrey[500],
-                    fontWeight: FontWeight.bold,
+                ],
+              ),
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 25,
                   ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Row(
-              children: [
-                SizedBox(width: width*0.3,),
-                Text(
-                  "view details",
-                  textAlign: TextAlign.right,
-                  style: TextStyle(
-                    decoration: TextDecoration.underline,
+                  Icon(
+                    Icons.date_range,
+                    size: 18,
+                    color: Colors.cyan[800],
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    "${examination.date}",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.blueGrey[500],
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Row(
+                children: [
+                  SizedBox(width: width*0.3,),
+                  Text(
+                    "view details",
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      color: Colors.cyan,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    size: 15,
                     color: Colors.cyan,
-                    fontStyle: FontStyle.italic,
                   ),
-                ),
-                SizedBox(
-                  width: 5,
-                ),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  size: 15,
-                  color: Colors.cyan,
-                ),
-              ],
-            ),
-          ],
-        )
-      ]),
+                ],
+              ),
+            ],
+          )
+        ]),
+      ),
     );
   }
 

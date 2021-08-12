@@ -43,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Colors.green[300],
+          color: Colors.green[200],
         ),
         child: Column(
           children: [
@@ -167,13 +167,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 50,
                           margin: EdgeInsets.symmetric(horizontal: 50),
                           decoration: BoxDecoration(
-                              color: Colors.green[300],
+                              color: Colors.green[200],
                               borderRadius: BorderRadius.circular(10)),
                           child: Center(
                             child: Text(
                               "login",
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color: Colors.blueGrey,
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold),
                             ),

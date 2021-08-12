@@ -3,6 +3,7 @@ import 'package:personhealth/events/group_detail_events.dart';
 import 'package:personhealth/models/patient.dart';
 import 'package:personhealth/repositorys/group_family_repository.dart';
 import 'package:personhealth/repositorys/patient_repository.dart';
+import 'package:personhealth/repositorys/sharing_repository.dart';
 import 'package:personhealth/states/group_detail_states.dart';
 
 class GroupDetailBloc extends Bloc<GroupDetailBloc, GroupDetailState>{
@@ -16,17 +17,41 @@ class GroupDetailBloc extends Bloc<GroupDetailBloc, GroupDetailState>{
         final groupFamily = await getGroupFamilyDetailFromApi(familyId);
         if (groupFamily != null) {
           List<Patient> patients = [];
+          print(familyId);
+          print(groupFamily.patients.length);
           for (int i = 0; i < groupFamily.patients.length; i++) {
             Patient? patient = await getDataSharingOfPatient(familyId, groupFamily.patients[i].id);
             if (patient != null) {
               patient.setId(groupFamily.patients[i].id);
               patient.setName(groupFamily.patients[i].name);
               patient.setPhone(groupFamily.patients[i].phone);
+              patient.setImage(groupFamily.patients[i].image);
+              patients.add(patient);
             }
           }
-          yield GroupDetailStateSuccess(groupFamily: groupFamily, patients: patients);
+          yield GroupDetailStateSuccess(groupFamily: groupFamily, patients: patients, isEdited: false);
         } else {
           yield GroupDetailStateFailure();
+        }
+      } catch (exception) {
+        print('State exception: ' + exception.toString());
+        yield GroupDetailStateFailure();
+      }
+    }
+
+    if (event is GroupDetailEditEvent) {
+      try {
+        var currentState = state as GroupDetailStateSuccess;
+        bool post = await postSharingInformationToGroup(event.bodyIndex, event.legalInformation, event.prehistoricInformation, event.familyGroupId);
+        if (!post) {
+          bool isEdited = await editSharingInformationToGroup(event.bodyIndex, event.legalInformation, event.prehistoricInformation, event.familyGroupId);
+          if (isEdited) {
+            yield GroupDetailStateSuccess(groupFamily: currentState.groupFamily, patients: currentState.patients, isEdited: true);
+          } else {
+            yield GroupDetailStateSuccess(groupFamily: currentState.groupFamily, patients: currentState.patients, isEdited: false);
+          }
+        } else {
+          yield GroupDetailStateSuccess(groupFamily: currentState.groupFamily, patients: currentState.patients, isEdited: true);
         }
       } catch (exception) {
         print('State exception: ' + exception.toString());

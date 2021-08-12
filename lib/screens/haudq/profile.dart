@@ -52,39 +52,42 @@ class _ProfileState extends State<Profile> {
             children: [
               Row(
                 children: [
-                  Padding(
-                    padding: EdgeInsets.all(20),
-                    child: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        "https://firebasestorage.googleapis.com/v0/b/phrsystem-a595c.appspot.com/o/5656dbb2-d9ad-4245-87fe-0f492bcd7b7f.jpg?alt=media",
+                  Container(
+                    width: width*0.35,
+                    child: Padding(
+                      padding: EdgeInsets.all(20),
+                      child: CircleAvatar(
+                        backgroundImage: NetworkImage(
+                          "https://firebasestorage.googleapis.com/v0/b/phrsystem-a595c.appspot.com/o/5656dbb2-d9ad-4245-87fe-0f492bcd7b7f.jpg?alt=media",
+                        ),
+                        radius: width * 0.13,
                       ),
-                      radius: width * 0.13,
                     ),
                   ),
                   Center(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Lươn Văn Nhật",
-                              style: TextStyle(
-                                color: Colors.blueGrey,
-                                fontSize: 25,
-                                fontWeight: FontWeight.bold,
+                        Container(
+                          width: width*0.6,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                width: width*0.6,
+                                child: Text(
+                                  "Lươn Văn Nhật",
+                                  style: TextStyle(
+                                    color: Colors.blueGrey,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  softWrap: true,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
-                            ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.edit,
-                                size: 25,
-                                color: Colors.blueGrey,
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                         Row(
                           children: [
@@ -390,7 +393,7 @@ class _ProfileState extends State<Profile> {
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.blueGrey,
-              fontSize: 18,
+              fontSize: 16,
             ),
           ),
         ),
@@ -408,7 +411,7 @@ class _ProfileState extends State<Profile> {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.blueGrey,
-                fontSize: 18,
+                fontSize: 16,
               ),
               onChanged: (value) {},
               maxLines: 1,
@@ -420,7 +423,7 @@ class _ProfileState extends State<Profile> {
                 onPressed: () {
                   showDialog(
                     context: context,
-                    builder: (contex) => AlertDialog(
+                    builder: (context) => AlertDialog(
                       shape: RoundedRectangleBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
@@ -428,7 +431,7 @@ class _ProfileState extends State<Profile> {
                         child: Text(
                           "Add $title",
                           style: TextStyle(
-                              fontSize: 25,
+                              fontSize: 18,
                               fontWeight: FontWeight.bold,
                               color: Colors.blueGrey),
                         ),
@@ -473,29 +476,24 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                       actions: [
-                        Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              TextButton(
-                                onPressed: () {},
-                                child: Text(
-                                  "Add",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ),
-                              TextButton(
-                                onPressed: () {},
-                                child: Text(
-                                  "Cancle",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ),
-                            ],
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text(
+                            "Cancel",
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "Add",
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
                           ),
                         ),
                       ],

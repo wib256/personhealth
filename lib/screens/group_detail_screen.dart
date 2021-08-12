@@ -43,7 +43,6 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _groupFamilyBloc = BlocProvider.of(context);
   }

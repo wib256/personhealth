@@ -10,5 +10,6 @@ class GroupDetailStateFailure extends GroupDetailState{}
 class GroupDetailStateSuccess extends GroupDetailState{
   final GroupFamily groupFamily;
   final List<Patient> patients;
-  GroupDetailStateSuccess({required this.groupFamily, required this.patients});
+  final bool isEdited;
+  GroupDetailStateSuccess({required this.groupFamily, required this.patients, required this.isEdited});
 }
