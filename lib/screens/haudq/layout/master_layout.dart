@@ -2,10 +2,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:personhealth/blocs/group_blocs.dart';
 import 'package:personhealth/blocs/home_blocs.dart';
 import 'package:personhealth/blocs/list_clinic_blocs.dart';
 import 'package:personhealth/blocs/list_examination_blocs.dart';
 import 'package:personhealth/blocs/login_blocs.dart';
+import 'package:personhealth/events/group_events.dart';
 import 'package:personhealth/events/home_events.dart';
 import 'package:personhealth/events/list_clinic_events.dart';
 import 'package:personhealth/events/list_examination_events.dart';
@@ -15,6 +17,8 @@ import 'package:personhealth/screens/haudq/home.dart';
 import 'package:personhealth/screens/haudq/list_clinic.dart';
 import 'package:personhealth/screens/haudq/list_examination.dart';
 import 'package:personhealth/screens/login_screen.dart';
+
+import '../group.dart';
 
 class MasterLayout extends StatefulWidget {
   final String name;
@@ -237,6 +241,19 @@ class _MasterLayoutState extends State<MasterLayout> {
                     ),
                     title: Text(
                       "Examination",
+                      style: TextStyle(color: Colors.blueGrey),
+                    ),
+                  ),
+                  ListTile(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => BlocProvider(create: (context) => GroupBloc()..add(GroupFetchEvent()), child: ListGroup(name: widget.name, image: widget.image,),)));
+                    },
+                    leading: Icon(
+                      Icons.group,
+                      color: Colors.blueGrey,
+                    ),
+                    title: Text(
+                      "Group",
                       style: TextStyle(color: Colors.blueGrey),
                     ),
                   ),

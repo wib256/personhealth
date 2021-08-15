@@ -110,7 +110,7 @@ class _ExaminationDetailState extends State<ExaminationDetail> {
                           style: TextStyle(fontSize: 15),
                         ),
                         Text(
-                          "Advise",
+                          "Advice",
                           style: TextStyle(
                             decoration: TextDecoration.underline,
                             fontSize: 15,

@@ -11,6 +11,7 @@ import 'package:personhealth/screens/haudq/layout/master_layout.dart';
 import 'package:personhealth/states/group_states.dart';
 
 import 'group_detail.dart';
+import 'information.dart';
 
 class ListGroup extends StatefulWidget {
   final String name;
@@ -60,7 +61,9 @@ class _ListGroupState extends State<ListGroup> {
                     bottom: height * 0.02,
                   ),
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Information()));
+                    },
                     child: Text(
                       "Individual Share",
                       style: TextStyle(
@@ -194,7 +197,7 @@ class _ListGroupState extends State<ListGroup> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                               BlocProvider(create: (context) => GroupDetailBloc()..add(GroupDetailFetchEvent(familyId: state.listGroup[index].id)), child:  GroupDetail(roleInGroup: state.listGroup[index].roleInTheGroup, familyId: state.listGroup[index].id,),)));
+                                               BlocProvider(create: (context) => GroupDetailBloc()..add(GroupDetailFetchEvent(familyId: state.listGroup[index].id)), child:  GroupDetail(roleInGroup: state.listGroup[index].roleInTheGroup, familyId: state.listGroup[index].id,name: widget.name,image: widget.image,))));
                                   },
                                   child: Container(
                                     padding: EdgeInsets.only(left: 10),

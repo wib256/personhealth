@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:personhealth/blocs/group_detail_blocs.dart';
 
 class GroupDetailFetchEvent extends GroupDetailBloc{
@@ -12,4 +13,17 @@ class GroupDetailEditEvent extends GroupDetailBloc {
   final bool prehistoricInformation;
 
   GroupDetailEditEvent({required this.familyGroupId, required this.bodyIndex, required this.legalInformation, required this.prehistoricInformation});
+}
+
+class GroupDetailRenameEvent extends GroupDetailBloc {
+  final int familyInt;
+  final String groupName;
+  GroupDetailRenameEvent({required this.familyInt,required this.groupName});
+}
+
+class GroupDetailChangeAvatarEvent extends GroupDetailBloc {
+  final int familyId;
+  final File? image;
+
+  GroupDetailChangeAvatarEvent({required this.familyId, required this.image});
 }

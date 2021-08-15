@@ -10,6 +10,8 @@ import 'package:personhealth/events/login_events.dart';
 import 'package:personhealth/screens/haudq/home.dart';
 import 'package:personhealth/states/login_states.dart';
 
+import 'haudq/create_account.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -153,7 +155,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                   builder: (context) => BlocProvider(
                                         create: (context) =>
                                             HomeBloc()..add(HomeFetchEvent()),
-                                        child: HomeScreen(name: state.name, image: state.image,),
+                                        child: HomeScreen(
+                                          name: state.name,
+                                          image: state.image,
+                                        ),
                                       )));
                         }
                       },
@@ -184,9 +189,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       height: 40,
                     ),
-                    Text(
-                      "Create new account?",
-                      style: TextStyle(color: Colors.grey),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CreateAccount()));
+                      },
+                      child: Text(
+                        "Create new account?",
+                        style: TextStyle(color: Colors.grey),
+                      ),
                     ),
                   ],
                 ),

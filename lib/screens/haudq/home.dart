@@ -226,6 +226,19 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         ListTile(
                           onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => BlocProvider(create: (context) => GroupBloc()..add(GroupFetchEvent()), child: ListGroup(name: widget.name, image: widget.image,),)));
+                          },
+                          leading: Icon(
+                            Icons.group,
+                            color: Colors.blueGrey,
+                          ),
+                          title: Text(
+                            "Group",
+                            style: TextStyle(color: Colors.blueGrey),
+                          ),
+                        ),
+                        ListTile(
+                          onTap: () {
                             logout();
                           },
                           leading: Icon(

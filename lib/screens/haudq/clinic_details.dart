@@ -148,7 +148,7 @@ class _ClinicDetailState extends State<ClinicDetail> {
                                     height: 10,
                                   ),
                                   Text(
-                                    'Interviews',
+                                    'Reviews',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20,

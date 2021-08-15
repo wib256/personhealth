@@ -1,17 +1,24 @@
+import 'dart:io' as local;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
 import 'package:personhealth/blocs/group_detail_blocs.dart';
+import 'package:personhealth/blocs/group_blocs.dart';
 import 'package:personhealth/events/group_detail_events.dart';
+import 'package:personhealth/events/group_events.dart';
+import 'package:personhealth/screens/haudq/group.dart';
 import 'package:personhealth/states/group_detail_states.dart';
 
 class GroupDetail extends StatefulWidget {
   final String roleInGroup;
   final int familyId;
+  final String name;
+  final String image;
 
-  const GroupDetail({required this.roleInGroup, required this.familyId});
+  const GroupDetail({required this.roleInGroup, required this.familyId, required this.name, required this.image});
 
   @override
   State<GroupDetail> createState() => _GroupDetailState();
@@ -22,11 +29,26 @@ class _GroupDetailState extends State<GroupDetail> {
   late bool valueSecond = false;
   late bool valueThird = false;
   late GroupDetailBloc _detailBloc;
+  final _renameController = TextEditingController();
+
+  final picker = ImagePicker();
+
+  _imgFromGallery() async {
+    XFile? imageT = (await picker.pickImage(source: ImageSource.gallery, imageQuality: 50));
+    local.File image = local.File(imageT!.path);
+    _detailBloc.add(GroupDetailChangeAvatarEvent(familyId: widget.familyId, image: image));
+  }
 
   @override
   void initState() {
     _detailBloc = BlocProvider.of(context);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _renameController.dispose();
+    super.dispose();
   }
 
   Widget build(BuildContext context) {
@@ -58,414 +80,62 @@ class _GroupDetailState extends State<GroupDetail> {
                           itemBuilder: (context, index) {
                             return Center(
                               child: Container(
-                                height: height * 0.1,
                                 width: width * 0.95,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(15)),
+                                  BorderRadius.all(Radius.circular(15)),
                                   boxShadow: [
                                     BoxShadow(
                                         color: Colors.green.shade100,
                                         blurRadius: 20)
                                   ],
                                 ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment:
+                                child: ExpansionTile(
+                                  title: Container(
+                                    padding: EdgeInsets.only(left: 10),
+                                    height: height * 0.07,
+                                    width: width * 0.9,
+
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.start,
+                                      crossAxisAlignment:
                                       CrossAxisAlignment.start,
+                                      children: [
+                                        Center(
+                                          child: Container(
+                                            child: CircleAvatar(
+                                              backgroundImage: NetworkImage(
+                                                  '${state.groupFamily.patients[index].image}'),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(width: 20,),
+                                        Container(
+                                          width: width * 0.6,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            "${state.groupFamily.patients[index].name}",
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.blueGrey[500],
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            maxLines: 2,
+                                            softWrap: true,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                   children: [
-                                    Container(
-                                      height: height * 0.1,
-                                      width: width * 0.2,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(15),
-                                        ),
-                                        image: DecorationImage(
-                                          image: NetworkImage(
-                                              "${state.groupFamily.patients[index].image}"),
-                                        ),
-                                      ),
-                                    ),
-                                    Center(
-                                      child: Text(
-                                        "${state.groupFamily.patients[index].name}",
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          color: Colors.blueGrey[500],
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        maxLines: 3,
-                                        softWrap: true,
-                                      ),
-                                    ),
-                                    Center(
-                                      child: IconButton(
-                                        icon: Icon(
-                                          Icons.person_remove,
-                                          color: Colors.red,
-                                          size: 30,
-                                        ),
-                                        onPressed: () {},
-                                      ),
-                                    ),
-                                    Center(
-                                      child: PopupMenuButton(
-                                        icon: Icon(
-                                          Icons.info_outline_rounded,
-                                          color: Colors.green,
-                                          size: 30,
-                                        ),
-                                        itemBuilder: (context) => [
-                                          PopupMenuItem(
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (context) =>
-                                                      AlertDialog(
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    20.0))),
-                                                    title: Center(
-                                                      child: Text(
-                                                        "Legal information",
-                                                        style: TextStyle(
-                                                            fontSize: 25,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold,
-                                                            color: Colors
-                                                                .blueGrey),
-                                                      ),
-                                                    ),
-                                                    content: Container(
-                                                      height: height * 0.5,
-                                                      decoration:
-                                                          BoxDecoration(
-                                                        color: Colors.white,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .all(Radius
-                                                                    .circular(
-                                                                        5)),
-                                                      ),
-                                                      child: Expanded(
-                                                        child: Center(
-                                                          child:
-                                                              SingleChildScrollView(
-                                                            child: Column(
-                                                              children: [
-                                                                _buildRow(
-                                                                  width,
-                                                                  "Name",
-                                                                  Color(
-                                                                      0xffcef4e8),
-                                                                ),
-                                                                _buildRow(
-                                                                  width,
-                                                                  "ket qua",
-                                                                  Colors
-                                                                      .white,
-                                                                ),
-                                                                _buildRow(
-                                                                  width,
-                                                                  "Phone",
-                                                                  Color(
-                                                                      0xffcef4e8),
-                                                                ),
-                                                                _buildRow(
-                                                                  width,
-                                                                  "ket qua",
-                                                                  Colors
-                                                                      .white,
-                                                                ),
-                                                                _buildRow(
-                                                                  width,
-                                                                  "Address",
-                                                                  Color(
-                                                                      0xffcef4e8),
-                                                                ),
-                                                                _buildRow(
-                                                                  width,
-                                                                  "ket qua",
-                                                                  Colors
-                                                                      .white,
-                                                                ),
-                                                                _buildRow(
-                                                                  width,
-                                                                  "Gender",
-                                                                  Color(
-                                                                      0xffcef4e8),
-                                                                ),
-                                                                _buildRow(
-                                                                  width,
-                                                                  "ket qua",
-                                                                  Colors
-                                                                      .white,
-                                                                ),
-                                                                _buildRow(
-                                                                  width,
-                                                                  "Date of birth",
-                                                                  Color(
-                                                                      0xffcef4e8),
-                                                                ),
-                                                                _buildRow(
-                                                                  width,
-                                                                  "ket qua",
-                                                                  Colors
-                                                                      .white,
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    actions: [
-                                                      Center(
-                                                        child: TextButton(
-                                                          onPressed: () {},
-                                                          child: Text(
-                                                            "Ok",
-                                                            style:
-                                                                TextStyle(
-                                                              fontSize: 20,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                );
-                                              },
-                                              child: ListTile(
-                                                title: Text(
-                                                    'Legal information'),
-                                              ),
-                                            ),
-                                            value: 1,
-                                          ),
-                                          PopupMenuItem(
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (contex) =>
-                                                      AlertDialog(
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    20.0))),
-                                                    title: Center(
-                                                      child: Text(
-                                                        "Body information",
-                                                        style: TextStyle(
-                                                            fontSize: 25,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold,
-                                                            color: Colors
-                                                                .blueGrey),
-                                                      ),
-                                                    ),
-                                                    content: Container(
-                                                      height: height * 0.5,
-                                                      decoration:
-                                                          BoxDecoration(
-                                                        color: Colors.white,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .all(Radius
-                                                                    .circular(
-                                                                        5)),
-                                                      ),
-                                                      child: Expanded(
-                                                        child: Center(
-                                                          child:
-                                                              SingleChildScrollView(
-                                                            child: Column(
-                                                              children: [
-                                                                _buildRow(
-                                                                  width,
-                                                                  "Height",
-                                                                  Color(
-                                                                      0xffcef4e8),
-                                                                ),
-                                                                _buildRow(
-                                                                  width,
-                                                                  "ket qua",
-                                                                  Colors
-                                                                      .white,
-                                                                ),
-                                                                _buildRow(
-                                                                  width,
-                                                                  "Weight",
-                                                                  Color(
-                                                                      0xffcef4e8),
-                                                                ),
-                                                                _buildRow(
-                                                                  width,
-                                                                  "ket qua",
-                                                                  Colors
-                                                                      .white,
-                                                                ),
-                                                                _buildRow(
-                                                                  width,
-                                                                  "Eyesight",
-                                                                  Color(
-                                                                      0xffcef4e8),
-                                                                ),
-                                                                _buildRow(
-                                                                  width,
-                                                                  "ket qua",
-                                                                  Colors
-                                                                      .white,
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    actions: [
-                                                      Center(
-                                                        child: TextButton(
-                                                          onPressed: () {},
-                                                          child: Text(
-                                                            "Ok",
-                                                            style:
-                                                                TextStyle(
-                                                              fontSize: 20,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                );
-                                              },
-                                              child: ListTile(
-                                                title: Text(
-                                                    'Body information'),
-                                              ),
-                                            ),
-                                            value: 2,
-                                          ),
-                                          PopupMenuItem(
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (contex) =>
-                                                      AlertDialog(
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    20.0))),
-                                                    title: Center(
-                                                      child: Text(
-                                                        "Medical history",
-                                                        style: TextStyle(
-                                                            fontSize: 25,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold,
-                                                            color: Colors
-                                                                .blueGrey),
-                                                      ),
-                                                    ),
-                                                    content: Container(
-                                                      height: height * 0.5,
-                                                      decoration:
-                                                          BoxDecoration(
-                                                        color: Colors.white,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .all(Radius
-                                                                    .circular(
-                                                                        5)),
-                                                      ),
-                                                      child: Expanded(
-                                                        child: Center(
-                                                          child:
-                                                              SingleChildScrollView(
-                                                            child: Column(
-                                                              children: [
-                                                                _buildRow(
-                                                                  width,
-                                                                  "Disease history",
-                                                                  Color(
-                                                                      0xffcef4e8),
-                                                                ),
-                                                                _buildRow(
-                                                                  width,
-                                                                  "ket qua",
-                                                                  Colors
-                                                                      .white,
-                                                                ),
-                                                                _buildRow(
-                                                                  width,
-                                                                  "History of surgery",
-                                                                  Color(
-                                                                      0xffcef4e8),
-                                                                ),
-                                                                _buildRow(
-                                                                  width,
-                                                                  "ket qua",
-                                                                  Colors
-                                                                      .white,
-                                                                ),
-                                                                _buildRow(
-                                                                  width,
-                                                                  "Allergies",
-                                                                  Color(
-                                                                      0xffcef4e8),
-                                                                ),
-                                                                _buildRow(
-                                                                  width,
-                                                                  "ket qua",
-                                                                  Colors
-                                                                      .white,
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    actions: [
-                                                      Center(
-                                                        child: TextButton(
-                                                          onPressed: () {},
-                                                          child: Text(
-                                                            "Ok",
-                                                            style:
-                                                                TextStyle(
-                                                              fontSize: 20,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                );
-                                              },
-                                              child: ListTile(
-                                                title:
-                                                    Text('Medical history'),
-                                              ),
-                                            ),
-                                            value: 3,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                                    Text('A'),
+                                    Text('A'),
+                                    Text('A'),
+                                    Text('A'),
+                                    Text('A'),
                                   ],
                                 ),
                               ),
@@ -529,7 +199,9 @@ class _GroupDetailState extends State<GroupDetail> {
                               ),
                             ),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                _showRenameDialog(context, widget.familyId);
+                              },
                               child: Row(
                                 children: [
                                   Icon(Icons.person),
@@ -541,7 +213,9 @@ class _GroupDetailState extends State<GroupDetail> {
                               ),
                             ),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                _imgFromGallery();
+                              },
                               child: Row(
                                 children: [
                                   Icon(Icons.image),
@@ -626,26 +300,6 @@ class _GroupDetailState extends State<GroupDetail> {
     );
   }
 
-  Container _buildRow(double width, String title, Color color) {
-    return Container(
-      color: color,
-      width: width,
-      child: Center(
-        child: Padding(
-          padding: EdgeInsets.all(10),
-          child: Text(
-            "$title",
-            style: TextStyle(
-              fontSize: 20,
-              color: Colors.blueGrey[500],
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   Container _buildAppBar() {
     return Container(
       height: 100,
@@ -677,7 +331,7 @@ class _GroupDetailState extends State<GroupDetail> {
               children: [
                 InkWell(
                   onTap: () {
-                    Navigator.pop(context);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => BlocProvider(create: (context) => GroupBloc()..add(GroupFetchEvent()), child: ListGroup(name: widget.name, image: widget.image,),)));
                   },
                   child: Icon(
                     Icons.arrow_back,
@@ -701,6 +355,76 @@ class _GroupDetailState extends State<GroupDetail> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  _showRenameDialog(BuildContext buildContext, int familyGroupId) {
+    showDialog(
+        context: context,
+        builder: (BuildContext buildContext) {
+          return _renameGroup(familyGroupId);
+        });
+  }
+
+  Widget _renameGroup(int familyGroupId) {
+    return AlertDialog(
+      title: Center(child: Text('Rename group')),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text('Close'),
+        ),
+        BlocListener(
+          bloc: _detailBloc,
+          listener: (context, state) {
+            if (state is GroupDetailStateSuccess) {
+              if (state.isRename) {
+                _displayRenameTopMotionToast(context, 0);
+              } else {
+                _displayRenameTopMotionToast(context, 1);
+              }
+            }
+          },
+          child: TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _detailBloc.add(GroupDetailRenameEvent(familyInt: familyGroupId, groupName: _renameController.text.trim()));
+            },
+            child: Text('Rename'),
+          ),
+        ),
+      ],
+      content: StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+          return Container(
+            height: 50,
+            child: Column(
+              children: [
+                TextField(
+                  controller: _renameController..text = '',
+                  decoration: InputDecoration(
+                    hintText: "Group name",
+                    hintStyle: TextStyle(color: Colors.grey.shade600),
+                    prefixIcon: Icon(
+                      Icons.drive_file_rename_outline,
+                      color: Colors.grey.shade600,
+                      size: 20,
+                    ),
+                    filled: true,
+                    fillColor: Colors.grey.shade100,
+                    contentPadding: EdgeInsets.all(8),
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(color: Colors.grey.shade100)),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
@@ -829,7 +553,7 @@ class _GroupDetailState extends State<GroupDetail> {
         MotionToast.error(
           title: "ERROR",
           titleStyle: TextStyle(fontWeight: FontWeight.bold),
-          description: "Edit sharing is failure",
+          description: "Edit sharing is failed",
           animationType: ANIMATION.FROM_TOP,
           position: MOTION_TOAST_POSITION.CENTER,
           width: 300,
@@ -839,7 +563,32 @@ class _GroupDetailState extends State<GroupDetail> {
         MotionToast.success(
           title: "SUCCESS",
           titleStyle: TextStyle(fontWeight: FontWeight.bold),
-          description: "Edit sharing is success",
+          description: "Edit sharing successfully",
+          animationType: ANIMATION.FROM_TOP,
+          position: MOTION_TOAST_POSITION.CENTER,
+          width: 300,
+        ).show(context);
+        break;
+    }
+  }
+
+  _displayRenameTopMotionToast(BuildContext context, int result) {
+    switch (result) {
+      case 1:
+        MotionToast.error(
+          title: "ERROR",
+          titleStyle: TextStyle(fontWeight: FontWeight.bold),
+          description: "Group renaming failed",
+          animationType: ANIMATION.FROM_TOP,
+          position: MOTION_TOAST_POSITION.CENTER,
+          width: 300,
+        ).show(context);
+        break;
+      case 0:
+        MotionToast.success(
+          title: "SUCCESS",
+          titleStyle: TextStyle(fontWeight: FontWeight.bold),
+          description: "Successful group name change",
           animationType: ANIMATION.FROM_TOP,
           position: MOTION_TOAST_POSITION.CENTER,
           width: 300,
