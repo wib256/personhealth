@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:personhealth/events/group_detail_events.dart';
 import 'package:personhealth/models/patient.dart';
 import 'package:personhealth/repositorys/group_family_repository.dart';
+import 'package:personhealth/repositorys/local_data.dart';
 import 'package:personhealth/repositorys/patient_repository.dart';
 import 'package:personhealth/repositorys/sharing_repository.dart';
 import 'package:personhealth/states/group_detail_states.dart';
@@ -16,10 +17,9 @@ class GroupDetailBloc extends Bloc<GroupDetailBloc, GroupDetailState>{
       try {
         int familyId = event.familyId;
         final groupFamily = await getGroupFamilyDetailFromApi(familyId);
-        if (groupFamily != null) {
+        Patient? leader = await getDataSharingOfPatient(familyId, groupFamily!.leaderId);
+        if (groupFamily.patients.length > 0) {
           List<Patient> patients = [];
-          print(familyId);
-          print(groupFamily.patients.length);
           for (int i = 0; i < groupFamily.patients.length; i++) {
             Patient? patient = await getDataSharingOfPatient(familyId, groupFamily.patients[i].id);
             if (patient != null) {
@@ -30,6 +30,15 @@ class GroupDetailBloc extends Bloc<GroupDetailBloc, GroupDetailState>{
               patients.add(patient);
             }
           }
+          if (leader != null) {
+            leader.setId(groupFamily.leaderId);
+            leader.setName(groupFamily.leaderName);
+            leader.setPhone(groupFamily.leaderPhone);
+            leader.setImage(groupFamily.leaderImage);
+            groupFamily.patients.insert(0, leader);
+            patients.insert(0, leader);
+          }
+
           yield GroupDetailStateSuccess(groupFamily: groupFamily, patients: patients, isEdited: false, isRename: false, isChangeAvatar: false);
         } else {
           yield GroupDetailStateFailure();
@@ -47,6 +56,19 @@ class GroupDetailBloc extends Bloc<GroupDetailBloc, GroupDetailState>{
         if (!post) {
           bool isEdited = await editSharingInformationToGroup(event.bodyIndex, event.legalInformation, event.prehistoricInformation, event.familyGroupId);
           if (isEdited) {
+            int? patientId = await LocalData().getPatientId();
+            Patient? patient = await getDataSharingOfPatient(event.familyGroupId, patientId!);
+            if (patient != null) {
+              for (int i = 0; i < currentState.patients.length; i++) {
+                if (currentState.patients[i].id == patientId) {
+                  patient.setId(currentState.groupFamily.patients[i].id);
+                  patient.setName(currentState.patients[i].name);
+                  patient.setPhone(currentState.patients[i].phone);
+                  patient.setImage(currentState.patients[i].image);
+                  currentState.patients[i] = patient;
+                }
+              }
+            }
             yield GroupDetailStateSuccess(groupFamily: currentState.groupFamily, patients: currentState.patients, isEdited: true, isRename: false, isChangeAvatar: false);
           } else {
             yield GroupDetailStateSuccess(groupFamily: currentState.groupFamily, patients: currentState.patients, isEdited: false, isRename: false, isChangeAvatar: false);

@@ -5,8 +5,10 @@ import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
 import 'package:personhealth/blocs/group_blocs.dart';
 import 'package:personhealth/blocs/group_detail_blocs.dart';
+import 'package:personhealth/blocs/individual_blocs.dart';
 import 'package:personhealth/events/group_detail_events.dart';
 import 'package:personhealth/events/group_events.dart';
+import 'package:personhealth/events/individual_events.dart';
 import 'package:personhealth/screens/haudq/layout/master_layout.dart';
 import 'package:personhealth/states/group_states.dart';
 
@@ -62,7 +64,7 @@ class _ListGroupState extends State<ListGroup> {
                   ),
                   child: OutlinedButton(
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => Information()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => BlocProvider(create: (context) => IndividualBloc()..add(IndividualFetchEvent()), child: Information(),)));
                     },
                     child: Text(
                       "Individual Share",

@@ -47,6 +47,7 @@ class Patient {
   void setHeight(String height) {
     this.height = int.parse(height);
   }
+
   void setWeight(String weight) {
     this.weight = int.parse(weight);
   }
@@ -127,9 +128,78 @@ class Patient {
     }
   }
 
+  String getListDiseases() {
+    String result = '';
+    for (int i = 0; i < diseaseHealthRecordList.length; i++) {
+      if (diseaseHealthRecordList[i].description.compareTo('Benh') == 0) {
+        if (result.compareTo('') == 0) {
+          result = diseaseHealthRecordList[i].name;
+        } else {
+          result = result + ', ' + diseaseHealthRecordList[i].name;
+        }
+      }
+    }
+    if (result.compareTo('') != 00) {
+      return result;
+    } else {
+      return '---';
+    }
+  }
+
+  String getListAllergies() {
+    String result = '';
+    for (int i = 0; i < diseaseHealthRecordList.length; i++) {
+      if (diseaseHealthRecordList[i].description.compareTo('Di Ung') == 0) {
+        if (result.compareTo('') == 0) {
+          result = diseaseHealthRecordList[i].name;
+        } else {
+          result = result + ', ' + diseaseHealthRecordList[i].name;
+        }
+      }
+    }
+    if (result.compareTo('') != 00) {
+      return result;
+    } else {
+      return '---';
+    }
+  }
+
+  String getListSurgeries() {
+    String result = '';
+    for (int i = 0; i < diseaseHealthRecordList.length; i++) {
+      if (diseaseHealthRecordList[i].description.compareTo('Phau Thuat') == 0) {
+        if (result.compareTo('') == 0) {
+          result = diseaseHealthRecordList[i].name;
+        } else {
+          result = result + ', ' + diseaseHealthRecordList[i].name;
+        }
+      }
+    }
+    if (result.compareTo('') != 00) {
+      return result;
+    } else {
+      return '---';
+    }
+  }
+
   @override
   String toString() {
-    // TODO: implement toString
-    return diseaseHealthRecordList.isNotEmpty ? diseaseHealthRecordList.toString() : 'None';
+    if (diseaseHealthRecordList.isNotEmpty) {
+      List<String> diseases = [];
+      List<String> allergies = [];
+      List<String> surgeries = [];
+      for (int i = 0; i < diseaseHealthRecordList.length; i++) {
+        if (diseaseHealthRecordList[i].description.compareTo('Benh') == 0) {
+          diseases.add(diseaseHealthRecordList[i].description);
+        } else if (diseaseHealthRecordList[i].description.compareTo('Di Ung') ==
+            0) {
+          allergies.add(diseaseHealthRecordList[i].description);
+        } else {
+          surgeries.add(diseaseHealthRecordList[i].description);
+        }
+      }
+      return '';
+    } else
+      return '';
   }
 }
