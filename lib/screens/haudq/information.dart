@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
+import 'package:personhealth/blocs/add_member_blocs.dart';
 import 'package:personhealth/blocs/individual_blocs.dart';
+import 'package:personhealth/events/add_member_events.dart';
 import 'package:personhealth/events/individual_events.dart';
+import 'package:personhealth/screens/haudq/layout/share_patient.dart';
 import 'package:personhealth/states/individual_states.dart';
 
 /// This is the stateless widget that the main application instantiates.
@@ -82,19 +85,7 @@ class _InformationState extends State<Information> {
                     SingleChildScrollView(
                       child: Column(
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(Icons.share,
-                                      color: Colors.blueGrey,
-                                      size: height * 0.04)),
-                              SizedBox(
-                                width: 30,
-                              ),
-                            ],
-                          ),
+
                           SizedBox(
                             height: 5,
                           ),
@@ -397,6 +388,21 @@ class _InformationState extends State<Information> {
                     SingleChildScrollView(
                       child: Column(
                         children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => BlocProvider(create: (context) => AddMemberBloc()..add(AddMemberFetchEvent()), child: SharePatient(),)));
+                                  },
+                                  icon: Icon(Icons.share,
+                                      color: Colors.blueGrey,
+                                      size: height * 0.04)),
+                              SizedBox(
+                                width: 30,
+                              ),
+                            ],
+                          ),
                           SizedBox(
                             height: 15,
                           ),

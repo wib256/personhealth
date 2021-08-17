@@ -6,10 +6,13 @@ import 'package:motion_toast/resources/arrays.dart';
 import 'package:personhealth/blocs/group_blocs.dart';
 import 'package:personhealth/blocs/group_detail_blocs.dart';
 import 'package:personhealth/blocs/individual_blocs.dart';
+import 'package:personhealth/blocs/notification_blocs.dart';
 import 'package:personhealth/events/group_detail_events.dart';
 import 'package:personhealth/events/group_events.dart';
 import 'package:personhealth/events/individual_events.dart';
+import 'package:personhealth/events/notification_events.dart';
 import 'package:personhealth/screens/haudq/layout/master_layout.dart';
+import 'package:personhealth/screens/haudq/notification.dart';
 import 'package:personhealth/states/group_states.dart';
 
 import 'group_detail.dart';
@@ -28,7 +31,6 @@ class ListGroup extends StatefulWidget {
 class _ListGroupState extends State<ListGroup> {
   final _groupNameController = TextEditingController();
   late GroupBloc _groupBloc;
-
 
   @override
   void initState() {
@@ -64,7 +66,14 @@ class _ListGroupState extends State<ListGroup> {
                   ),
                   child: OutlinedButton(
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => BlocProvider(create: (context) => IndividualBloc()..add(IndividualFetchEvent()), child: Information(),)));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => BlocProvider(
+                                    create: (context) => IndividualBloc()
+                                      ..add(IndividualFetchEvent()),
+                                    child: Information(),
+                                  )));
                     },
                     child: Text(
                       "Individual Share",
@@ -79,86 +88,100 @@ class _ListGroupState extends State<ListGroup> {
                     right: width * 0.03,
                     bottom: height * 0.02,
                   ),
-                  child: IconButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0))),
-                          title: Center(
-                            child: Text(
-                              "Create new group",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.blueGrey),
-                            ),
-                          ),
-                          content: Container(
-                            height: height * 0.08,
-                            child: Center(
-                              child: TextField(
-                                controller: _groupNameController,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(15),
+                  child: Row(
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => BlocProvider(create: (context) => NotificationBloc()..add(NotificationFetchEvent()), child: NotificationScreen(name: widget.name, image: widget.image,),)));
+                          },
+                          icon: Icon(
+                            Icons.notifications_active,
+                            color: Colors.purpleAccent,
+                          )),
+                      IconButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20.0))),
+                              title: Center(
+                                child: Text(
+                                  "Create new group",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.blueGrey),
+                                ),
+                              ),
+                              content: Container(
+                                height: height * 0.08,
+                                child: Center(
+                                  child: TextField(
+                                    controller: _groupNameController,
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(15),
+                                        ),
+                                      ),
+                                      labelText: "Group's name",
                                     ),
                                   ),
-                                  labelText: "Group's name",
                                 ),
                               ),
-                            ),
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Text(
-                                "Cancel",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
-                            BlocListener<GroupBloc, GroupState>(
-                              bloc: _groupBloc,
-                              listener: (context, state) {
-                                if (state is GroupStateSuccess) {
-                                  if (state.isCreated) {
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
                                     Navigator.pop(context);
-                                    _displayTopMotionToast(context, 0);
-                                  } else {
-                                    Navigator.pop(context);
-                                    _displayTopMotionToast(context, 1);
-                                  }
-                                }
-                              },
-                              child: TextButton(
-                                onPressed: () {
-                                  print(_groupNameController.text);
-                                  _groupBloc.add(GroupCreateEvent(groupName: _groupNameController.text));
-                                },
-                                child: Text(
-                                  "Create",
-                                  style: TextStyle(
-                                    fontSize: 16,
+                                  },
+                                  child: Text(
+                                    "Cancel",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                    ),
                                   ),
                                 ),
-                              ),
+                                BlocListener<GroupBloc, GroupState>(
+                                  bloc: _groupBloc,
+                                  listener: (context, state) {
+                                    if (state is GroupStateSuccess) {
+                                      if (state.isCreated) {
+                                        Navigator.pop(context);
+                                        _displayTopMotionToast(context, 0);
+                                      } else {
+                                        Navigator.pop(context);
+                                        _displayTopMotionToast(context, 1);
+                                      }
+                                    }
+                                  },
+                                  child: TextButton(
+                                    onPressed: () {
+                                      print(_groupNameController.text);
+                                      _groupBloc.add(GroupCreateEvent(
+                                          groupName:
+                                              _groupNameController.text));
+                                    },
+                                    child: Text(
+                                      "Create",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
+                          );
+                        },
+                        icon: Icon(
+                          Icons.group_add,
+                          color: Colors.blueGrey,
+                          size: height * 0.04,
                         ),
-                      );
-                    },
-                    icon: Icon(
-                      Icons.group_add,
-                      color: Colors.blueGrey,
-                      size: height * 0.04,
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -172,8 +195,8 @@ class _ListGroupState extends State<ListGroup> {
                     if (state is GroupStateFailure) {
                       return Expanded(
                           child: Center(
-                            child: Text('Cannot connect to the system'),
-                          ));
+                        child: Text('Cannot connect to the system'),
+                      ));
                     }
                     if (state is GroupStateInitial) {
                       return SizedBox();
@@ -182,8 +205,8 @@ class _ListGroupState extends State<ListGroup> {
                       if (state.listGroup.isEmpty) {
                         return Expanded(
                             child: Center(
-                              child: Text('You have not joined any groups yet'),
-                            ));
+                          child: Text('You have not joined any groups yet'),
+                        ));
                       }
                       return ListView.builder(
                           physics: NeverScrollableScrollPhysics(),
@@ -198,8 +221,24 @@ class _ListGroupState extends State<ListGroup> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                               BlocProvider(create: (context) => GroupDetailBloc()..add(GroupDetailFetchEvent(familyId: state.listGroup[index].id)), child:  GroupDetail(roleInGroup: state.listGroup[index].roleInTheGroup, familyId: state.listGroup[index].id,name: widget.name,image: widget.image,))));
+                                            builder: (context) => BlocProvider(
+                                                create: (context) =>
+                                                    GroupDetailBloc()
+                                                      ..add(
+                                                          GroupDetailFetchEvent(
+                                                              familyId: state
+                                                                  .listGroup[
+                                                                      index]
+                                                                  .id)),
+                                                child: GroupDetail(
+                                                  roleInGroup: state
+                                                      .listGroup[index]
+                                                      .roleInTheGroup,
+                                                  familyId:
+                                                      state.listGroup[index].id,
+                                                  name: widget.name,
+                                                  image: widget.image,
+                                                ))));
                                   },
                                   child: Container(
                                     padding: EdgeInsets.only(left: 10),

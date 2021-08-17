@@ -40,5 +40,19 @@ class AddMemberBloc extends Bloc<AddMemberBloc, AddMemberState>{
         yield AddMemberStateFailure();
       }
     }
+    if (event is AddMemberShareEvent) {
+      try {
+        bool isAdded = await postSharingInformationToPatient(event.bodyIndex,event.legalInformation,event.prehistoricInformation,event.phone);
+        var currentState = state as AddMemberStateSuccess;
+        if (isAdded) {
+          yield AddMemberStateSuccess(patient: currentState.patient, isAdded: true);
+        } else {
+          yield AddMemberStateSuccess(patient: currentState.patient, isAdded: false);
+        }
+      } catch (exception) {
+        print('State error: ' + exception.toString());
+        yield AddMemberStateFailure();
+      }
+    }
   }
 }

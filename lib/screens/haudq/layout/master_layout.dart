@@ -19,6 +19,7 @@ import 'package:personhealth/screens/haudq/list_examination.dart';
 import 'package:personhealth/screens/login_screen.dart';
 
 import '../group.dart';
+import '../profile.dart';
 
 class MasterLayout extends StatefulWidget {
   final String name;
@@ -167,22 +168,27 @@ class _MasterLayoutState extends State<MasterLayout> {
         child: Column(
           children: [
             DrawerHeader(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    radius: 50.0,
-                    backgroundImage: NetworkImage(
-                        "${widget.image}"),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    "${widget.name}",
-                    style: TextStyle(color: Colors.blueGrey, fontSize: 20),
-                  ),
-                ],
+              child: GestureDetector(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()));
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: 50.0,
+                      backgroundImage: NetworkImage(
+                          "${widget.image}"),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "${widget.name}",
+                      style: TextStyle(color: Colors.blueGrey, fontSize: 20),
+                    ),
+                  ],
+                ),
               ),
             ),
             Expanded(

@@ -28,6 +28,9 @@ class GroupDetailBloc extends Bloc<GroupDetailBloc, GroupDetailState>{
               patient.setPhone(groupFamily.patients[i].phone);
               patient.setImage(groupFamily.patients[i].image);
               patients.add(patient);
+            } else {
+              patient = new Patient(id: groupFamily.patients[i].id, accountId: 0, medicalNote: "", image: groupFamily.patients[i].image, height: 0, weight: 0, eyesight: 0, name: groupFamily.patients[i].name, dob: 'dob', gender: 'gender', bloodType: 'bloodType', address: 'address', diseaseHealthRecordList: List.empty(), phone: 'phone', status: 'status', hasLegal: false, hasBody: false, hasPreHistoric: false);
+              patients.add(patient);
             }
           }
           if (leader != null) {

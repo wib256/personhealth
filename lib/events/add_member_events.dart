@@ -11,3 +11,11 @@ class AddMemberAddEvent extends AddMemberBloc{
   final int familyId;
   AddMemberAddEvent({required this.phone, required this.familyId});
 }
+
+class AddMemberShareEvent extends AddMemberBloc {
+  final bool legalInformation;
+  final bool bodyIndex;
+  final bool prehistoricInformation;
+  final String phone;
+  AddMemberShareEvent({required this.phone, required this.prehistoricInformation, required this.legalInformation, required this.bodyIndex});
+}

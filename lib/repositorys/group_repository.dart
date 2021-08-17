@@ -7,6 +7,24 @@ import 'package:personhealth/models/group.dart';
 import 'package:personhealth/repositorys/local_data.dart';
 import 'package:personhealth/repositorys/sharing_repository.dart';
 
+Future<bool> rejectInvited(int familyId, int patientId) async {
+  try {
+    String? token = await LocalData().getToken();
+    token = 'Bearer ' + token!;
+    final response = await http.delete(Uri.parse('$REJECT_INVITED$familyId/$patientId'), headers: {
+      HttpHeaders.authorizationHeader: token
+    });
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (exception) {
+    return false;
+  }
+}
+
 Future<bool> acceptInvited(int familyId, int patientId) async {
   try {
     String? token = await LocalData().getToken();
