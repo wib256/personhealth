@@ -5,6 +5,7 @@ import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
 import 'package:personhealth/blocs/home_blocs.dart';
 import 'package:personhealth/blocs/login_blocs.dart';
+import 'package:personhealth/blocs/register_blocs.dart';
 import 'package:personhealth/events/home_events.dart';
 import 'package:personhealth/events/login_events.dart';
 import 'package:personhealth/screens/haudq/home.dart';
@@ -194,7 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => CreateAccount()));
+                                builder: (context) => BlocProvider(create: (context) => RegisterBloc(),child: CreateAccount(),)));
                       },
                       child: Text(
                         "Create new account?",

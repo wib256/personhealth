@@ -7,6 +7,32 @@ import 'package:personhealth/models/patient.dart';
 import 'package:http/http.dart' as http;
 import 'package:personhealth/repositorys/local_data.dart';
 
+Future<String> createPatient(String phone, String password, String name, String dob, String gender, String address) async {
+  try {
+    var params = {
+      "address": address,
+      "dob": dob,
+      "gender": gender,
+      "name": name,
+      "password": password,
+      "phone": phone
+    };
+    final response = await http.post(Uri.parse('$CREATE_PATIENT'), body: json.encode(params), headers: {
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.acceptHeader: "*/*",
+    });
+    print(response.body);
+    if (response.statusCode == 200) {
+      return 'true';
+    } else {
+      return 'doubly';
+    }
+  } catch (exception) {
+    print(exception);
+    return '0';
+  }
+}
+
 Future<bool> changeAvatarPatient(int id, File? image) async {
   try {
     String? token = await LocalData().getToken();
@@ -55,9 +81,12 @@ Future<Patient?> getPatientByIdFromApi(int patientId) async {
         await http.get(Uri.parse('$GET_PATIENT_BY_ID_FROM_API$patientId'), headers: {
           HttpHeaders.authorizationHeader: token
         });
+    print(response.body);
+    print(response.statusCode);
     if (response.statusCode == 200) {
       Map<String, dynamic> parse = jsonDecode(utf8.decode(response.bodyBytes));
       var patient = Patient.fromJson(parse);
+      print(patient.name);
       return patient;
     } else {
       return null;

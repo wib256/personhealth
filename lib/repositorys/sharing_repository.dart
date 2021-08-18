@@ -124,7 +124,7 @@ Future<bool> postSharingInformationToGroup(bool bodyIndex, bool legalInformation
       "sharingPatientId": patientId
     };
     Uri uri = Uri.parse('$POST_SHARING_INFORMATION_TO_GROUP');
-    final response = await http.put(uri, body: jsonEncode(params), headers: {
+    final response = await http.post(uri, body: jsonEncode(params), headers: {
       HttpHeaders.contentTypeHeader: "application/json",
       HttpHeaders.acceptHeader: "application/json",
       HttpHeaders.authorizationHeader: token

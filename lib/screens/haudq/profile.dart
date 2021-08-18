@@ -24,6 +24,7 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   late ProfileBloc _profileBloc;
+  String img = '';
   bool readLegal = true;
   bool readMedical = true;
   bool readBody = true;
@@ -45,6 +46,9 @@ class _ProfileState extends State<Profile> {
 
   @override
   void initState() {
+    img = widget.image;
+    print('Image ne: ' + img);
+
     _profileBloc = BlocProvider.of(context);
     super.initState();
   }
@@ -67,6 +71,7 @@ class _ProfileState extends State<Profile> {
     XFile? imageT = await picker.pickImage(source: ImageSource.gallery,  imageQuality: 50);
     File image = File(imageT!.path);
     _profileBloc.add(ProfileUpdateImageEvent(image: image));
+
   }
 
   @override
@@ -77,8 +82,8 @@ class _ProfileState extends State<Profile> {
 
     return MasterLayout(
       title: "Profile",
-      name: '',
-      image: "",
+      name: '${widget.name}',
+      image: img,
       child: Container(
         width: width,
         height: height - 100,
@@ -714,6 +719,9 @@ class _ProfileState extends State<Profile> {
                   color: Colors.blueGrey,
                   fontSize: 16,
                 ),
+                onTap: () {
+                  editingController..text = hintValue;
+                },
                 onSubmitted: (value) {
                   editingController..text = value;
                 },

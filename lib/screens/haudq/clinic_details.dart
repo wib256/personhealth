@@ -82,6 +82,7 @@ class _ClinicDetailState extends State<ClinicDetail> {
                 ),
               ),
               child: BlocBuilder<ClinicDetailBloc, ClinicDetailStates>(
+                bloc: _clinicDetailBloc,
                   builder: (context, state) {
                     if (state is ClinicDetailStateFailure) {
                       return Expanded(
@@ -99,10 +100,12 @@ class _ClinicDetailState extends State<ClinicDetail> {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "${state.clinic.name}",
-                            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                            maxLines: 2,
+                          Container(
+                            child: Text(
+                              "${state.clinic.name}",
+                              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                              maxLines: 2,
+                            ),
                           ),
                           SizedBox(
                             height: 5,

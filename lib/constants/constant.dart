@@ -8,6 +8,7 @@ const GET_PATIENT_BY_ID_FROM_API = 'http://14.161.47.36:8080/PHR_System-0.0.1-SN
 const GET_PATIENT_BY_PHONE_FROM_API = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/patients/patient/account/';
 const GET_DATA_SHARING_OF_PATIENT = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/sharings/shared-information';
 const EDIT_PATIENT_INFORMATION = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/patients/patient/';
+const CREATE_PATIENT = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/patients/patient';
 
 //Clinic
 const GET_CLINIC_FROM_API = 'http://14.161.47.36:8080/PHR_System-0.0.1-SNAPSHOT/clinics/clinics';

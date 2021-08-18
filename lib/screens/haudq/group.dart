@@ -202,7 +202,7 @@ class _ListGroupState extends State<ListGroup> {
                       return SizedBox();
                     }
                     if (state is GroupStateSuccess) {
-                      if (state.listGroup.isEmpty) {
+                      if (state.listGroup.length == 0) {
                         return Expanded(
                             child: Center(
                           child: Text('You have not joined any groups yet'),

@@ -53,17 +53,29 @@ class _ExaminationDetailState extends State<ExaminationDetail> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          "${widget.examination.clinicName}",
-                          style: TextStyle(
-                            fontSize: 25,
-                            color: Colors.blueGrey[500],
-                            fontWeight: FontWeight.bold,
+                        Container(
+                          width: width * 0.8,
+                          child: Text(
+                            "${widget.examination.clinicName}",
+                            style: TextStyle(
+                              fontSize: 22,
+                              color: Colors.blueGrey[500],
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
+                        widget.examination.rateStatus == 'enable' ?
                         IconButton(
                           onPressed: () {
                             _showRatingAppDialog();
+                          },
+                          icon: Image.asset(
+                            "assets/img/rating.png",
+                            height: 50,
+                          ),
+                        ) : IconButton(
+                          onPressed: () {
+                            _showNotificationDialog(context);
                           },
                           icon: Image.asset(
                             "assets/img/rating.png",
@@ -320,8 +332,14 @@ class _ExaminationDetailState extends State<ExaminationDetail> {
                                                                       .result ==
                                                                   9999
                                                               ? Text("Positive")
-                                                              : Text(
-                                                                  "${state.list[index].result}"),
+                                                              : Row(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: [
+                                                          Text(
+                                                              "${state.list[index].result}"),
+                                                          state.list[index].lastResul != 0 && state.list[index].lastResul < state.list[index].result ? Icon(Icons.arrow_upward_outlined, color: Colors.green,) : state.list[index].lastResul != 0 && state.list[index].lastResul > state.list[index].result ? Icon(Icons.arrow_downward, color: Colors.red,) : state.list[index].lastResul != 0 && state.list[index].lastResul == state.list[index].result ? Icon(Icons.remove, color: Colors.yellow,) : SizedBox(),
+                                                        ],
+                                                      )
                                                     ),
                                                   )
                                                 ],
@@ -396,6 +414,23 @@ class _ExaminationDetailState extends State<ExaminationDetail> {
           Positioned(child: _buildAppBar(), top: 0, left: 0, right: 0),
         ],
       ),
+    );
+  }
+
+  void _showNotificationDialog(BuildContext buildContext) {
+    showDialog(
+        context: context,
+        builder: (buildContext) {
+          return showNotificationDialog();
+    });
+  }
+
+  Widget showNotificationDialog() {
+    return AlertDialog(
+      title: Center(child: Text('The allotted date has passed or you rated.', style: TextStyle(fontSize: 16),),),
+      actions: [
+        TextButton(onPressed: (){Navigator.pop(context);}, child: Text('Close')),
+      ],
     );
   }
 

@@ -23,6 +23,8 @@ class _ListClinicState extends State<ListClinic> {
 
   @override
   void initState() {
+    print(widget.image);
+    print(widget.name);
     _listClinicBloc = BlocProvider.of(context);
     super.initState();
   }

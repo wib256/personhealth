@@ -178,9 +178,11 @@ class _MasterLayoutState extends State<MasterLayout> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CircleAvatar(
+                      backgroundColor: Colors.white,
                       radius: 50.0,
                       backgroundImage: NetworkImage(
-                          "${widget.image}"),
+                          "${widget.image}",
+                      ),
                     ),
                     SizedBox(
                       height: 10,

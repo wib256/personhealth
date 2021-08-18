@@ -1,6 +1,15 @@
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:motion_toast/motion_toast.dart';
+import 'package:motion_toast/resources/arrays.dart';
+import 'package:personhealth/blocs/login_blocs.dart';
+import 'package:personhealth/blocs/register_blocs.dart';
+import 'package:personhealth/events/login_events.dart';
+import 'package:personhealth/events/register_events.dart';
+import 'package:personhealth/screens/login_screen.dart';
+import 'package:personhealth/states/register_states.dart';
 
 class CreateAccount extends StatefulWidget {
   const CreateAccount({Key? key}) : super(key: key);
@@ -10,7 +19,21 @@ class CreateAccount extends StatefulWidget {
 }
 
 class _CreateAccountState extends State<CreateAccount> {
+  late RegisterBloc _registerBloc;
   String dropdownValue = 'Male';
+  String phone = '';
+  String password = '';
+  String confirm = '';
+  String name = '';
+  String dob = DateTime.now().toString();
+  String gender = '';
+  String address = '';
+
+  @override
+  void initState() {
+    _registerBloc = BlocProvider.of(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,12 +109,26 @@ class _CreateAccountState extends State<CreateAccount> {
                                 border: Border(
                                     bottom: BorderSide(
                                         color: Colors.grey.shade200))),
-                            child: TextField(
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                  hintText: "Your phone",
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  border: InputBorder.none),
+                            child: BlocBuilder<RegisterBloc, RegisterState>(
+                              bloc: _registerBloc,
+                              builder: (context, state) {
+                                return TextField(
+                                  keyboardType: TextInputType.number,
+                                  onChanged: (value) {
+                                    phone = value;
+                                  },
+                                  onSubmitted: (value) {
+                                    _registerBloc.add(
+                                        RegisterOnSubmitPhoneEvent(
+                                            phone: value));
+                                  },
+                                  decoration: InputDecoration(
+                                      errorText: state.phone,
+                                      hintText: "Your phone",
+                                      hintStyle: TextStyle(color: Colors.grey),
+                                      border: InputBorder.none),
+                                );
+                              },
                             ),
                           ),
                           Container(
@@ -100,12 +137,26 @@ class _CreateAccountState extends State<CreateAccount> {
                                 border: Border(
                                     bottom: BorderSide(
                                         color: Colors.grey.shade200))),
-                            child: TextField(
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                  hintText: "Password",
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  border: InputBorder.none),
+                            child: BlocBuilder<RegisterBloc, RegisterState>(
+                              bloc: _registerBloc,
+                              builder: (context, state) {
+                                return TextField(
+                                  obscureText: true,
+                                  onChanged: (value) {
+                                    password = value;
+                                  },
+                                  onSubmitted: (value) {
+                                    _registerBloc.add(
+                                        RegisterOnSubmitPasswordEvent(
+                                            password: value));
+                                  },
+                                  decoration: InputDecoration(
+                                      errorText: state.password,
+                                      hintText: "Password",
+                                      hintStyle: TextStyle(color: Colors.grey),
+                                      border: InputBorder.none),
+                                );
+                              },
                             ),
                           ),
                           Container(
@@ -114,12 +165,26 @@ class _CreateAccountState extends State<CreateAccount> {
                                 border: Border(
                                     bottom: BorderSide(
                                         color: Colors.grey.shade200))),
-                            child: TextField(
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                  hintText: "Confirm password",
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  border: InputBorder.none),
+                            child:  BlocBuilder<RegisterBloc, RegisterState>(
+                              bloc: _registerBloc,
+                              builder: (context, state) {
+                                return TextField(
+                                  obscureText: true,
+                                  onChanged: (value) {
+                                    confirm = value;
+                                  },
+                                  onSubmitted: (value) {
+                                    _registerBloc.add(
+                                        RegisterOnSubmitConfirmEvent(
+                                            password: password, confirm: value));
+                                  },
+                                  decoration: InputDecoration(
+                                      errorText: state.confirm,
+                                      hintText: "Confirm password",
+                                      hintStyle: TextStyle(color: Colors.grey),
+                                      border: InputBorder.none),
+                                );
+                              },
                             ),
                           ),
                           Container(
@@ -128,29 +193,29 @@ class _CreateAccountState extends State<CreateAccount> {
                                 border: Border(
                                     bottom: BorderSide(
                                         color: Colors.grey.shade200))),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                  hintText: "Name",
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  border: InputBorder.none),
+                            child: BlocBuilder<RegisterBloc, RegisterState>(
+                              bloc: _registerBloc,
+                              builder: (context, state) {
+                                return TextField(
+                                  onChanged: (value) {
+                                    name = value;
+                                  },
+                                  onSubmitted: (value) {
+                                    _registerBloc.add(
+                                        RegisterOnSubmitNameEvent(
+                                            name: value));
+                                  },
+                                  decoration: InputDecoration(
+                                      errorText: state.name,
+                                      hintText: "Name",
+                                      hintStyle: TextStyle(color: Colors.grey),
+                                      border: InputBorder.none),
+                                );
+                              },
                             ),
                           ),
-                          // Container(
-                          //   padding: EdgeInsets.all(10),
-                          //   decoration: BoxDecoration(
-                          //       border: Border(
-                          //           bottom: BorderSide(
-                          //               color: Colors.grey.shade200))),
-                          //   child: TextField(
-                          //     decoration: InputDecoration(
-                          //       hintText: "Date of birth",
-                          //       hintStyle: TextStyle(color: Colors.grey),
-                          //       border: InputBorder.none,
-                          //     ),
-                          //   ),
-                          // ),
                           Padding(
-                              padding: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             child: DateTimePicker(
                               initialValue: DateTime.now().toString(),
                               firstDate: DateTime(1900),
@@ -161,15 +226,23 @@ class _CreateAccountState extends State<CreateAccount> {
                                 print(val);
                                 return null;
                               },
-                              onSaved: (val) => print(val),
+                              onSaved: (val) {
+                                val == null ? dob = DateTime.now().toString() : dob = val;
+                              },
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Row(
                               children: [
-                                Text('Gender  ', style: TextStyle(color: Colors.grey, fontSize: 16),),
-                                SizedBox(width: 20,),
+                                Text(
+                                  'Gender  ',
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 16),
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
                                 DropdownButton(
                                   value: dropdownValue,
                                   icon: Icon(Icons.expand_more),
@@ -181,12 +254,17 @@ class _CreateAccountState extends State<CreateAccount> {
                                     });
                                   },
                                   items: <String>['Male', 'Female']
-                                      .map<DropdownMenuItem<String>>((String value) {
+                                      .map<DropdownMenuItem<String>>(
+                                          (String value) {
                                     return DropdownMenuItem<String>(
                                       value: value,
-                                      child: Text(value, style: TextStyle(color: Colors.grey),),
+                                      child: Text(
+                                        value,
+                                        style: TextStyle(color: Colors.grey),
+                                      ),
                                     );
-                                  }).toList(),),
+                                  }).toList(),
+                                ),
                               ],
                             ),
                           ),
@@ -196,11 +274,25 @@ class _CreateAccountState extends State<CreateAccount> {
                                 border: Border(
                                     bottom: BorderSide(
                                         color: Colors.grey.shade200))),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                  hintText: "Address",
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  border: InputBorder.none),
+                            child: BlocBuilder<RegisterBloc, RegisterState>(
+                              bloc: _registerBloc,
+                              builder: (context, state) {
+                                return TextField(
+                                  onChanged: (value) {
+                                    address = value;
+                                  },
+                                  onSubmitted: (value) {
+                                    _registerBloc.add(
+                                        RegisterOnSubmitAddressEvent(
+                                            address: value));
+                                  },
+                                  decoration: InputDecoration(
+                                      errorText: state.address,
+                                      hintText: "Address",
+                                      hintStyle: TextStyle(color: Colors.grey),
+                                      border: InputBorder.none),
+                                );
+                              },
                             ),
                           ),
                         ],
@@ -216,26 +308,70 @@ class _CreateAccountState extends State<CreateAccount> {
       backgroundColor: Colors.white,
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(20),
-        child: InkWell(
-          onTap: () {},
-          child: Container(
-            height: 50,
-            margin: EdgeInsets.symmetric(horizontal: 50),
-            decoration: BoxDecoration(
-                color: Colors.green[300],
-                borderRadius: BorderRadius.circular(10)),
-            child: Center(
-              child: Text(
-                "Create",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
+        child: BlocListener<RegisterBloc, RegisterState>(
+          bloc: _registerBloc,
+          listener: (context, state) {
+            if (state is RegisterStateSuccess) {
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => BlocProvider(create: (context) =>LoginBloc()..add(LoginFetchEvent()),child: LoginScreen(),)));
+            }
+            if (state is RegisterStateFailure) {
+              if (!state.status!) {
+                if (state.phone != null) {
+                  _displayTopMotionToast(context, '0');
+                }
+              } else {
+                _displayTopMotionToast(context, '1');
+              }
+            }
+          },
+          child: InkWell(
+            onTap: () {
+              _registerBloc.add(RegisterEvent(phone: phone, password: password, confirm: confirm, name: name, dob: dob, gender: dropdownValue, address: address));
+            },
+            child: Container(
+              height: 50,
+              margin: EdgeInsets.symmetric(horizontal: 50),
+              decoration: BoxDecoration(
+                  color: Colors.green[300],
+                  borderRadius: BorderRadius.circular(10)),
+              child: Center(
+                child: Text(
+                  "Create",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
             ),
           ),
         ),
       ),
     );
+  }
+
+  _displayTopMotionToast(BuildContext context, String msg) {
+    switch (msg) {
+      case "0":
+        MotionToast.error(
+          title: "ERROR",
+          titleStyle: TextStyle(fontWeight: FontWeight.bold),
+          description: "Unable to connect to the system.",
+          animationType: ANIMATION.FROM_TOP,
+          position: MOTION_TOAST_POSITION.CENTER,
+          width: 300,
+        ).show(context);
+        break;
+      case "1":
+        MotionToast.error(
+          title: "ERROR",
+          titleStyle: TextStyle(fontWeight: FontWeight.bold),
+          description: "Phone number not available.",
+          animationType: ANIMATION.FROM_TOP,
+          position: MOTION_TOAST_POSITION.CENTER,
+          width: 300,
+        ).show(context);
+        break;
+    }
   }
 }

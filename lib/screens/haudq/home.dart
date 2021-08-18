@@ -45,6 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    print(widget.image);
+    print(widget.name);
     super.initState();
   }
 
@@ -106,6 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: Column(
                                   children: [
                                     CircleAvatar(
+                                      backgroundColor: Colors.white,
                                       radius: 50.0,
                                       backgroundImage: NetworkImage(
                                           "${widget.image}"),
@@ -130,6 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: Column(
                                   children: [
                                     CircleAvatar(
+                                      backgroundColor: Colors.white,
                                       radius: 50.0,
                                       backgroundImage:
                                           NetworkImage("${state.image}"),
