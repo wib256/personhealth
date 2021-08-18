@@ -771,6 +771,9 @@ class _ProfileState extends State<Profile> {
                       color: Colors.blueGrey,
                       fontSize: 16,
                     ),
+                    onTap: () {
+                      editingController..text = hintValue;
+                    },
                     onSubmitted: (value) {
                       editingController.text = value;
                     },

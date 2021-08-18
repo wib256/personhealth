@@ -20,6 +20,10 @@ class Patient {
   final bool hasBody;
   final bool hasPreHistoric;
 
+  void setGender(String gender) {
+    this.gender = gender;
+  }
+
   void setPhone(String phone) {
     this.phone = phone;
   }
@@ -89,9 +93,9 @@ class Patient {
         gender: json['gender'] == null ? '' : json['gender'],
         bloodType: json['bloodType'] == null ? '' : json['bloodType'],
         address: json['address'] == null ? '' : json['address'],
-        diseaseHealthRecordList: List<DiseaseHealthRecord>.from(
+        diseaseHealthRecordList: json["diseaseHealthRecordList"] != null ? List<DiseaseHealthRecord>.from(
             json["diseaseHealthRecordList"]
-                .map((x) => DiseaseHealthRecord.fromJson(x))),
+                .map((x) => DiseaseHealthRecord.fromJson(x))) : [],
         phone: json['phone'] == null ? '' : json['phone'],
         status: json['status'] == null ? '' : json['status'],
         hasLegal: json['haslegal'] == null ? false : json['haslegal'],

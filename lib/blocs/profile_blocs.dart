@@ -15,6 +15,16 @@ class ProfileBloc extends Bloc<ProfileBloc, ProfileState>{
         int? patientId = await LocalData().getPatientId();
         Patient? patient = await getPatientByIdFromApi(patientId!);
         if (patient != null) {
+          if (patient.status.compareTo('new') == 0) {
+            String? name = await LocalData().getName();
+            String? phone = await LocalData().getPhone();
+            String? gender = await LocalData().getGender();
+            String? dob = await LocalData().getDob();
+            patient.setName(name!);
+            patient.setPhone(phone!);
+            patient.setDob(dob!);
+            patient.setGender(gender!);
+          }
           yield ProfileStateSuccess(patient: patient);
         } else {
           yield ProfileStateFailure();
