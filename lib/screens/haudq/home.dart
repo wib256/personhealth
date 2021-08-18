@@ -9,6 +9,7 @@ import 'package:personhealth/blocs/home_blocs.dart';
 import 'package:personhealth/blocs/list_clinic_blocs.dart';
 import 'package:personhealth/blocs/list_examination_blocs.dart';
 import 'package:personhealth/blocs/login_blocs.dart';
+import 'package:personhealth/blocs/profile_blocs.dart';
 import 'package:personhealth/events/clinic_detail_event.dart';
 import 'package:personhealth/events/examination_detail_events.dart';
 import 'package:personhealth/events/group_events.dart';
@@ -16,6 +17,7 @@ import 'package:personhealth/events/home_events.dart';
 import 'package:personhealth/events/list_clinic_events.dart';
 import 'package:personhealth/events/list_examination_events.dart';
 import 'package:personhealth/events/login_events.dart';
+import 'package:personhealth/events/profile_events.dart';
 import 'package:personhealth/models/clinic.dart';
 import 'package:personhealth/models/examination.dart';
 import 'package:personhealth/repositorys/local_data.dart';
@@ -99,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             if (state is HomeStateFailure) {
                               return GestureDetector(
                                 onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => BlocProvider(create: (context) => ProfileBloc()..add(ProfileFetchEvent()), child: Profile(image: widget.image, name: widget.name,),)));
                                 },
                                 child: Column(
                                   children: [
@@ -123,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             if (state is HomeStateSuccess) {
                               return GestureDetector(
                                 onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => BlocProvider(create: (context) => ProfileBloc()..add(ProfileFetchEvent()), child: Profile(image: widget.image, name: widget.name,),)));
                                 },
                                 child: Column(
                                   children: [

@@ -1,3 +1,4 @@
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -9,10 +10,12 @@ class CreateAccount extends StatefulWidget {
 }
 
 class _CreateAccountState extends State<CreateAccount> {
+  String dropdownValue = 'Male';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
@@ -63,6 +66,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   child: Column(
                     children: [
                       Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Center(
                             child: Text(
@@ -125,38 +129,65 @@ class _CreateAccountState extends State<CreateAccount> {
                                     bottom: BorderSide(
                                         color: Colors.grey.shade200))),
                             child: TextField(
-                              keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                   hintText: "Name",
                                   hintStyle: TextStyle(color: Colors.grey),
                                   border: InputBorder.none),
                             ),
                           ),
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                                border: Border(
-                                    bottom: BorderSide(
-                                        color: Colors.grey.shade200))),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                hintText: "Date of birth",
-                                hintStyle: TextStyle(color: Colors.grey),
-                                border: InputBorder.none,
-                              ),
+                          // Container(
+                          //   padding: EdgeInsets.all(10),
+                          //   decoration: BoxDecoration(
+                          //       border: Border(
+                          //           bottom: BorderSide(
+                          //               color: Colors.grey.shade200))),
+                          //   child: TextField(
+                          //     decoration: InputDecoration(
+                          //       hintText: "Date of birth",
+                          //       hintStyle: TextStyle(color: Colors.grey),
+                          //       border: InputBorder.none,
+                          //     ),
+                          //   ),
+                          // ),
+                          Padding(
+                              padding: const EdgeInsets.all(10),
+                            child: DateTimePicker(
+                              initialValue: DateTime.now().toString(),
+                              firstDate: DateTime(1900),
+                              lastDate: DateTime.now(),
+                              dateLabelText: 'Date of birth',
+                              onChanged: (val) => print(val),
+                              validator: (val) {
+                                print(val);
+                                return null;
+                              },
+                              onSaved: (val) => print(val),
                             ),
                           ),
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                                border: Border(
-                                    bottom: BorderSide(
-                                        color: Colors.grey.shade200))),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                  hintText: "Gender",
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  border: InputBorder.none),
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Row(
+                              children: [
+                                Text('Gender  ', style: TextStyle(color: Colors.grey, fontSize: 16),),
+                                SizedBox(width: 20,),
+                                DropdownButton(
+                                  value: dropdownValue,
+                                  icon: Icon(Icons.expand_more),
+                                  iconSize: 20,
+                                  elevation: 16,
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      dropdownValue = newValue!;
+                                    });
+                                  },
+                                  items: <String>['Male', 'Female']
+                                      .map<DropdownMenuItem<String>>((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value, style: TextStyle(color: Colors.grey),),
+                                    );
+                                  }).toList(),),
+                              ],
                             ),
                           ),
                           Container(

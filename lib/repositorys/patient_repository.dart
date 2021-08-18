@@ -138,6 +138,104 @@ Future<Patient?> getDataSharingOfPatientWithOtherPatient(int sharingPatientId, i
   }
 }
 
+Future<bool> editInformationMedicalPatient(Patient patient, List<String> allergyList, List<String> diseaseList, List<String> surgeryList) async {
+  try {
+
+    String? password = await LocalData().getPassword();
+
+    var params = {
+      "accountId": patient.accountId,
+      "address": patient.address,
+      "allergyList": allergyList,
+      "bloodType": patient.bloodType,
+      "diseaseList": diseaseList,
+      "dob": patient.dob,
+      "eyesight": patient.eyesight,
+      "gender": patient.gender,
+      "height": patient.height,
+      "image": patient.image,
+      "name": patient.name,
+      "password": password,
+      "surgeryList": surgeryList,
+      "weight": patient.weight,
+    };
+
+    int? patientId = await LocalData().getPatientId();
+    String? token = await LocalData().getToken();
+    token = 'Bearer ' + token!;
+    final response = await http.put(
+        Uri.parse('$EDIT_PATIENT_INFORMATION$patientId'),
+        body: json.encode(params), headers: {
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.acceptHeader: "*/*",
+      HttpHeaders.authorizationHeader: token
+    });
+    print(response.body);
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (exception) {
+    print('edit Patient information error: ' + exception.toString());
+    return false;
+  }
+}
+
+Future<bool> editInformationPatient(Patient patient) async {
+  try {
+    List<String> diseaseList = [];
+    diseaseList = patient.getListDiseases().split(",");
+
+    List<String> surgeryList = [];
+    surgeryList = patient.getListSurgeries().split(",");
+
+    List<String> allergyList = [];
+    allergyList = patient.getListAllergies().split(",");
+
+    String? password = await LocalData().getPassword();
+
+    var params = {
+      "accountId": patient.accountId,
+      "address": patient.address,
+      "allergyList": allergyList,
+      "bloodType": patient.bloodType,
+      "diseaseList": diseaseList,
+      "dob": patient.dob,
+      "eyesight": patient.eyesight,
+      "gender": patient.gender,
+      "height": patient.height,
+      "image": patient.image,
+      "name": patient.name,
+      "password": password,
+      "surgeryList": surgeryList,
+      "weight": patient.weight,
+    };
+
+    int? patientId = await LocalData().getPatientId();
+    String? token = await LocalData().getToken();
+    token = 'Bearer ' + token!;
+    final response = await http.put(
+        Uri.parse('$EDIT_PATIENT_INFORMATION$patientId'),
+        body: json.encode(params), headers: {
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.acceptHeader: "*/*",
+      HttpHeaders.authorizationHeader: token
+    });
+    print(response.body);
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (exception) {
+    print('edit Patient information error: ' + exception.toString());
+    return false;
+  }
+}
+
 Future<bool?> editPatientInformation(Patient patient) async {
   try {
     int? patientId = await LocalData().getPatientId();

@@ -7,11 +7,13 @@ import 'package:personhealth/blocs/home_blocs.dart';
 import 'package:personhealth/blocs/list_clinic_blocs.dart';
 import 'package:personhealth/blocs/list_examination_blocs.dart';
 import 'package:personhealth/blocs/login_blocs.dart';
+import 'package:personhealth/blocs/profile_blocs.dart';
 import 'package:personhealth/events/group_events.dart';
 import 'package:personhealth/events/home_events.dart';
 import 'package:personhealth/events/list_clinic_events.dart';
 import 'package:personhealth/events/list_examination_events.dart';
 import 'package:personhealth/events/login_events.dart';
+import 'package:personhealth/events/profile_events.dart';
 import 'package:personhealth/repositorys/local_data.dart';
 import 'package:personhealth/screens/haudq/home.dart';
 import 'package:personhealth/screens/haudq/list_clinic.dart';
@@ -170,7 +172,7 @@ class _MasterLayoutState extends State<MasterLayout> {
             DrawerHeader(
               child: GestureDetector(
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => BlocProvider(create: (context) => ProfileBloc()..add(ProfileFetchEvent()), child: Profile(image: widget.image, name: widget.name,),)));
                 },
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

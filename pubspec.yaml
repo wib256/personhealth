@@ -37,6 +37,8 @@ dependencies:
   mime_type: ^1.0.0
   draw_graph: ^1.0.0
   syncfusion_flutter_datepicker: ^19.2.51
+  formz: ^0.4.0-nullsafety.0
+  date_time_picker: ^2.1.0
 
   # haudq
   firebase_core: ^1.4.0

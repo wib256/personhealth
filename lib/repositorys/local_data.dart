@@ -1,6 +1,16 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalData {
+  Future<void> savePassword(String password) async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.setString('password', password);
+  }
+
+  Future<String?> getPassword() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    return sp.getString('password');
+  }
+
   Future<bool?> isLogin() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     return sp.getBool('isLogin');
