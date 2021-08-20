@@ -123,6 +123,7 @@ class _GroupDetailState extends State<GroupDetail> {
                                                 Center(
                                                   child: Container(
                                                     child: CircleAvatar(
+                                                      backgroundColor: Colors.grey,
                                                       backgroundImage: NetworkImage(
                                                           '${state.groupFamily
                                                               .patients[index]

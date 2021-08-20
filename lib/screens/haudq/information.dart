@@ -144,6 +144,7 @@ class _InformationState extends State<Information> {
                                                   Center(
                                                     child: Container(
                                                       child: CircleAvatar(
+                                                        backgroundColor: Colors.grey,
                                                         backgroundImage:
                                                             NetworkImage(
                                                                 '${state.listShared[i].image}'),
@@ -462,6 +463,7 @@ class _InformationState extends State<Information> {
                                               Center(
                                                 child: Container(
                                                   child: CircleAvatar(
+                                                    backgroundColor: Colors.grey,
                                                     backgroundImage: NetworkImage(
                                                         '${state.listSharing[i].image}'),
                                                   ),

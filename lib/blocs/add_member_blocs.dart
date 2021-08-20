@@ -1,6 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:personhealth/events/add_member_events.dart';
 import 'package:personhealth/models/patient.dart';
+import 'package:personhealth/repositorys/local_data.dart';
+import 'package:personhealth/repositorys/notification.dart';
 import 'package:personhealth/repositorys/patient_repository.dart';
 import 'package:personhealth/repositorys/sharing_repository.dart';
 import 'package:personhealth/states/add_member_states.dart';
@@ -29,8 +31,13 @@ class AddMemberBloc extends Bloc<AddMemberBloc, AddMemberState>{
     if (event is AddMemberAddEvent) {
       try {
         bool isAdded = await addMember(event.familyId, event.phone);
+        Patient? patient = await getPatientByPhoneFromApi(event.phone);
+        int accountReceiveId = patient!.id;
         var currentState = state as AddMemberStateSuccess;
         if (isAdded) {
+          String? name = await LocalData().getName();
+          String message = name! + ' has invited you to join the group.';
+          await sentNotification(accountReceiveId, message);
           yield AddMemberStateSuccess(patient: currentState.patient, isAdded: true);
         } else {
           yield AddMemberStateSuccess(patient: currentState.patient, isAdded: false);

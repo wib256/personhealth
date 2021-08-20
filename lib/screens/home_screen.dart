@@ -136,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
     FirebaseMessaging.instance
         .getToken()
         .then((value) async {
-          String? fcm_token = await updateToken(value!); 
+          String? fcm_token = await updateToken(value!);
           print(value);
           if (fcm_token != null) {
             if (fcm_token.isNotEmpty) {
@@ -147,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         });
 
-    LocalNotificationService.initialize(context);
+    //LocalNotificationService.initialize(context);
 
     // FirebaseMessaging.instance.getInitialMessage().then((message) {
     //   if (message != null) {

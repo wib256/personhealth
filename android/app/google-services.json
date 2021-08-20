@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "612057377858-sc4qv9lgkf2o379te8ge401tet7rho1q.apps.googleusercontent.com",
+          "client_id": "612057377858-e803agu6f4t0ppo9r79krgv11nms2r65.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.personhealth",
-            "certificate_hash": "bcbc76b3f9728ce4be98f94c0c7daa6f8517b708"
+            "certificate_hash": "7fa4fcdd8aaedc85b4b04baacded56f8424b79b7"
           }
         },
         {

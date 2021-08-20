@@ -96,7 +96,7 @@ class _ListGroupState extends State<ListGroup> {
                           },
                           icon: Icon(
                             Icons.notifications_active,
-                            color: Colors.purpleAccent,
+                            color: Colors.purpleAccent.shade100,
                           )),
                       IconButton(
                         onPressed: () {
@@ -263,6 +263,7 @@ class _ListGroupState extends State<ListGroup> {
                                         Center(
                                           child: Container(
                                             child: CircleAvatar(
+                                              backgroundColor: Colors.grey,
                                               backgroundImage: NetworkImage(
                                                   '${state.listGroup[index].avatar}'),
                                             ),

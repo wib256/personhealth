@@ -178,7 +178,7 @@ class _MasterLayoutState extends State<MasterLayout> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CircleAvatar(
-                      backgroundColor: Colors.white,
+                      backgroundColor: Colors.grey,
                       radius: 50.0,
                       backgroundImage: NetworkImage(
                           "${widget.image}",

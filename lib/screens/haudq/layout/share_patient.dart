@@ -146,6 +146,7 @@ class _SharePatientState extends State<SharePatient> {
                           Center(
                             child: Container(
                               child: CircleAvatar(
+                                backgroundColor: Colors.grey,
                                 backgroundImage: NetworkImage(
                                     '${state.patient.image}'),
                               ),

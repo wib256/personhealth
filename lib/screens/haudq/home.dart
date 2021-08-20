@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:personhealth/blocs/clinic_detail_blocs.dart';
@@ -21,8 +22,10 @@ import 'package:personhealth/events/profile_events.dart';
 import 'package:personhealth/models/clinic.dart';
 import 'package:personhealth/models/examination.dart';
 import 'package:personhealth/repositorys/local_data.dart';
+import 'package:personhealth/repositorys/notification.dart';
 import 'package:personhealth/screens/haudq/list_clinic.dart';
 import 'package:personhealth/states/home_states.dart';
+import 'package:personhealth/utils/local_notification_service.dart';
 import 'profile.dart';
 
 import '../login_screen.dart';
@@ -45,8 +48,40 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    print(widget.image);
-    print(widget.name);
+
+    FirebaseMessaging.instance
+        .getToken()
+        .then((value) async {
+      String? fcm_token = await updateToken(value!);
+      print(value);
+      if (fcm_token != null) {
+        if (fcm_token.isNotEmpty) {
+          print('value token: ' + fcm_token);
+        } else {
+          print('Get update tokent fail');
+        }
+      }
+    });
+
+
+
+
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
+      if (message != null) {
+        LocalNotificationService.initialize(context, widget.name, widget.image, message.notification!.body);
+      }
+    });
+
+    FirebaseMessaging.onMessage.listen((message) {
+      if (message.notification != null) {
+        LocalNotificationService.initialize(context, widget.name, widget.image, message.notification!.body);
+      }
+
+
+    });
+
+
+
     super.initState();
   }
 
@@ -413,7 +448,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               height: 20,
                                             ),
                                             Text(
-                                              "Clinic near you",
+                                              "Top clinics",
                                               style: TextStyle(
                                                 fontSize: 25,
                                                 fontWeight: FontWeight.w800,
