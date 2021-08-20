@@ -64,7 +64,7 @@ class _ExaminationDetailState extends State<ExaminationDetail> {
                             ),
                           ),
                         ),
-                        widget.examination.rateStatus == 'enable' ?
+                        widget.examination.rateStatus == 'waiting' ?
                         IconButton(
                           onPressed: () {
                             _showRatingAppDialog();

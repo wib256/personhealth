@@ -85,7 +85,8 @@ class RegisterBloc extends Bloc<RegisterBloc, RegisterState> {
         } else if (event.address.trim().isEmpty) {
           yield RegisterStateFailure(phone: null, password: null, confirm: null, name: null, dob: null, gender: null, address: 'Address is not blank', status: false);
         } else {
-          String register = await createPatient(event.phone, event.password, event.name, event.dob, event.gender, event.address);
+          String dob = event.dob.split(' ')[0];
+          String register = await createPatient(event.phone, event.password, event.name, dob, event.gender, event.address);
           switch (register) {
             case '0': yield RegisterStateFailure(phone: null, password: null, confirm: null, name: null, dob: null, gender: null, address: null, status: false); break;
             case 'true': yield RegisterStateSuccess(); break;

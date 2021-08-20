@@ -144,7 +144,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Text(
                                       "${state.name}",
                                       style: TextStyle(
-                                          color: Colors.blueGrey, fontSize: 20),
+                                          color: Colors.blueGrey, fontSize: 18),
+                                      softWrap: true,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ],
                                 ),

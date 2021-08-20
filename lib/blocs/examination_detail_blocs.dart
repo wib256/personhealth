@@ -45,38 +45,55 @@ class ExaminationDetailBloc extends Bloc<ExaminationDetailBloc, ExaminationDetai
             if (lastID != -1) {
               final lastExaminationsDetail =
               await getExaminationsDetailFromApi(lastID, gender);
-              for (int i = 0; i < examinationsDetail.length; i++) {
-                for (int j = 0; j < lastExaminationsDetail.length; j++) {
-                  if (examinationsDetail[i].testID ==
-                      lastExaminationsDetail[j].testID) {
-                    ExaminationDetailExpand temp = new ExaminationDetailExpand(
-                        examinationsDetail[i].id,
-                        examinationsDetail[i].examinationID,
-                        examinationsDetail[i].testID,
-                        examinationsDetail[i].result,
-                        examinationsDetail[i].indexValueMax,
-                        examinationsDetail[i].indexValueMin,
-                        examinationsDetail[i].diagnose,
-                        examinationsDetail[i].testName,
-                        lastExaminationsDetail[j].result);
-                    j = lastExaminationsDetail.length;
-                    list.add(temp);
-                  }
-                  if ((j + 1) == lastExaminationsDetail.length) {
-                    ExaminationDetailExpand temp = new ExaminationDetailExpand(
-                        examinationsDetail[i].id,
-                        examinationsDetail[i].examinationID,
-                        examinationsDetail[i].testID,
-                        examinationsDetail[i].result,
-                        examinationsDetail[i].indexValueMax,
-                        examinationsDetail[i].indexValueMin,
-                        examinationsDetail[i].diagnose,
-                        examinationsDetail[i].testName,
-                        0);
-                    list.add(temp);
+              if (lastExaminationsDetail.length > 0) {
+                for (int i = 0; i < examinationsDetail.length; i++) {
+                  for (int j = 0; j < lastExaminationsDetail.length; j++) {
+                    if (examinationsDetail[i].testID ==
+                        lastExaminationsDetail[j].testID) {
+                      ExaminationDetailExpand temp = new ExaminationDetailExpand(
+                          examinationsDetail[i].id,
+                          examinationsDetail[i].examinationID,
+                          examinationsDetail[i].testID,
+                          examinationsDetail[i].result,
+                          examinationsDetail[i].indexValueMax,
+                          examinationsDetail[i].indexValueMin,
+                          examinationsDetail[i].diagnose,
+                          examinationsDetail[i].testName,
+                          lastExaminationsDetail[j].result);
+                      j = lastExaminationsDetail.length;
+                      list.add(temp);
+                    }
+                    if ((j + 1) == lastExaminationsDetail.length) {
+                      ExaminationDetailExpand temp = new ExaminationDetailExpand(
+                          examinationsDetail[i].id,
+                          examinationsDetail[i].examinationID,
+                          examinationsDetail[i].testID,
+                          examinationsDetail[i].result,
+                          examinationsDetail[i].indexValueMax,
+                          examinationsDetail[i].indexValueMin,
+                          examinationsDetail[i].diagnose,
+                          examinationsDetail[i].testName,
+                          0);
+                      list.add(temp);
+                    }
                   }
                 }
+              } else {
+                for (int i = 0; i < examinationsDetail.length; i++) {
+                  ExaminationDetailExpand temp = new ExaminationDetailExpand(
+                      examinationsDetail[i].id,
+                      examinationsDetail[i].examinationID,
+                      examinationsDetail[i].testID,
+                      examinationsDetail[i].result,
+                      examinationsDetail[i].indexValueMax,
+                      examinationsDetail[i].indexValueMin,
+                      examinationsDetail[i].diagnose,
+                      examinationsDetail[i].testName,
+                      0);
+                  list.add(temp);
+                }
               }
+
             } else {
               for (int i = 0; i < examinationsDetail.length; i++) {
                 ExaminationDetailExpand temp = new ExaminationDetailExpand(

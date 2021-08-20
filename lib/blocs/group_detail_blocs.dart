@@ -94,10 +94,11 @@ class GroupDetailBloc extends Bloc<GroupDetailBloc, GroupDetailState>{
             }
             yield GroupDetailStateSuccess(groupFamily: currentState.groupFamily, patients: currentState.patients, isEdited: true, isRename: false, isChangeAvatar: false);
           } else {
-            yield GroupDetailStateSuccess(groupFamily: currentState.groupFamily, patients: currentState.patients, isEdited: false, isRename: false, isChangeAvatar: false);
+            yield GroupDetailStateSuccess(groupFamily: currentState.groupFamily, patients: currentState.patients, isEdited: true, isRename: false, isChangeAvatar: false);
           }
         } else {
           int? patientId = await LocalData().getPatientId();
+          await editSharingInformationToGroup(event.bodyIndex, event.legalInformation, event.prehistoricInformation, event.familyGroupId);
           Patient? patient = await getDataSharingOfPatient(event.familyGroupId, patientId!);
           if (patient != null) {
             for (int i = 0; i < currentState.patients.length; i++) {

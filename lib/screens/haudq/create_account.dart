@@ -221,13 +221,15 @@ class _CreateAccountState extends State<CreateAccount> {
                               firstDate: DateTime(1900),
                               lastDate: DateTime.now(),
                               dateLabelText: 'Date of birth',
-                              onChanged: (val) => print(val),
+                              onChanged: (val) {
+                                dob = val;
+                              },
                               validator: (val) {
                                 print(val);
                                 return null;
                               },
                               onSaved: (val) {
-                                val == null ? dob = DateTime.now().toString() : dob = val;
+                                dob = val!;
                               },
                             ),
                           ),

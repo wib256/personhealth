@@ -57,7 +57,7 @@ class DrawGraphBloc extends Bloc<DrawGraphBloc, DrawGraphState> {
           yield DrawGraphStateSuccess(data: data, labelX: labelX, labelY: labelY, graphData: listGraphData);
         } else {
           double plus = maxData / 5;
-          var labelY = [(plus).toString(), (plus * 2).toString(), (plus * 3).toString(), maxData.toString()];
+          var labelY = [(plus).toStringAsFixed(1), (plus * 2).toStringAsFixed(1), (plus * 3).toStringAsFixed(1), maxData.toStringAsFixed(1)];
 
           //return yield success
           yield DrawGraphStateSuccess(data: data, labelX: labelX, labelY: labelY, graphData: listGraphData);

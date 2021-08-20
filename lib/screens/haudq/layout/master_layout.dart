@@ -189,7 +189,9 @@ class _MasterLayoutState extends State<MasterLayout> {
                     ),
                     Text(
                       "${widget.name}",
-                      style: TextStyle(color: Colors.blueGrey, fontSize: 20),
+                      style: TextStyle(color: Colors.blueGrey, fontSize: 18),
+                      softWrap: true,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
