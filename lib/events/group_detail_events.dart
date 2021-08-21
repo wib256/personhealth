@@ -27,3 +27,9 @@ class GroupDetailChangeAvatarEvent extends GroupDetailBloc {
 
   GroupDetailChangeAvatarEvent({required this.familyId, required this.image});
 }
+
+class GroupDetailRemoveMemberEvent extends GroupDetailBloc {
+  final int familyId;
+  final int patientId;
+  GroupDetailRemoveMemberEvent({required this.familyId, required this.patientId});
+}

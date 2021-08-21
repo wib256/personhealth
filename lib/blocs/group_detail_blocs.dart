@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:personhealth/events/group_detail_events.dart';
 import 'package:personhealth/models/patient.dart';
 import 'package:personhealth/repositorys/group_family_repository.dart';
+import 'package:personhealth/repositorys/group_repository.dart';
 import 'package:personhealth/repositorys/local_data.dart';
 import 'package:personhealth/repositorys/patient_repository.dart';
 import 'package:personhealth/repositorys/sharing_repository.dart';
@@ -48,7 +49,7 @@ class GroupDetailBloc extends Bloc<GroupDetailBloc, GroupDetailState>{
             patients.insert(0, leader);
           }
 
-          yield GroupDetailStateSuccess(groupFamily: groupFamily, patients: patients, isEdited: false, isRename: false, isChangeAvatar: false);
+          yield GroupDetailStateSuccess(groupFamily: groupFamily, patients: patients, isEdited: false, isRename: false, isChangeAvatar: false, isRemove: false);
         } else {
           List<Patient> patients = [];
           Patient? leader = await getDataSharingOfPatient(familyId, groupFamily.leaderId);
@@ -64,7 +65,7 @@ class GroupDetailBloc extends Bloc<GroupDetailBloc, GroupDetailState>{
             groupFamily.patients.insert(0, leader);
             patients.insert(0, leader);
           }
-          yield GroupDetailStateSuccess(groupFamily: groupFamily, patients: patients, isEdited: false, isRename: false, isChangeAvatar: false);
+          yield GroupDetailStateSuccess(groupFamily: groupFamily, patients: patients, isEdited: false, isRename: false, isChangeAvatar: false, isRemove: false);
         }
       } catch (exception) {
         print('State exception: ' + exception.toString());
@@ -92,9 +93,9 @@ class GroupDetailBloc extends Bloc<GroupDetailBloc, GroupDetailState>{
                 }
               }
             }
-            yield GroupDetailStateSuccess(groupFamily: currentState.groupFamily, patients: currentState.patients, isEdited: true, isRename: false, isChangeAvatar: false);
+            yield GroupDetailStateSuccess(groupFamily: currentState.groupFamily, patients: currentState.patients, isEdited: true, isRename: false, isChangeAvatar: false, isRemove: false);
           } else {
-            yield GroupDetailStateSuccess(groupFamily: currentState.groupFamily, patients: currentState.patients, isEdited: true, isRename: false, isChangeAvatar: false);
+            yield GroupDetailStateSuccess(groupFamily: currentState.groupFamily, patients: currentState.patients, isEdited: true, isRename: false, isChangeAvatar: false, isRemove: false);
           }
         } else {
           int? patientId = await LocalData().getPatientId();
@@ -111,7 +112,7 @@ class GroupDetailBloc extends Bloc<GroupDetailBloc, GroupDetailState>{
               }
             }
           }
-          yield GroupDetailStateSuccess(groupFamily: currentState.groupFamily, patients: currentState.patients, isEdited: true, isRename: false, isChangeAvatar: false);
+          yield GroupDetailStateSuccess(groupFamily: currentState.groupFamily, patients: currentState.patients, isEdited: true, isRename: false, isChangeAvatar: false, isRemove: false);
         }
       } catch (exception) {
         print('State exception: ' + exception.toString());
@@ -124,9 +125,9 @@ class GroupDetailBloc extends Bloc<GroupDetailBloc, GroupDetailState>{
         bool isRename = await renameGroup(event.familyInt, event.groupName);
         if (isRename) {
           currentState.groupFamily.setName(event.groupName);
-          yield GroupDetailStateSuccess(groupFamily: currentState.groupFamily, patients: currentState.patients, isEdited: false, isRename: true, isChangeAvatar: false);
+          yield GroupDetailStateSuccess(groupFamily: currentState.groupFamily, patients: currentState.patients, isEdited: false, isRename: true, isChangeAvatar: false, isRemove: false);
         } else {
-          yield GroupDetailStateSuccess(groupFamily: currentState.groupFamily, patients: currentState.patients, isEdited: false, isRename: false, isChangeAvatar: false);
+          yield GroupDetailStateSuccess(groupFamily: currentState.groupFamily, patients: currentState.patients, isEdited: false, isRename: false, isChangeAvatar: false, isRemove: false);
         }
       }catch (exception) {
         print('State exception: ' + exception.toString());
@@ -139,9 +140,24 @@ class GroupDetailBloc extends Bloc<GroupDetailBloc, GroupDetailState>{
         var currentState = state as GroupDetailStateSuccess;
         bool isChange = await changeAvatar(event.familyId, event.image as local.File);
         if (isChange) {
-          yield GroupDetailStateSuccess(groupFamily: currentState.groupFamily, patients: currentState.patients, isEdited: false, isRename: false, isChangeAvatar: true);
+          yield GroupDetailStateSuccess(groupFamily: currentState.groupFamily, patients: currentState.patients, isEdited: false, isRename: false, isChangeAvatar: true, isRemove: false);
         } else {
-          yield GroupDetailStateSuccess(groupFamily: currentState.groupFamily, patients: currentState.patients, isEdited: false, isRename: false, isChangeAvatar: false);
+          yield GroupDetailStateSuccess(groupFamily: currentState.groupFamily, patients: currentState.patients, isEdited: false, isRename: false, isChangeAvatar: false, isRemove: false);
+        }
+      } catch (exception) {
+        print('State exception: ' + exception.toString());
+        yield GroupDetailStateFailure();
+      }
+    }
+    if (event is GroupDetailRemoveMemberEvent) {
+      try {
+        bool isRemove = await rejectInvited(event.familyId, event.patientId);
+        if (isRemove) {
+          var currentState = state as GroupDetailStateSuccess;
+          yield GroupDetailStateSuccess(groupFamily: currentState.groupFamily, patients: currentState.patients, isEdited: false, isRename: false, isChangeAvatar: false, isRemove: true);
+        } else {
+          var currentState = state as GroupDetailStateSuccess;
+          yield GroupDetailStateSuccess(groupFamily: currentState.groupFamily, patients: currentState.patients, isEdited: false, isRename: false, isChangeAvatar: false, isRemove: false);
         }
       } catch (exception) {
         print('State exception: ' + exception.toString());

@@ -13,5 +13,6 @@ class GroupDetailStateSuccess extends GroupDetailState{
   final bool isEdited;
   final bool isRename;
   final bool isChangeAvatar;
-  GroupDetailStateSuccess({required this.groupFamily, required this.patients, required this.isEdited, required this.isRename, required this.isChangeAvatar});
+  final bool isRemove;
+  GroupDetailStateSuccess({required this.groupFamily, required this.patients, required this.isEdited, required this.isRename, required this.isChangeAvatar, required this.isRemove});
 }

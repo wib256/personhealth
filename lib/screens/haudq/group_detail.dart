@@ -11,6 +11,7 @@ import 'package:personhealth/blocs/group_blocs.dart';
 import 'package:personhealth/events/add_member_events.dart';
 import 'package:personhealth/events/group_detail_events.dart';
 import 'package:personhealth/events/group_events.dart';
+import 'package:personhealth/models/patient.dart';
 import 'package:personhealth/screens/haudq/group.dart';
 import 'package:personhealth/states/group_detail_states.dart';
 
@@ -96,7 +97,8 @@ class _GroupDetailState extends State<GroupDetail> {
                                 itemBuilder: (context, index) {
                                   return Center(
                                     child: Padding(
-                                      padding: const EdgeInsets.only(bottom: 10),
+                                      padding: const EdgeInsets.only(
+                                          bottom: 10),
                                       child: Container(
                                         width: width * 0.95,
                                         decoration: BoxDecoration(
@@ -109,220 +111,268 @@ class _GroupDetailState extends State<GroupDetail> {
                                                 blurRadius: 20)
                                           ],
                                         ),
-                                        child: ExpansionTile(
-                                          title: Container(
-                                            padding: EdgeInsets.only(left: 10),
-                                            height: height * 0.07,
-                                            width: width * 0.9,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                              children: [
-                                                Center(
-                                                  child: Container(
-                                                    child: CircleAvatar(
-                                                      backgroundColor: Colors.grey,
-                                                      backgroundImage: NetworkImage(
-                                                          '${state.groupFamily
-                                                              .patients[index]
-                                                              .image}'),
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  width: 20,
-                                                ),
-                                                Container(
-                                                  width: width * 0.6,
-                                                  alignment: Alignment.centerLeft,
-                                                  child: Text(
-                                                    "${state.groupFamily
-                                                        .patients[index].name}",
-                                                    style: TextStyle(
-                                                      fontSize: 20,
-                                                      color: Colors.blueGrey[500],
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
-                                                    maxLines: 2,
-                                                    softWrap: true,
-                                                    overflow: TextOverflow.ellipsis,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          children: [
-                                            state.patients[index].hasLegal
-                                                ? Card(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                BorderRadius.circular(15.0),
-                                                side: new BorderSide(
-                                                    color: Colors.green.shade100,
-                                                    width: 1.0),
-                                              ),
-                                              child: Column(
+                                        child: GestureDetector(
+                                          onLongPress: () {
+                                            if (widget.roleInGroup.compareTo(
+                                                'leader') == 0 && state.groupFamily.leaderId != state.patients[index].id) {
+                                              _showRemoveDialog(context,
+                                                  state.patients[index]);
+                                            }
+                                          },
+                                          child: ExpansionTile(
+                                            title: Container(
+                                              padding: EdgeInsets.only(
+                                                  left: 10),
+                                              height: height * 0.07,
+                                              width: width * 0.9,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                                 children: [
-                                                  ListTile(
-                                                    leading: Icon(Icons.person),
-                                                    title: Text(
-                                                        'Personal information'),
+                                                  Center(
+                                                    child: Container(
+                                                      child: CircleAvatar(
+                                                        backgroundColor: Colors
+                                                            .grey,
+                                                        backgroundImage: NetworkImage(
+                                                            '${state.groupFamily
+                                                                .patients[index]
+                                                                .image}'),
+                                                      ),
+                                                    ),
                                                   ),
-                                                  ListTile(
-                                                    title: Text(
-                                                        'Date of birth: ${state
-                                                            .patients[index].dob}'),
+                                                  SizedBox(
+                                                    width: 20,
                                                   ),
-                                                  ListTile(
-                                                    title: Text(
-                                                        'Gender: ${state
-                                                            .patients[index]
-                                                            .gender}'),
-                                                  ),
-                                                  ListTile(
-                                                    title: Text(
-                                                        'Phone: ${state
-                                                            .patients[index]
-                                                            .phone}'),
-                                                  ),
-                                                  ListTile(
-                                                    title: Text(
-                                                        'Address: ${state
-                                                            .patients[index]
-                                                            .address}'),
-                                                  ),
-                                                  ListTile(
-                                                    title: Text(
-                                                        'Blood Type: ${state
-                                                            .patients[index]
-                                                            .bloodType}'),
+                                                  Container(
+                                                    width: width * 0.6,
+                                                    alignment: Alignment
+                                                        .centerLeft,
+                                                    child: Text(
+                                                      "${state.groupFamily
+                                                          .patients[index]
+                                                          .name}",
+                                                      style: TextStyle(
+                                                        fontSize: 20,
+                                                        color: Colors
+                                                            .blueGrey[500],
+                                                        fontWeight: FontWeight
+                                                            .bold,
+                                                      ),
+                                                      maxLines: 2,
+                                                      softWrap: true,
+                                                      overflow: TextOverflow
+                                                          .ellipsis,
+                                                    ),
                                                   ),
                                                 ],
                                               ),
-                                            )
-                                                : Card(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                BorderRadius.circular(15.0),
-                                                side: new BorderSide(
-                                                    color: Colors.green.shade100,
-                                                    width: 1.0),
-                                              ),
-                                              child: ListTile(
-                                                leading: Icon(Icons.person),
-                                                title:
-                                                Text('Personal information'),
-                                                subtitle: Text(
-                                                    'This information has not been shared.'),
-                                              ),
                                             ),
-                                            state.patients[index].hasBody
-                                                ? Card(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                BorderRadius.circular(15.0),
-                                                side: new BorderSide(
-                                                    color: Colors.green.shade100,
-                                                    width: 1.0),
-                                              ),
-                                              child: Column(
-                                                children: [
-                                                  ListTile(
-                                                    leading: Icon(Icons.info),
-                                                    title: Text('Body information'),
-                                                  ),
-                                                  ListTile(
-                                                    title: state.patients[index]
-                                                        .height != 0
-                                                        ? Text(
-                                                        'Height: ' +
-                                                            state.patients[index]
-                                                                .height.toString())
-                                                        : Text('Height: '),
-                                                  ),
-                                                  ListTile(
-                                                    title: state.patients[index]
-                                                        .weight != 0
-                                                        ? Text(
-                                                        'Weight: ' +
-                                                            state.patients[index]
-                                                                .weight.toString())
-                                                        : Text('Weight: '),
-                                                  ),
-                                                  ListTile(
-                                                    title: state.patients[index]
-                                                        .eyesight != 0 ? Text(
-                                                        'Eyesight: ' +
-                                                            state.patients[index]
-                                                                .eyesight
-                                                                .toString()) : Text(
-                                                        'Eyesight: '),
-                                                  ),
-                                                ],
-                                              ),
-                                            ) : Card(
+                                            children: [
+                                              state.patients[index].hasLegal
+                                                  ? Card(
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
                                                   BorderRadius.circular(15.0),
                                                   side: new BorderSide(
-                                                      color: Colors.green.shade100,
+                                                      color: Colors.green
+                                                          .shade100,
+                                                      width: 1.0),
+                                                ),
+                                                child: Column(
+                                                  children: [
+                                                    ListTile(
+                                                      leading: Icon(
+                                                          Icons.person),
+                                                      title: Text(
+                                                          'Personal information'),
+                                                    ),
+                                                    ListTile(
+                                                      title: Text(
+                                                          'Date of birth: ${state
+                                                              .patients[index]
+                                                              .dob}'),
+                                                    ),
+                                                    ListTile(
+                                                      title: Text(
+                                                          'Gender: ${state
+                                                              .patients[index]
+                                                              .gender}'),
+                                                    ),
+                                                    ListTile(
+                                                      title: Text(
+                                                          'Phone: ${state
+                                                              .patients[index]
+                                                              .phone}'),
+                                                    ),
+                                                    ListTile(
+                                                      title: Text(
+                                                          'Address: ${state
+                                                              .patients[index]
+                                                              .address}'),
+                                                    ),
+                                                    ListTile(
+                                                      title: Text(
+                                                          'Blood Type: ${state
+                                                              .patients[index]
+                                                              .bloodType}'),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                                  : Card(
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                  BorderRadius.circular(15.0),
+                                                  side: new BorderSide(
+                                                      color: Colors.green
+                                                          .shade100,
+                                                      width: 1.0),
+                                                ),
+                                                child: ListTile(
+                                                  leading: Icon(Icons.person),
+                                                  title:
+                                                  Text('Personal information'),
+                                                  subtitle: Text(
+                                                      'This information has not been shared.'),
+                                                ),
+                                              ),
+                                              state.patients[index].hasBody
+                                                  ? Card(
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                  BorderRadius.circular(15.0),
+                                                  side: new BorderSide(
+                                                      color: Colors.green
+                                                          .shade100,
+                                                      width: 1.0),
+                                                ),
+                                                child: Column(
+                                                  children: [
+                                                    ListTile(
+                                                      leading: Icon(Icons.info),
+                                                      title: Text(
+                                                          'Body information'),
+                                                    ),
+                                                    ListTile(
+                                                      title: state
+                                                          .patients[index]
+                                                          .height != 0
+                                                          ? Text(
+                                                          'Height: ' +
+                                                              state
+                                                                  .patients[index]
+                                                                  .height
+                                                                  .toString())
+                                                          : Text('Height: '),
+                                                    ),
+                                                    ListTile(
+                                                      title: state
+                                                          .patients[index]
+                                                          .weight != 0
+                                                          ? Text(
+                                                          'Weight: ' +
+                                                              state
+                                                                  .patients[index]
+                                                                  .weight
+                                                                  .toString())
+                                                          : Text('Weight: '),
+                                                    ),
+                                                    ListTile(
+                                                      title: state
+                                                          .patients[index]
+                                                          .eyesight != 0
+                                                          ? Text(
+                                                          'Eyesight: ' +
+                                                              state
+                                                                  .patients[index]
+                                                                  .eyesight
+                                                                  .toString())
+                                                          : Text(
+                                                          'Eyesight: '),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ) : Card(
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                  BorderRadius.circular(15.0),
+                                                  side: new BorderSide(
+                                                      color: Colors.green
+                                                          .shade100,
                                                       width: 1.0),
                                                 ),
                                                 child: ListTile(
                                                     leading: Icon(Icons.info),
-                                                    title: Text('Body information'),
+                                                    title: Text(
+                                                        'Body information'),
                                                     subtitle: Text(
                                                         'This information has not been shared.')
                                                 ),
-                                            ),
-                                            state.patients[index].hasPreHistoric ? Card(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                BorderRadius.circular(15.0),
-                                                side: new BorderSide(
-                                                    color: Colors.green.shade100,
-                                                    width: 1.0),
                                               ),
-                                              child: Column(
-                                                children: [
-                                                  ListTile(
-                                                    leading: Icon(Icons.medical_services),
-                                                    title: Text('Medical history'),
-                                                  ),
-                                                  ListTile(
-                                                    title: Text('Diseases'),
+                                              state.patients[index]
+                                                  .hasPreHistoric ? Card(
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                  BorderRadius.circular(15.0),
+                                                  side: new BorderSide(
+                                                      color: Colors.green
+                                                          .shade100,
+                                                      width: 1.0),
+                                                ),
+                                                child: Column(
+                                                  children: [
+                                                    ListTile(
+                                                      leading: Icon(Icons
+                                                          .medical_services),
+                                                      title: Text(
+                                                          'Medical history'),
+                                                    ),
+                                                    ListTile(
+                                                      title: Text('Diseases'),
+                                                      subtitle: Text(
+                                                          '   ' + state
+                                                              .patients[index]
+                                                              .getListDiseases()),
+                                                    ),
+                                                    ListTile(
+                                                      title: Text('Allergies'),
+                                                      subtitle: Text(
+                                                          '   ' + state
+                                                              .patients[index]
+                                                              .getListAllergies()),
+                                                    ),
+                                                    ListTile(
+                                                      title: Text('Surgeries'),
+                                                      subtitle: Text(
+                                                          '   ' + state
+                                                              .patients[index]
+                                                              .getListSurgeries()),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ) : Card(
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                  BorderRadius.circular(15.0),
+                                                  side: new BorderSide(
+                                                      color: Colors.green
+                                                          .shade100,
+                                                      width: 1.0),
+                                                ),
+                                                child: ListTile(
+                                                    leading: Icon(
+                                                        Icons.medical_services),
+                                                    title: Text(
+                                                        'Medical history'),
                                                     subtitle: Text(
-                                                        '   ' + state.patients[index].getListDiseases()),
-                                                  ),
-                                                  ListTile(
-                                                    title: Text('Allergies'),
-                                                    subtitle: Text(
-                                                        '   ' + state.patients[index].getListAllergies()),
-                                                  ),
-                                                  ListTile(
-                                                    title: Text('Surgeries'),
-                                                    subtitle: Text(
-                                                        '   ' + state.patients[index].getListSurgeries()),
-                                                  ),
-                                                ],
+                                                        'This information has not been shared.')
+                                                ),
                                               ),
-                                            ) : Card(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                BorderRadius.circular(15.0),
-                                                side: new BorderSide(
-                                                    color: Colors.green.shade100,
-                                                    width: 1.0),
-                                              ),
-                                              child: ListTile(
-                                                  leading: Icon(Icons.medical_services),
-                                                  title: Text('Medical history'),
-                                                  subtitle: Text('This information has not been shared.')
-                                              ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -360,7 +410,14 @@ class _GroupDetailState extends State<GroupDetail> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => BlocProvider(create: (context) => AddMemberBloc()..add(AddMemberFetchEvent()), child: AddMember(familyId: widget.familyId,),)));
+                          Navigator.push(context, MaterialPageRoute(
+                              builder: (context) =>
+                                  BlocProvider(
+                                    create: (context) =>
+                                    AddMemberBloc()
+                                      ..add(AddMemberFetchEvent()),
+                                    child: AddMember(
+                                      familyId: widget.familyId,),)));
                         },
                         child: Row(
                           children: [
@@ -559,6 +616,51 @@ class _GroupDetailState extends State<GroupDetail> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  _showRemoveDialog(BuildContext buildContext, Patient patient) {
+    showDialog(
+        context: context,
+        builder: (buildContext) {
+          return _removeGroup(patient);
+        });
+  }
+
+  Widget _removeGroup(Patient patient) {
+    return AlertDialog(
+      content: Text(
+          'Are you sure you want to remove ${patient.name} from the group?'),
+      actions: [
+        TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text('Cancel')),
+        BlocListener<GroupDetailBloc, GroupDetailState>(
+          bloc: _detailBloc,
+          listener: (context, state) {
+            if (state is GroupDetailStateSuccess) {
+              if (state.isRemove) {
+                _detailBloc.add(
+                    GroupDetailFetchEvent(familyId: widget.familyId));
+              } else if (!state.isRemove) {
+                _displayRemoveTopMotionToast(context);
+              }
+            }
+          },
+          child: TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _detailBloc.add(GroupDetailRemoveMemberEvent(
+                  familyId: widget.familyId, patientId: patient.id));
+            },
+            child: Text('Remove'),
+          ),
+        ),
+      ],
+      title: Center(child: Text('Remove member'),
       ),
     );
   }
@@ -775,5 +877,16 @@ class _GroupDetailState extends State<GroupDetail> {
         ).show(context);
         break;
     }
+  }
+
+  _displayRemoveTopMotionToast(BuildContext context) {
+    MotionToast.error(
+      title: "ERROR",
+      titleStyle: TextStyle(fontWeight: FontWeight.bold),
+      description: "Unable to connect to the system.",
+      animationType: ANIMATION.FROM_TOP,
+      position: MOTION_TOAST_POSITION.CENTER,
+      width: 300,
+    ).show(context);
   }
 }

@@ -62,26 +62,35 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       }
     });
-
-
-
-
-    FirebaseMessaging.instance.getInitialMessage().then((message) {
-      if (message != null) {
-        LocalNotificationService.initialize(context, widget.name, widget.image, message.notification!.body);
-      }
-    });
-
-    FirebaseMessaging.onMessage.listen((message) {
-      if (message.notification != null) {
-        LocalNotificationService.initialize(context, widget.name, widget.image, message.notification!.body);
-      }
-
-
-    });
-
-
-
+    //
+    // FirebaseMessaging.instance.getInitialMessage().then((message) {
+    //
+    //   // if (message != null) {
+    //   //   print(message.data.toString());
+    //   //   print(message.notification!.title);
+    //     LocalNotificationService.initialize(context, widget.name, widget.image, message!.notification!.body);
+    //   // }
+    // });
+    //
+    // FirebaseMessaging.onMessage.listen((message) {
+    //   print('Messagesssssssssssss: ' + message.toString());
+    //   LocalNotificationService.display(message);
+    //   if (message.notification != null) {
+    //     print(message.data.toString());
+    //     print(message.notification!.title);
+    //     LocalNotificationService.initialize(context, widget.name, widget.image, message.notification!.body);
+    //   }
+    //
+    //
+    // });
+    //
+    // FirebaseMessaging.onMessageOpenedApp.listen((message) {
+    //   if (message.notification != null) {
+    //     print(message.data.toString());
+    //     print(message.notification!.title);
+    //     LocalNotificationService.initialize(context, widget.name, widget.image, message.notification!.body);
+    //   }
+    // });
     super.initState();
   }
 

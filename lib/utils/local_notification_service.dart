@@ -71,7 +71,7 @@ class LocalNotificationService {
         notificationDetails,
       );
     } on Exception catch (e) {
-      print(e);
+      print('Local notification: ' + e.toString());
     }
   }
 }
