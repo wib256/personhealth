@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:personhealth/events/register_events.dart';
 import 'package:personhealth/repositorys/patient_repository.dart';
 import 'package:personhealth/states/register_states.dart';
+import 'package:intl/intl.dart';
 
 class RegisterBloc extends Bloc<RegisterBloc, RegisterState> {
   RegisterBloc():super(RegisterStateInitial());
@@ -86,7 +87,10 @@ class RegisterBloc extends Bloc<RegisterBloc, RegisterState> {
           yield RegisterStateFailure(phone: null, password: null, confirm: null, name: null, dob: null, gender: null, address: 'Address is not blank', status: false);
         } else {
           String dob = event.dob.split(' ')[0];
-          String register = await createPatient(event.phone, event.password, event.name, dob, event.gender, event.address);
+          DateTime date = DateTime.parse(dob);
+          String formatDate = DateFormat('yyyy/MM/dd').format(date);
+          print(formatDate);
+          String register = await createPatient(event.phone, event.password, event.name, formatDate.toString(), event.gender, event.address);
           switch (register) {
             case '0': yield RegisterStateFailure(phone: null, password: null, confirm: null, name: null, dob: null, gender: null, address: null, status: false); break;
             case 'true': yield RegisterStateSuccess(); break;

@@ -67,7 +67,7 @@ class ProfileBloc extends Bloc<ProfileBloc, ProfileState>{
         if (event.bloodType.compareTo('') != 0) {
           patient.setBloodType(event.bloodType);
         }
-        if (event.bloodType.compareTo('') != 0) {
+        if (event.dob.compareTo('') != 0) {
           patient.setDob(event.dob);
         }
 
