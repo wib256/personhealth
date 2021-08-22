@@ -25,7 +25,6 @@ import 'package:personhealth/repositorys/local_data.dart';
 import 'package:personhealth/repositorys/notification.dart';
 import 'package:personhealth/screens/haudq/list_clinic.dart';
 import 'package:personhealth/states/home_states.dart';
-import 'package:personhealth/utils/local_notification_service.dart';
 import 'profile.dart';
 
 import '../login_screen.dart';
@@ -45,9 +44,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late double _value = 0;
+  String dropdownValue = '1';
+  late HomeBloc _homeBloc;
 
   @override
   void initState() {
+    _homeBloc = BlocProvider.of(context);
 
     FirebaseMessaging.instance
         .getToken()
@@ -456,12 +458,40 @@ class _HomeScreenState extends State<HomeScreen> {
                                             SizedBox(
                                               height: 20,
                                             ),
-                                            Text(
-                                              "Top clinics",
-                                              style: TextStyle(
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.w800,
-                                              ),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Text(
+                                                  "Clinics near you",
+                                                  style: TextStyle(
+                                                    fontSize: 25,
+                                                    fontWeight: FontWeight.w800,
+                                                  ),
+                                                ),
+                                                DropdownButton(
+                                                  value: dropdownValue,
+                                                  icon: Icon(Icons.expand_more),
+                                                  iconSize: 20,
+                                                  elevation: 16,
+                                                  onChanged: (String? newValue) {
+                                                    setState(() {
+                                                      dropdownValue = newValue!;
+                                                      _homeBloc.add(HomeChangeDistrictEvent(district: dropdownValue));
+                                                    });
+                                                  },
+                                                  items: <String>['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', 'Go Vap', 'Binh Thanh', 'Phu Nhuan', 'Tan Binh']
+                                                      .map<DropdownMenuItem<String>>(
+                                                          (String value) {
+                                                        return DropdownMenuItem<String>(
+                                                          value: value,
+                                                          child: Text(
+                                                            value,
+                                                            style: TextStyle(color: Colors.grey),
+                                                          ),
+                                                        );
+                                                      }).toList(),
+                                                ),
+                                              ],
                                             ),
                                             SizedBox(
                                               height: 10,
@@ -505,8 +535,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   .width *
                                                               0.8,
                                                       color: Color(0xffcef4e8),
-                                                      child: Text(
-                                                          'There are no clinics near your location'),
+                                                      child: Center(
+                                                        child: Text(
+                                                            'There are no clinics near your location'),
+                                                      ),
                                                     );
                                                   }
                                                   return ListView.builder(
@@ -821,6 +853,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       fontSize: 20,
                       color: Colors.blueGrey[500],
                       fontWeight: FontWeight.bold),
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: true,
                 ),
               ),
               SizedBox(

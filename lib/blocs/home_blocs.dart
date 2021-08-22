@@ -19,7 +19,7 @@ class HomeBloc extends Bloc<HomeBloc, HomeState> {
       int? patientId = await LocalData().getPatientId();
 
       //get address to compare with clinic.
-      String? district = "3"; //require when login success
+      String? district = "1"; //require when login success
       List<Clinic> clinics = await getClinicsByDistrict(district);
 
       Examination? examination = await getExaminationLast();
@@ -30,6 +30,25 @@ class HomeBloc extends Bloc<HomeBloc, HomeState> {
         yield HomeStateSuccess(name: name!, image: image!, clinics: clinics, examination: examination);
       }
 
+    }
+    if (event is HomeChangeDistrictEvent) {
+      try {
+        String? name = await LocalData().getName();
+        String? image = await LocalData().getImage();
+        String district = event.district;
+        List<Clinic> clinics = await getClinicsByDistrict(district);
+        Examination? examination = await getExaminationLast();
+        if (examination != null) {
+          yield HomeStateSuccess(name: name!, image: image!, clinics: clinics, examination: examination);
+        } else {
+          examination = new Examination(0, "date", "diagnose", 0, "clinicName", 0, "advise", "rateStatus");
+          yield HomeStateSuccess(name: name!, image: image!, clinics: clinics, examination: examination);
+        }
+      } catch (exception) {
+        print('State error: ' + exception.toString());
+        var currentState = state as HomeStateSuccess;
+        yield currentState;
+      }
     }
   }
 }
